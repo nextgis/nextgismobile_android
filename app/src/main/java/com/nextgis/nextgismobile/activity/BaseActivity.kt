@@ -19,30 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile
+package com.nextgis.nextgismobile.activity
 
-import android.databinding.DataBindingUtil
-import android.os.Build
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
-import android.view.View
-import android.view.WindowManager
-import com.nextgis.nextgismobile.databinding.ActivityProxyBinding
-import com.nextgis.nextgismobile.util.runDelayed
-import com.nextgis.nextgismobile.util.startActivity
 
-
-class ProxyActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityProxyBinding
+abstract class BaseActivity : AppCompatActivity() {
+    protected lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_proxy)
-        binding.executePendingBindings()
-        runDelayed(2500) { startActivity<MainActivity>() }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        else
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
     }
 }

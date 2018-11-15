@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile
+package com.nextgis.nextgismobile.activity
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -27,10 +27,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.nextgis.maplib.*
+import com.nextgis.nextgismobile.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity(), GestureDelegate {
+class MainActivity : BaseActivity(), GestureDelegate {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,12 @@ class MainActivity : AppCompatActivity(), GestureDelegate {
         API.init(this@MainActivity)
         val map = API.getMap("main")
         map?.let {
-            it.setExtentLimits(MIN_X, MIN_Y, MAX_X, MAX_Y)
+            it.setExtentLimits(
+                MIN_X,
+                MIN_Y,
+                MAX_X,
+                MAX_Y
+            )
             mapView.setMap(it)
             addOSMTo(it)
 //            it.save()
@@ -59,8 +65,14 @@ class MainActivity : AppCompatActivity(), GestureDelegate {
     private fun addOSMTo(map: MapDocument) {
         val dataDir = API.getDataDirectory()
         if(dataDir != null) {
-            val bbox = Envelope(MIN_X, MAX_X, MIN_Y, MAX_Y)
-            val baseMap = dataDir.createTMS("osm.wconn", OSM_URL, 3857, 0, 18, bbox, bbox, 14)
+            val bbox = Envelope(
+                MIN_X,
+                MAX_X,
+                MIN_Y,
+                MAX_Y
+            )
+            val baseMap = dataDir.createTMS("osm.wconn",
+                OSM_URL, 3857, 0, 18, bbox, bbox, 14)
             map.addLayer("OSM", baseMap!!)
         }
     }
