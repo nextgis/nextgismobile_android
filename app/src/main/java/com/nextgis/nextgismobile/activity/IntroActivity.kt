@@ -33,7 +33,7 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.WindowManager
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.util.startActivity
+import com.pawegio.kandroid.startActivity
 
 
 class IntroActivity: AppIntro() {
@@ -66,10 +66,7 @@ class IntroActivity: AppIntro() {
         val inactive = ContextCompat.getColor(this, R.color.indicatorInactive)
         setIndicatorColor(active, inactive)
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        else
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        BaseActivity.hideStatusBar(window)
     }
 
     override fun onSkipPressed(currentFragment: Fragment) {
@@ -85,6 +82,6 @@ class IntroActivity: AppIntro() {
     private fun openSignin() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         preferences.edit().putBoolean("intro_shown", true).apply()
-        startActivity<NGIDLoginActivity>()
+        startActivity<NGIDSigninActivity>()
     }
 }

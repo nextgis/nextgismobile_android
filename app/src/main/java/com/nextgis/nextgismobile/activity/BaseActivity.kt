@@ -22,9 +22,13 @@
 package com.nextgis.nextgismobile.activity
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 
 abstract class BaseActivity : AppCompatActivity() {
     protected lateinit var preferences: SharedPreferences
@@ -32,5 +36,14 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
+    }
+
+    companion object {
+        fun hideStatusBar(window: Window) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+                window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            else
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
     }
 }

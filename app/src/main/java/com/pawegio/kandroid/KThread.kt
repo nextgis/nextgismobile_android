@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-package com.nextgis.nextgismobile.util
+package com.pawegio.kandroid
 
-import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-
-inline fun <reified T : Any> IntentFor(context: Context): Intent = Intent(context, T::class.java)
-
-inline fun <reified T : Any> Context.startActivity() = startActivity(IntentFor<T>(this))
 
 fun runAsync(action: () -> Unit) = Thread(Runnable(action)).start()
 
@@ -37,7 +31,6 @@ fun runOnUiThread(action: () -> Unit) {
 
 fun runDelayed(delayMillis: Long, action: () -> Unit) = Handler().postDelayed(Runnable(action), delayMillis)
 
-fun runDelayedOnUiThread(delayMillis: Long, action: () -> Unit) =
-    Handler(Looper.getMainLooper()).postDelayed(Runnable(action), delayMillis)
+fun runDelayedOnUiThread(delayMillis: Long, action: () -> Unit) = Handler(Looper.getMainLooper()).postDelayed(Runnable(action), delayMillis)
 
 private fun isMainLooperAlive() = Looper.myLooper() == Looper.getMainLooper()

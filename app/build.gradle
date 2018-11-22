@@ -12,21 +12,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
+        buildConfigField "String", "CLIENT_ID", "\"Im6GFdPPuPM09BnvFb3EacFZyq8TpRBSAAex7JDZ\""
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
         }
     }
     dataBinding {
@@ -50,6 +41,7 @@ dependencies {
 
     implementation 'com.nextgis.maplib:maplib:3.0.+'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     implementation 'com.github.paolorotolo:appintro:v4.2.3'
 }

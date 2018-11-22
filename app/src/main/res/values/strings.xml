@@ -26,4 +26,20 @@
     <string name="intro_title_2">Have fun!</string>
     <string name="intro_description_1">It\'s NextGIS Mobile v3</string>
     <string name="intro_description_2">Under construction</string>
+    <string name="signed_in_already">Already signed in</string>
+    <string name="sign_out_first">Please sign out first to add new account.</string>
+    <string name="login_or_email">Login or email</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="restore">Restore password</string>
+    <string name="social">Sign in with social:</string>
+    <string name="authenticate">@string/sign_in</string>
+    <string name="authenticate_new">@string/sign_up</string>
+    <string name="invalid_email">Invalid email format</string>
+    <string name="empty_password">Please type your password</string>
+    <string name="terms_and_privacy">By signing up, you agree to the <a href='https://nextgis.com/terms'>Terms of Service</a> and <a href='https://nextgis.com/privacy'>Privacy Policy</a></string>
+    <string name="not_implemented">Not implemented yet</string>
+    <string name="skip_ngid">Start work without signin in</string>
 </resources>

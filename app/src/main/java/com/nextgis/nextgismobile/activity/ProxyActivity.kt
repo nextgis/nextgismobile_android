@@ -22,14 +22,11 @@
 package com.nextgis.nextgismobile.activity
 
 import android.databinding.DataBindingUtil
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityProxyBinding
-import com.nextgis.nextgismobile.util.runDelayed
-import com.nextgis.nextgismobile.util.startActivity
+import com.pawegio.kandroid.runDelayed
+import com.pawegio.kandroid.startActivity
 
 
 class ProxyActivity : BaseActivity() {
@@ -39,17 +36,14 @@ class ProxyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_proxy)
         binding.executePendingBindings()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        else
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        hideStatusBar(window)
 
         val intro = !preferences.getBoolean("intro_shown", false)
         val signin = !preferences.getBoolean("ngid_shown", false)
         runDelayed(2500) {
             when {
                 intro -> startActivity<IntroActivity>()
-                signin -> startActivity<NGIDLoginActivity>()
+                signin -> startActivity<NGIDSigninActivity>()
                 else -> startActivity<MainActivity>()
             }
         }

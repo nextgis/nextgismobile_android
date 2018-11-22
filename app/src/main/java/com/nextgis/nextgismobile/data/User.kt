@@ -19,9 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.activity
+package com.nextgis.nextgismobile.data
 
+import android.databinding.BaseObservable
+import android.databinding.Bindable
+import com.android.databinding.library.baseAdapters.BR
 
-class NGIDLoginActivity: BaseActivity() {
+class User(var first_name: String?, var last_name: String?, avatar: String) : BaseObservable() {
+    val name: String get() = "$first_name $last_name"
+
+    @get:Bindable
+    var avatar: String = avatar
+        set(value) {
+            field = value
+//            notifyPropertyChanged(BR.avatar)
+        }
 
 }
