@@ -22,16 +22,13 @@
 package com.nextgis.nextgismobile.activity
 
 import android.graphics.Color
-import android.os.Build
-import com.github.paolorotolo.appintro.AppIntro
-import com.github.paolorotolo.appintro.AppIntroFragment
-import com.github.paolorotolo.appintro.model.SliderPage
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.view.View
-import android.view.WindowManager
+import com.github.paolorotolo.appintro.AppIntro
+import com.github.paolorotolo.appintro.AppIntroFragment
+import com.github.paolorotolo.appintro.model.SliderPage
 import com.nextgis.nextgismobile.R
 import com.pawegio.kandroid.startActivity
 

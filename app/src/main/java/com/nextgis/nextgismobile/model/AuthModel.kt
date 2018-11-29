@@ -27,6 +27,9 @@ import android.os.Bundle
 import android.os.Handler
 import com.nextgis.nextgismobile.BuildConfig
 import com.nextgis.nextgismobile.data.Token
+import com.nextgis.nextgismobile.data.UserAuth
+import com.nextgis.nextgismobile.data.UserCreate
+import com.nextgis.nextgismobile.data.Username
 import com.nextgis.nextgismobile.util.AuthService
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,7 +53,25 @@ class AuthModel {
         fun onRequestFailed(error: String?)
     }
 
+    fun signUp(email: String, password: String, callback: OnDataReadyCallback) {
+        authService.signUp(UserCreate(email, password)).enqueue(object : Callback<Username> {
+            override fun onFailure(call: Call<Username>?, t: Throwable?) {
+                callback.onRequestFailed(t?.localizedMessage)
+            }
+
+            override fun onResponse(call: Call<Username>?, response: Response<Username>?) {
+                response?.let {
+                    if (it.isSuccessful)
+                        signIn(email, password, callback)
+                    else
+                        callback.onRequestFailed(it.errorBody()?.string())
+                }
+            }
+        })
+    }
+
     fun signIn(email: String, password: String, callback: OnDataReadyCallback) {
+//        authService.signIn(UserAuth(email, password)).enqueue(object : Callback<Token> {
         authService.signIn(email, password).enqueue(object : Callback<Token> {
             override fun onFailure(call: Call<Token>?, t: Throwable?) {
                 callback.onRequestFailed(t?.localizedMessage)

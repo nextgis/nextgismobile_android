@@ -23,8 +23,13 @@ package com.nextgis.nextgismobile.util
 
 import com.nextgis.nextgismobile.BuildConfig
 import com.nextgis.nextgismobile.data.Token
+import com.nextgis.nextgismobile.data.UserAuth
+import com.nextgis.nextgismobile.data.UserCreate
+import com.nextgis.nextgismobile.data.Username
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface AuthService {
     companion object {
@@ -41,6 +46,9 @@ interface AuthService {
         @Query("client_id") client_id: String = BuildConfig.CLIENT_ID_OLD
     ): Call<Token>
 
-//    @GET("user_info/")
-//    fun profile(): Call<Profile>
+    @POST("oauth2/token/")
+    fun signIn(@Body credentials: UserAuth): Call<Token>
+
+    @POST("api/v1/integration/user_create/")
+    fun signUp(@Body credentials: UserCreate): Call<Username>
 }

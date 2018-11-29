@@ -25,7 +25,6 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,10 +70,7 @@ class SigninFragment : AuthFragment() {
 
     override fun onEyeClicked() {
         binding.auth?.let {
-//            val visible = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-//            val hidden = InputType.TYPE_TEXT_VARIATION_PASSWORD
             it.passwordVisible.set(!it.passwordVisible.get())
-//            binding.password.inputType = if (it.passwordVisible.get()) visible else hidden
         }
     }
 }

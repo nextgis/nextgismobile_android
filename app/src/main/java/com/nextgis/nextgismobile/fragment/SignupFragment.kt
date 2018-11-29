@@ -61,7 +61,6 @@ class SignupFragment : AuthFragment() {
     override fun authenticate() {
         binding.auth?.let {
             if (credentialsValid(it)) {
-                toast(R.string.not_implemented)
                 it.signUp()
                 hideKB()
             }
@@ -70,10 +69,7 @@ class SignupFragment : AuthFragment() {
 
     override fun onEyeClicked() {
         binding.auth?.let {
-//            val visible = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-//            val hidden = InputType.TYPE_TEXT_VARIATION_PASSWORD
             it.passwordVisible.set(!it.passwordVisible.get())
-//            binding.password.inputType = if (it.passwordVisible.get()) visible else hidden
         }
     }
 }

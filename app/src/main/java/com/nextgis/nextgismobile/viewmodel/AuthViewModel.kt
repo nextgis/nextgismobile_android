@@ -91,6 +91,7 @@ class AuthViewModel : ViewModel() {
             override fun onDataReady(data: Any?) {
                 isLoading.set(false)
                 token.value = data as Token?
+                token.value?.let { APIService.TOKEN = "${it.token_type} ${it.access_token}" }
             }
 
             override fun onRequestFailed(error: String?) {
@@ -100,17 +101,17 @@ class AuthViewModel : ViewModel() {
     }
 
     fun signUp() {
-//        isLoading.set(true)
-//        authModel.signUp(login.get(), password.get(), object : AuthModel.OnDataReadyCallback {
-//            override fun onDataReady(data: Any?) {
-//                isLoading.set(false)
-//                token.value = data as Token?
-//            }
-//
-//            override fun onRequestFailed(error: String?) {
-//                onFailure(error)
-//            }
-//        })
+        isLoading.set(true)
+        authModel.signUp(login.get(), password.get(), object : AuthModel.OnDataReadyCallback {
+            override fun onDataReady(data: Any?) {
+                isLoading.set(false)
+                token.value = data as Token?
+            }
+
+            override fun onRequestFailed(error: String?) {
+                onFailure(error)
+            }
+        })
     }
 
     fun addAccount(account: String, token: Token): Boolean {
