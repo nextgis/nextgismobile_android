@@ -29,7 +29,7 @@ import retrofit2.http.*
 interface AuthService {
     companion object {
         fun create(): AuthService {
-            return APIService.build().create(AuthService::class.java)
+            return APIService.build(APIService.SERVER_MY).create(AuthService::class.java)
         }
     }
 
@@ -38,7 +38,7 @@ interface AuthService {
         @Query("username") username: String,
         @Query("password") password: String,
         @Query("grant_type") grant_type: String = "password",
-        @Query("client_id") client_id: String = BuildConfig.CLIENT_ID
+        @Query("client_id") client_id: String = BuildConfig.CLIENT_ID_OLD
     ): Call<Token>
 
 //    @GET("user_info/")

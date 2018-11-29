@@ -21,24 +21,4 @@
 
 package com.nextgis.nextgismobile.data
 
-import android.databinding.BaseObservable
-import java.security.MessageDigest
-
-class User(var first_name: String, var last_name: String, var username: String, var email: String) : BaseObservable() {
-    val name: String get() = "$first_name $last_name"
-    val avatar: String
-        get() {
-            val md = MessageDigest.getInstance("MD5")
-            md.update(email.trim().toLowerCase().toByteArray())
-            val byteData = md.digest()
-            val hexString = StringBuffer()
-            for (i in byteData.indices) {
-                val hex = Integer.toHexString(255 and byteData[i].toInt())
-                if (hex.length == 1) hexString.append('0')
-                hexString.append(hex)
-            }
-
-            val hash = hexString.toString()
-            return "https://www.gravatar.com/avatar/$hash?s=120&d=404"
-        }
-}
+class Setting(val title: String, val key: String)

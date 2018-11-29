@@ -72,6 +72,12 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
 
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".auth.AuthService"
             android:enabled="true"

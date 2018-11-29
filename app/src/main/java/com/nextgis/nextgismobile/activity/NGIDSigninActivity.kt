@@ -55,7 +55,7 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
         authModel.init(accountManager, false)
         authModel.firstTime.set(!preferences.getBoolean("ngid_shown", false))
 
-        if (authModel.isAuthorized) {
+        if (authModel.isAuthorized.get()) {
             val newAccount = intent.getBooleanExtra("add_account", false)
             showInfo(newAccount)
             return

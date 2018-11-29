@@ -22,8 +22,8 @@
 package com.nextgis.nextgismobile.util
 
 import android.os.Build
-import com.google.gson.annotations.SerializedName
 import com.nextgis.nextgismobile.BuildConfig
+import com.nextgis.nextgismobile.data.User
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -40,18 +40,18 @@ interface APIService {
         private const val WEB_SCHEME = "https"
         private const val SCHEME = "$WEB_SCHEME://"
         private const val DOMAIN = "nextgis.com"
-        private const val SERVER_MY = SCHEME + "my." + DOMAIN + "/"
+        internal const val SERVER_MY = SCHEME + "my." + DOMAIN + "/"
         private const val SERVER_API = SERVER_MY + "api/v1/"
 
         var TOKEN = ""
         private val userAgent = String.format("NextGIS Mobile %s rev. %d (Android %s; API %d)",
                 BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, Build.VERSION.RELEASE, Build.VERSION.SDK_INT)
 
-        fun build(): Retrofit {
+        fun build(base: String = SERVER_API): Retrofit {
             return Retrofit.Builder()
                     .client(OkHttpClient.Builder().addNetworkInterceptor(CustomInterceptor()).build())
                     .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(SERVER_MY)
+                    .baseUrl(base)
                     .build()
         }
 
@@ -69,17 +69,21 @@ interface APIService {
                     builder.addHeader("Authorization", TOKEN)
                 builder.addHeader("Accept", JSON)
                 val request = builder.build()
-                var response = chain.proceed(request)
-
+                return chain.proceed(request)
+//                var response = chain.proceed(request)
+//
 //                response.body()?.let {
 //                    try {
 //                        val data = it.string()
 //                        response = response.newBuilder().body(ResponseBody.create(it.contentType(), data)).build()
 //                    } catch (e: JSONException) {}
 //                }
-
-                return response
+//
+//                return response
             }
         }
     }
+
+    @GET("user_info/")
+    fun profile(): Call<User>
 }

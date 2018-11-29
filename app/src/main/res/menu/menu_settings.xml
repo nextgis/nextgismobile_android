@@ -25,8 +25,9 @@
     tools:context="com.nextgis.nextgismobile.activity.MainActivity">
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_signing"
+        android:icon="@drawable/ic_exit_to_app"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="@string/sign_out"
+        app:showAsAction="ifRoom" />
 </menu>

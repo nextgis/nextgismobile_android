@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Project:  NextGIS Mobile
   ~ Purpose:  Mobile GIS for Android
   ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
@@ -19,14 +19,26 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.nextgis.nextgismobile.activity.MainActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-</menu>
+    <data>
+
+        <variable
+            name="setting"
+            type="com.nextgis.nextgismobile.data.Setting" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_chevron_right"
+        android:drawableRight="@drawable/ic_chevron_right"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@{setting.title}"
+        android:textColor="#000"
+        android:textSize="16sp"
+        tools:text="Title" />
+</layout>

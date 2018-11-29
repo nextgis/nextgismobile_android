@@ -19,14 +19,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.nextgis.nextgismobile.activity.MainActivity">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-</menu>
+        android:bottom="24dp"
+        android:drawable="@drawable/ic_account_outline"
+        android:left="24dp"
+        android:right="24dp"
+        android:top="24dp" />
+</layer-list>

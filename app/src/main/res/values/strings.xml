@@ -33,6 +33,7 @@
     <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
+    <string name="sign_out">Sign out</string>
     <string name="restore">Restore password</string>
     <string name="social">Sign in with social:</string>
     <string name="authenticate">@string/sign_in</string>
@@ -42,4 +43,15 @@
     <string name="terms_and_privacy">By signing up, you agree to the <a href='https://nextgis.com/terms'>Terms of Service</a> and <a href='https://nextgis.com/privacy'>Privacy Policy</a></string>
     <string name="not_implemented">Not implemented yet</string>
     <string name="skip_ngid">Start work without signin in</string>
+    <string name="upgrade">You have free plan, some functionality is locked</string>
+    <string name="unidentified">You are not signed in</string>
+    <string name="unlock">Unlock</string>
+    <string name="confirmation">Sign out?</string>
+    <string name="ngid_disconnect">You won\'t be able to sync data and use your plan features.</string>
+    <string name="general">General</string>
+    <string name="map">Map</string>
+    <string name="location">Location</string>
+    <string name="webgis">Web GIS</string>
+    <string name="tracking">Tracks and bypass</string>
+    <string name="backup">Backup</string>
 </resources>

@@ -36,7 +36,8 @@ import java.util.regex.Pattern
 
 class AuthViewModel : ViewModel() {
     companion object {
-        const val EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+        const val EMAIL_PATTERN =
+            "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
     }
 
     private var authModel: AuthModel = AuthModel()
@@ -45,10 +46,9 @@ class AuthViewModel : ViewModel() {
     val signIn = NonNullObservableField(false)
     var login = NonNullObservableField("")
     var password = NonNullObservableField("")
-    var user = ObservableField<User>()
     var token = MutableLiveData<Token>()
     var error = MutableLiveData<String>()
-    val isAuthorized = login.get().isNotBlank()
+    val isAuthorized = NonNullObservableField(false)
     val passwordVisible = NonNullObservableField(false)
 
     fun init(accountManager: AccountManager?, load: Boolean) {
@@ -63,23 +63,12 @@ class AuthViewModel : ViewModel() {
             APIService.TOKEN = "$type $token"
         })
         login.set(authModel.getUserData("login"))
+        isAuthorized.set(login.get().isNotBlank())
     }
 
     fun buildIntent(account: String, token: String): Intent {
         return authModel.buildIntent(account, token)
     }
-
-//    fun profile() {
-//        authModel.profile(object : AuthModel.OnDataReadyCallback {
-//            override fun onDataReady(data: Any?) {
-//                user.set(data as User?)
-//            }
-//
-//            override fun onRequestFailed(error: String?) {
-//                onFailure(error)
-//            }
-//        })
-//    }
 
     fun isEmailValid(): Boolean {
         val pattern = Pattern.compile(EMAIL_PATTERN)
@@ -88,7 +77,7 @@ class AuthViewModel : ViewModel() {
     }
 
     fun isPasswordEmpty(): Boolean {
-        return password.get().isBlank() ?: false
+        return password.get().isBlank()
     }
 
     private fun onFailure(message: String?) {
@@ -130,5 +119,9 @@ class AuthViewModel : ViewModel() {
 
     fun deleteAccount() {
         authModel.deleteAccount()
+        isAuthorized.set(false)
+        login.set("")
+        this.token.value = null
+        APIService.TOKEN = ""
     }
 }

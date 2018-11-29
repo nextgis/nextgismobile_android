@@ -67,23 +67,6 @@ class AuthModel {
         })
     }
 
-//    fun profile(callback: OnDataReadyCallback) {
-//        authService.profile().enqueue(object : Callback<ProfileResponse> {
-//            override fun onFailure(call: Call<ProfileResponse>?, t: Throwable?) {
-//                callback.onRequestFailed(t?.localizedMessage)
-//            }
-//
-//            override fun onResponse(call: Call<ProfileResponse>?, response: Response<ProfileResponse>?) {
-//                response?.let {
-//                    if (it.isSuccessful)
-//                        callback.onDataReady(it.body()?.data)
-//                    else
-//                        callback.onRequestFailed(it.errorBody()?.string())
-//                }
-//            }
-//        })
-//    }
-
     fun buildIntent(account: String, token: String): Intent {
         val intent = Intent()
         intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, account)

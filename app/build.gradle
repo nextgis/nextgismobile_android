@@ -12,7 +12,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "CLIENT_ID", "\"Im6GFdPPuPM09BnvFb3EacFZyq8TpRBSAAex7JDZ\""
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        buildConfigField "String", "CLIENT_ID_OLD", "\"${properties.getProperty('oauth.id.old')}\""
+        buildConfigField "String", "CLIENT_ID", "\"${properties.getProperty('oauth.id')}\""
+        buildConfigField "String", "CLIENT_SECRET", "\"${properties.getProperty('oauth.secret')}\""
     }
     buildTypes {
         release {
@@ -42,6 +46,9 @@ dependencies {
     implementation 'com.nextgis.maplib:maplib:3.0.+'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
     implementation 'com.github.paolorotolo:appintro:v4.2.3'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
