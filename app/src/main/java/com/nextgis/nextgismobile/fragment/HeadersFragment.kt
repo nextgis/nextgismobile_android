@@ -36,6 +36,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.NGIDSigninActivity
+import com.nextgis.nextgismobile.adapter.OnItemClickListener
 import com.nextgis.nextgismobile.adapter.SettingAdapter
 import com.nextgis.nextgismobile.data.Setting
 import com.nextgis.nextgismobile.databinding.FragmentHeadersBinding
@@ -45,9 +46,9 @@ import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
 
 
-class HeadersFragment : Fragment() {
+class HeadersFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentHeadersBinding
-    val settings: List<Setting>
+    private val settings: List<Setting>
         get() {
             val array = arrayListOf<Setting>()
             array.add(Setting(getString(R.string.general), "general"))
@@ -70,7 +71,7 @@ class HeadersFragment : Fragment() {
             user = userModel
             fragment = this@HeadersFragment
 
-            list.adapter = SettingAdapter(settings)
+            list.adapter = SettingAdapter(settings, this@HeadersFragment)
             list.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
             list.isNestedScrollingEnabled = false
         }
@@ -90,6 +91,21 @@ class HeadersFragment : Fragment() {
 
         binding.executePendingBindings()
         return binding.root
+    }
+
+    override fun onItemClick(key: String) {
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.container, fragment(key)).addToBackStack("settings").commitAllowingStateLoss()
+    }
+
+    private fun fragment(key: String): Fragment {
+        return when(key) {
+            "general" -> SettingsGeneralFragment()
+            "map" -> SettingsMapFragment()
+            "location" -> SettingsLocationFragment()
+            "tracking" -> SettingsTracksFragment()
+//            "backup" -> SettingsBackupFragment()
+            else -> SettingsGeneralFragment()
+        }
     }
 
     fun action() {

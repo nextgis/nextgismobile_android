@@ -24,6 +24,7 @@
     <color name="colorPrimary">#03A9F4</color>
     <color name="colorPrimaryDark">#01579B</color>
     <color name="colorAccent">#03A9F4</color>
+    <color name="colorButton">#00b77e</color>
     <color name="indicatorActive">#798185</color>
     <color name="indicatorInactive">#D0D3D4</color>
 </resources>

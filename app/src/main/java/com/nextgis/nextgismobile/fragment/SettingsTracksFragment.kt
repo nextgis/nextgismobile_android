@@ -19,35 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.activity
+package com.nextgis.nextgismobile.fragment
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.preference.PreferenceManager
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.databinding.ActivityProxyBinding
-import com.pawegio.kandroid.runDelayed
-import com.pawegio.kandroid.startActivity
+import com.nextgis.nextgismobile.databinding.FragmentSettingsTracksBinding
+import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 
+class SettingsTracksFragment : SettingsFragment() {
+    private lateinit var binding: FragmentSettingsTracksBinding
 
-class ProxyActivity : BaseActivity() {
-    private lateinit var binding: ActivityProxyBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_proxy)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_tracks, container, false)
+        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        binding.settings = settingsModel
         binding.executePendingBindings()
-        hideStatusBar(window)
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
-        val intro = !preferences.getBoolean("intro_shown", false)
-        val signin = !preferences.getBoolean("ngid_shown", false)
-        runDelayed(2500) {
-            when {
-                intro -> startActivity<IntroActivity>()
-                signin -> startActivity<NGIDSigninActivity>()
-                else -> startActivity<MainActivity>()
-            }
-        }
+        return binding.root
     }
+
 }

@@ -24,18 +24,19 @@ package com.nextgis.nextgismobile.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.nextgis.nextgismobile.data.Setting
-import com.nextgis.nextgismobile.databinding.ItemSettingBinding
+import com.nextgis.nextgismobile.data.Backup
+import com.nextgis.nextgismobile.databinding.ItemBackupBinding
 
-interface OnItemClickListener {
-    fun onItemClick(key: String)
+interface OnBackupClickListener {
+    fun onSyncClick(key: String)
+    fun onDeleteClick(key: String)
 }
 
-class SettingAdapter(val items: List<Setting>, val listener: OnItemClickListener) :
+class BackupAdapter(val items: List<Backup>, val listener: OnBackupClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemSettingBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemBackupBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -44,10 +45,11 @@ class SettingAdapter(val items: List<Setting>, val listener: OnItemClickListener
 
     override fun getItemCount(): Int = items.size
 
-    class ViewHolder(private var binding: ItemSettingBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(repo: Setting, listener: OnItemClickListener) {
-            binding.setting = repo
-            binding.root.setOnClickListener { listener.onItemClick(repo.key) }
+    class ViewHolder(private var binding: ItemBackupBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(repo: Backup, listener: OnBackupClickListener) {
+            binding.backup = repo
+            binding.cloud.setOnClickListener { listener.onSyncClick(repo.id) }
+            binding.delete.setOnClickListener { listener.onDeleteClick(repo.id) }
             binding.executePendingBindings()
         }
     }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Project:  NextGIS Mobile
+  ~ Purpose:  Mobile GIS for Android
+  ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
+  ~ *****************************************************************************
+  ~ Copyright © 2018 NextGIS, info@nextgis.com
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="collect_analytics"
+        android:title="@string/collect_analytics" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="keep_screen_on"
+        android:title="@string/keep_screen_on" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="roaming_on"
+        android:title="@string/roaming_on" />
+
+    <EditTextPreference
+        android:defaultValue="external"
+        android:key="data_storage"
+        android:title="@string/data_storage" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="status_panel"
+        android:title="@string/status_panel" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="zoom_buttons"
+        android:title="@string/zoom_buttons" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="use_favorites"
+        android:title="@string/use_favorites" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="map_measurement"
+        android:title="@string/map_measurement" />
+
+    <EditTextPreference
+        android:defaultValue="0"
+        android:key="scale_format"
+        android:title="@string/scale_format" />
+
+    <EditTextPreference
+        android:defaultValue="0"
+        android:key="coordinate_format"
+        android:title="@string/coordinate_format" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="6"
+        android:key="coordinate_precision"
+        android:title="@string/coordinate_precision" />
+
+    <EditTextPreference
+        android:defaultValue="bright"
+        android:key="map_background"
+        android:title="@string/map_background" />
+
+    <EditTextPreference
+        android:defaultValue="03A9F4"
+        android:key="fill_color"
+        android:title="@string/fill_color" />
+
+    <EditTextPreference
+        android:defaultValue="01579B"
+        android:key="stroke_color"
+        android:title="@string/stroke_color" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="4"
+        android:key="coordinate_precision"
+        android:title="@string/stroke_width" />
+
+    <ListPreference
+        android:defaultValue="3"
+        android:entries="@array/location_accuracy"
+        android:entryValues="@array/location_accuracy_value"
+        android:key="location_accuracy"
+        android:title="@string/location_accuracy" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="10"
+        android:key="location_time"
+        android:title="@string/location_time" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="5"
+        android:key="location_distance"
+        android:title="@string/location_distance" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="10"
+        android:key="location_count"
+        android:title="@string/location_count" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="filter_emissions"
+        android:title="@string/filter_emissions" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="daily_split"
+        android:title="@string/daily_split" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="cloud_sync"
+        android:title="@string/cloud_sync" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="10"
+        android:key="track_time"
+        android:title="@string/location_time" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="5"
+        android:key="track_distance"
+        android:title="@string/location_distance" />
+
+    <com.nextgis.nextgismobile.util.IntEditPreference
+        android:defaultValue="10"
+        android:key="track_count"
+        android:title="@string/location_count" />
+
+</PreferenceScreen>

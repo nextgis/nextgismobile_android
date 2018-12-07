@@ -19,27 +19,10 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <variable
-            name="setting"
-            type="com.nextgis.nextgismobile.data.Setting" />
-    </data>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:drawableEnd="@drawable/ic_chevron_right"
-        android:drawableRight="@drawable/ic_chevron_right"
-        android:fontFamily="sans-serif"
-        android:gravity="center_vertical"
-        android:padding="16dp"
-        android:text="@{setting.title}"
-        android:textColor="#000"
-        android:textSize="16sp"
-        tools:text="Title" />
-</layout>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|center_vertical"
+    android:src="@drawable/ic_chevron_right"
+    tools:ignore="ContentDescription" />

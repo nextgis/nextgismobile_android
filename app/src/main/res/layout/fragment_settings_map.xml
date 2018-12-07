@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Project:  NextGIS Mobile
+  ~ Purpose:  Mobile GIS for Android
+  ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
+  ~ *****************************************************************************
+  ~ Copyright © 2018 NextGIS, info@nextgis.com
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="settings"
+            type="com.nextgis.nextgismobile.viewmodel.SettingsViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.nextgis.nextgismobile.fragment.SettingsMapFragment" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:clickable="true"
+        android:focusable="true"
+        tools:context=".activity.SettingsActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.SwitchCompat
+                style="@style/Switch.Settings"
+                android:checked="@={settings.statusPanel}"
+                android:text="@string/status_panel" />
+
+            <android.support.v7.widget.SwitchCompat
+                style="@style/Switch.Settings"
+                android:checked="@={settings.zoomButtons}"
+                android:text="@string/zoom_buttons" />
+
+            <android.support.v7.widget.SwitchCompat
+                style="@style/Switch.Settings"
+                android:checked="@={settings.favorites}"
+                android:text="@string/use_favorites" />
+
+            <android.support.v7.widget.SwitchCompat
+                style="@style/Switch.Settings"
+                android:checked="@={settings.measurement}"
+                android:text="@string/map_measurement" />
+
+            <FrameLayout
+                style="@style/SettingsItem"
+                android:onClick="@{()->fragment.style()}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SettingsTitle"
+                        android:text="@string/selection_style" />
+                </LinearLayout>
+
+                <include layout="@layout/view_chevron" />
+            </FrameLayout>
+
+            <FrameLayout
+                style="@style/SettingsItem"
+                android:onClick="@{()->fragment.scale()}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SettingsTitle"
+                        android:text="@string/scale_format" />
+
+                    <TextView
+                        style="@style/SettingsSummary"
+                        android:text="@{settings.scaleFormatSummary}" />
+                </LinearLayout>
+
+                <include layout="@layout/view_chevron" />
+            </FrameLayout>
+
+            <FrameLayout
+                style="@style/SettingsItem"
+                android:onClick="@{()->fragment.coordinates()}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SettingsTitle"
+                        android:text="@string/coordinate_format" />
+
+                    <TextView
+                        style="@style/SettingsSummary"
+                        android:text="@{settings.coordinatesFormatSummary}" />
+                </LinearLayout>
+
+                <include layout="@layout/view_chevron" />
+            </FrameLayout>
+
+            <FrameLayout
+                style="@style/SettingsItem"
+                android:onClick="@{()->fragment.map()}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SettingsTitle"
+                        android:text="@string/map_background" />
+
+                    <TextView
+                        style="@style/SettingsSummary"
+                        android:text="@{settings.mapBackgroundSummary}" />
+                </LinearLayout>
+
+                <include layout="@layout/view_chevron" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

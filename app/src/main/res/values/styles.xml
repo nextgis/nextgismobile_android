@@ -50,4 +50,36 @@
         <item name="colorButtonNormal">#fff</item>
     </style>
 
+    <style name="SettingsItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="Switch.Settings" parent="SettingsItem">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SettingsTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#000</item>
+    </style>
+
+    <style name="SettingsSummary">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#8018262c</item>
+    </style>
+
+    <style name="SettingsEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
 </resources>

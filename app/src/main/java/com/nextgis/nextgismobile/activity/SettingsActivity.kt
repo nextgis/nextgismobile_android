@@ -31,6 +31,7 @@ import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivitySettingsBinding
 import com.nextgis.nextgismobile.fragment.HeadersFragment
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
+import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.accountManager
 import com.pawegio.kandroid.startActivity
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -46,10 +47,14 @@ class SettingsActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
+        val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
+        settingsModel.setup(this)
+        settingsModel.load()
+
         val authModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
         binding.auth = authModel
         val headers = HeadersFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.headers, headers).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.headers, headers).addToBackStack("headers").commitAllowingStateLoss()
         binding.executePendingBindings()
         authModel.init(accountManager, true)
     }
@@ -70,6 +75,10 @@ class SettingsActivity : BaseActivity() {
                 }
                 true
             }
+            android.R.id.home -> {
+                supportFragmentManager.popBackStack()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -81,5 +90,11 @@ class SettingsActivity : BaseActivity() {
             .setPositiveButton(android.R.string.ok) { _, _ -> auth.deleteAccount() }
             .setNegativeButton(android.R.string.cancel, null).create()
         builder.show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
+        settingsModel.save()
     }
 }

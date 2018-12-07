@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Project:  NextGIS Mobile
+  ~ Purpose:  Mobile GIS for Android
+  ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
+  ~ *****************************************************************************
+  ~ Copyright © 2018 NextGIS, info@nextgis.com
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="settings"
+            type="com.nextgis.nextgismobile.viewmodel.SettingsViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.nextgis.nextgismobile.fragment.SettingsGeneralFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        tools:context=".activity.SettingsActivity">
+
+        <android.support.v7.widget.SwitchCompat
+            style="@style/Switch.Settings"
+            android:checked="@={settings.analytics}"
+            android:text="@string/collect_analytics" />
+
+        <android.support.v7.widget.SwitchCompat
+            style="@style/Switch.Settings"
+            android:checked="@={settings.keepScreen}"
+            android:text="@string/keep_screen_on" />
+
+        <android.support.v7.widget.SwitchCompat
+            style="@style/Switch.Settings"
+            android:checked="@={settings.roaming}"
+            android:text="@string/roaming_on" />
+
+        <FrameLayout
+            style="@style/SettingsItem"
+            android:onClick="@{()->fragment.storage()}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SettingsTitle"
+                    android:text="@string/data_storage" />
+
+                <TextView
+                    style="@style/SettingsSummary"
+                    android:text="@{settings.mapPathSummary}"
+                    tools:text="@string/external" />
+            </LinearLayout>
+
+            <include layout="@layout/view_chevron" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>
