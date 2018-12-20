@@ -158,4 +158,8 @@ class SettingsViewModel : ViewModel() {
 
         return ""
     }
+
+    fun setCoordinatesFormat(value: String) {
+        coordinatesFormat.set(value)
+    }
 }

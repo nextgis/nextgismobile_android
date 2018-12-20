@@ -41,9 +41,9 @@
         <item>2</item>
     </string-array>
     <string-array name="scale_format" translatable="false">
-        <item>DD.DDDD</item>
-        <item>DD-MM.MM</item>
-        <item>DD-MM-SS.SS</item>
+        <item>Metric</item>
+        <item>Imperial</item>
+        <item>Zoom</item>
     </string-array>
     <string-array name="scale_format_value" translatable="false">
         <item>0</item>

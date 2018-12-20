@@ -22,10 +22,16 @@
 package com.nextgis.nextgismobile.fragment.settings
 
 import android.preference.PreferenceManager
+import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
+import com.nextgis.nextgismobile.activity.SettingsActivity
 
 open class SettingsFragment : Fragment() {
     open fun switch(checked: Boolean, key: String) {
         PreferenceManager.getDefaultSharedPreferences(requireActivity()).edit().putBoolean(key, checked).apply()
+    }
+
+    protected fun setTitle(@StringRes res: Int) {
+        (activity as? SettingsActivity)?.let { it.supportActionBar?.setTitle(res) }
     }
 }

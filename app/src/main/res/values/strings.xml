@@ -68,6 +68,9 @@
     <string name="scale_format">Scale format</string>
     <string name="coordinate_format">Coordinate format</string>
     <string name="coordinate_precision">Coordinate precision, decimal places</string>
+    <string name="degrees_min_sec">Degrees - Minutes Seconds</string>
+    <string name="degrees_min">Degrees - Minutes</string>
+    <string name="degrees">Degrees</string>
     <string name="fill_color">Fill color</string>
     <string name="stroke_color">Stroke color</string>
     <string name="stroke_width">Stroke width</string>
