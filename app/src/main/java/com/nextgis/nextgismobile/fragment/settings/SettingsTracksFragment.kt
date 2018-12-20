@@ -39,6 +39,7 @@ class SettingsTracksFragment : SettingsFragment() {
         val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
         binding.settings = settingsModel
         binding.executePendingBindings()
+        setTitle(R.string.tracking)
         return binding.root
     }
 

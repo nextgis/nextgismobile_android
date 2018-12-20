@@ -43,6 +43,7 @@ class SettingsGeneralFragment : SettingsFragment() {
             settings = settingsModel
         }
         binding.executePendingBindings()
+        setTitle(R.string.general)
         return binding.root
     }
 

@@ -76,7 +76,11 @@ class SettingsActivity : BaseActivity() {
                 true
             }
             android.R.id.home -> {
-                supportFragmentManager.popBackStack()
+                supportActionBar?.setTitle(R.string.action_settings)
+                if (supportFragmentManager.backStackEntryCount > 1)
+                    supportFragmentManager.popBackStack()
+                else
+                    finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)

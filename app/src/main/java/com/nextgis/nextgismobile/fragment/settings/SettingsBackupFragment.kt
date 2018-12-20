@@ -52,6 +52,7 @@ class SettingsBackupFragment : SettingsFragment(), OnBackupClickListener {
             list.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         }
         binding.executePendingBindings()
+        setTitle(R.string.backup)
         return binding.root
     }
 

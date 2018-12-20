@@ -43,6 +43,7 @@ class SettingsMapFragment : SettingsFragment() {
             settings = settingsModel
         }
         binding.executePendingBindings()
+        setTitle(R.string.map)
         return binding.root
     }
 
@@ -55,7 +56,8 @@ class SettingsMapFragment : SettingsFragment() {
     }
 
     fun coordinates() {
-        toast(R.string.not_implemented)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.container, SettingsCoordinatesFragment()).addToBackStack("subsettings").commitAllowingStateLoss()
     }
 
     fun map() {

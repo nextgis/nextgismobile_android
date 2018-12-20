@@ -43,6 +43,7 @@ class SettingsLocationFragment : SettingsFragment() {
             settings = settingsModel
         }
         binding.executePendingBindings()
+        setTitle(R.string.location)
         return binding.root
     }
 
