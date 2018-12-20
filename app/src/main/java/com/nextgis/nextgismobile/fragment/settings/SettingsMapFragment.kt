@@ -24,6 +24,7 @@ package com.nextgis.nextgismobile.fragment.settings
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +62,18 @@ class SettingsMapFragment : SettingsFragment() {
     }
 
     fun map() {
-        toast(R.string.not_implemented)
+        context?.let { context ->
+            val array = context.resources.getStringArray(R.array.map_background)
+            val value = context.resources.getStringArray(R.array.map_background_value)
+            binding.settings?.mapBackground?.get()?.let {
+                val id = value.indexOf(it)
+                val builder = AlertDialog.Builder(context)
+                    .setTitle(R.string.map_background)
+                    .setSingleChoiceItems(array, id) { _, i -> binding.settings?.mapBackground?.set(value[i]) }
+                    .setPositiveButton(android.R.string.ok, null).create()
+                builder.show()
+            }
+        }
     }
 
 }

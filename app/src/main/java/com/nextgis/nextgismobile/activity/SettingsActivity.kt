@@ -76,11 +76,7 @@ class SettingsActivity : BaseActivity() {
                 true
             }
             android.R.id.home -> {
-                supportActionBar?.setTitle(R.string.action_settings)
-                if (supportFragmentManager.backStackEntryCount > 1)
-                    supportFragmentManager.popBackStack()
-                else
-                    finish()
+                handleBackPress()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -100,5 +96,18 @@ class SettingsActivity : BaseActivity() {
         super.onStop()
         val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
         settingsModel.save()
+    }
+
+    override fun onBackPressed() {
+        handleBackPress()
+    }
+
+    private fun handleBackPress() {
+        if (supportFragmentManager.backStackEntryCount == 1)
+            supportActionBar?.setTitle(R.string.action_settings)
+        if (supportFragmentManager.backStackEntryCount > 1)
+            supportFragmentManager.popBackStack()
+        else
+            finish()
     }
 }

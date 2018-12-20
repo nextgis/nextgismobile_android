@@ -23,6 +23,7 @@ package com.nextgis.nextgismobile.viewmodel
 
 import android.app.Activity
 import android.arch.lifecycle.ViewModel
+import android.databinding.Observable
 import android.databinding.ObservableField
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.model.SettingsModel
@@ -77,8 +78,12 @@ class SettingsViewModel : ViewModel() {
         keepScreen.set(settingsModel.getBoolean(SettingsModel.KEEP_SCREEN_ON))
         roaming.set(settingsModel.getBoolean(SettingsModel.ROAMING_NETWORK))
         statusPanel.set(settingsModel.getBoolean(SettingsModel.STATUS_PANEL))
+        mapPath.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                mapPathSummary.set(description(if (mapPath.get() == "external") R.string.external else R.string.internal))
+            }
+        })
         mapPath.set(settingsModel.getString(SettingsModel.MAP_PATH))
-        mapPathSummary.set(description(if (mapPath.get() == "external") R.string.external else R.string.internal))
 
         zoomButtons.set(settingsModel.getBoolean(SettingsModel.ZOOM_BUTTONS))
         favorites.set(settingsModel.getBoolean(SettingsModel.USE_FAVORITES))
@@ -88,16 +93,32 @@ class SettingsViewModel : ViewModel() {
         strokeColor.set(settingsModel.getString(SettingsModel.STROKE_COLOR))
         strokeWidth.set(settingsModel.getInt(SettingsModel.STROKE_WIDTH).toString())
 
+        scaleFormat.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                scaleFormatSummary.set(description(scaleFormat.get(), R.array.scale_format_value, R.array.scale_format))
+            }
+        })
         scaleFormat.set(settingsModel.getString(SettingsModel.SCALE_FORMAT))
-        scaleFormatSummary.set(description(scaleFormat.get(), R.array.scale_format_value, R.array.scale_format))
+        coordinatesFormat.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                coordinatesFormatSummary.set(description(coordinatesFormat.get(), R.array.coordinates_format_value, R.array.coordinates_format))
+            }
+        })
         coordinatesFormat.set(settingsModel.getString(SettingsModel.COORDINATE_FORMAT))
-        coordinatesFormatSummary.set(description(coordinatesFormat.get(), R.array.coordinates_format_value, R.array.coordinates_format))
         coordinatesPrecision.set(settingsModel.getInt(SettingsModel.COORDINATE_PRECISION).toString())
+        mapBackground.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                mapBackgroundSummary.set(description(if (mapBackground.get() == "bright") R.string.bright else R.string.dark))
+            }
+        })
         mapBackground.set(settingsModel.getString(SettingsModel.MAP_BACKGROUND))
-        mapBackgroundSummary.set(description(if (mapBackground.get() == "bright") R.string.bright else R.string.dark))
 
+        locationAccuracy.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                locationAccuracySummary.set(description(locationAccuracy.get(), R.array.location_accuracy_value, R.array.location_accuracy))
+            }
+        })
         locationAccuracy.set(settingsModel.getString(SettingsModel.LOCATION_ACCURACY))
-        locationAccuracySummary.set(description(locationAccuracy.get(), R.array.location_accuracy_value, R.array.location_accuracy))
         locationTime.set(settingsModel.getInt(SettingsModel.LOCATION_TIME).toString())
         locationDistance.set(settingsModel.getInt(SettingsModel.LOCATION_DISTANCE).toString())
         locationCount.set(settingsModel.getInt(SettingsModel.LOCATION_COUNT).toString())
