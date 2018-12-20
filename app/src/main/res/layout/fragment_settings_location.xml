@@ -30,7 +30,7 @@
 
         <variable
             name="fragment"
-            type="com.nextgis.nextgismobile.fragment.SettingsLocationFragment" />
+            type="com.nextgis.nextgismobile.fragment.settings.SettingsLocationFragment" />
     </data>
 
     <ScrollView

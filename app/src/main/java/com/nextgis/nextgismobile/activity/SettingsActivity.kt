@@ -29,7 +29,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivitySettingsBinding
-import com.nextgis.nextgismobile.fragment.HeadersFragment
+import com.nextgis.nextgismobile.fragment.settings.HeadersFragment
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.accountManager

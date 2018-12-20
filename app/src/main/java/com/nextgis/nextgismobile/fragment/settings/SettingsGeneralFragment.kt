@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.fragment
+package com.nextgis.nextgismobile.fragment.settings
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil

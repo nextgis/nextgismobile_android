@@ -31,7 +31,7 @@
 
         <variable
             name="fragment"
-            type="com.nextgis.nextgismobile.fragment.SettingsBackupFragment" />
+            type="com.nextgis.nextgismobile.fragment.settings.SettingsBackupFragment" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
