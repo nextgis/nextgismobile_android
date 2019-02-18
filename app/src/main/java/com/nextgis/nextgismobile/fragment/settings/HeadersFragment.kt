@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,12 +98,12 @@ class HeadersFragment : Fragment(), OnItemClickListener {
     }
 
     private fun fragment(key: String): Fragment {
-        return when(key) {
+        return when (key) {
             "general" -> SettingsGeneralFragment()
             "map" -> SettingsMapFragment()
             "location" -> SettingsLocationFragment()
             "tracking" -> SettingsTracksFragment()
-//            "backup" -> SettingsBackupFragment()
+            "backup" -> SettingsBackupFragment()
             else -> SettingsGeneralFragment()
         }
     }

@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,10 @@
 package com.nextgis.nextgismobile.fragment.settings
 
 import android.preference.PreferenceManager
+import android.support.annotation.ArrayRes
 import android.support.annotation.StringRes
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import com.nextgis.nextgismobile.activity.SettingsActivity
 
 open class SettingsFragment : Fragment() {
@@ -33,5 +35,18 @@ open class SettingsFragment : Fragment() {
 
     protected fun setTitle(@StringRes res: Int) {
         (activity as? SettingsActivity)?.let { it.supportActionBar?.setTitle(res) }
+    }
+
+    protected fun showDialog(@ArrayRes entries: Int, @ArrayRes values: Int, default: String, @StringRes title: Int, listener: (value: String) -> Unit) {
+        context?.let { context ->
+            val array = context.resources.getStringArray(entries)
+            val value = context.resources.getStringArray(values)
+            val id = value.indexOf(default)
+            val builder = AlertDialog.Builder(context)
+                .setTitle(title)
+                .setSingleChoiceItems(array, id) { _, i -> listener(value[i]) }
+                .setPositiveButton(android.R.string.ok, null).create()
+            builder.show()
+        }
     }
 }

@@ -3,7 +3,7 @@
   ~ Purpose:  Mobile GIS for Android
   ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
   ~ *****************************************************************************
-  ~ Copyright © 2018 NextGIS, info@nextgis.com
+  ~ Copyright © 2018-2019 NextGIS, info@nextgis.com
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -40,15 +40,13 @@
         <item>1</item>
         <item>2</item>
     </string-array>
-    <string-array name="scale_format" translatable="false">
+    <string-array name="measurement_units" translatable="false">
         <item>Metric</item>
         <item>Imperial</item>
-        <item>Zoom</item>
     </string-array>
-    <string-array name="scale_format_value" translatable="false">
+    <string-array name="measurement_units_value" translatable="false">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
     </string-array>
     <string-array name="map_background" translatable="false">
         <item>@string/bright</item>
@@ -57,5 +55,23 @@
     <string-array name="map_background_value" translatable="false">
         <item>bright</item>
         <item>dark</item>
+    </string-array>
+    <string-array name="data_storage_path" translatable="false">
+        <item>@string/internal</item>
+        <item>@string/external</item>
+    </string-array>
+    <string-array name="data_storage_path_value" translatable="false">
+        <item>internal</item>
+        <item>external</item>
+    </string-array>
+    <string-array name="scale_format" translatable="false">
+        <item>@string/scale_text</item>
+        <item>@string/scale_bar</item>
+        <item>@string/scale_zoom</item>
+    </string-array>
+    <string-array name="scale_format_value" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 </resources>

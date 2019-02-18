@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ package com.nextgis.nextgismobile.fragment.settings
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +52,10 @@ class SettingsMapFragment : SettingsFragment() {
     }
 
     fun scale() {
-        toast(R.string.not_implemented)
+        binding.settings?.scaleFormat?.get()?.let {
+            showDialog(R.array.scale_format, R.array.scale_format_value, it, R.string.scale_format)
+            { value -> binding.settings?.scaleFormat?.set(value) }
+        }
     }
 
     fun coordinates() {
@@ -62,17 +64,9 @@ class SettingsMapFragment : SettingsFragment() {
     }
 
     fun map() {
-        context?.let { context ->
-            val array = context.resources.getStringArray(R.array.map_background)
-            val value = context.resources.getStringArray(R.array.map_background_value)
-            binding.settings?.mapBackground?.get()?.let {
-                val id = value.indexOf(it)
-                val builder = AlertDialog.Builder(context)
-                    .setTitle(R.string.map_background)
-                    .setSingleChoiceItems(array, id) { _, i -> binding.settings?.mapBackground?.set(value[i]) }
-                    .setPositiveButton(android.R.string.ok, null).create()
-                builder.show()
-            }
+        binding.settings?.mapBackground?.get()?.let {
+            showDialog(R.array.map_background, R.array.map_background_value, it, R.string.map_background)
+            { value -> binding.settings?.mapBackground?.set(value) }
         }
     }
 

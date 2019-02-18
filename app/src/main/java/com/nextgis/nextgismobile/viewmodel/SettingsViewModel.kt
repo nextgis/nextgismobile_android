@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@ import android.app.Activity
 import android.arch.lifecycle.ViewModel
 import android.databinding.Observable
 import android.databinding.ObservableField
+import android.support.annotation.ArrayRes
+import android.support.annotation.StringRes
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.model.SettingsModel
 import com.nextgis.nextgismobile.util.NonNullObservableField
@@ -47,8 +49,8 @@ class SettingsViewModel : ViewModel() {
     var strokeWidth = NonNullObservableField("4")
     var strokeColor = NonNullObservableField("D0021B")
 
-    var scaleFormat = NonNullObservableField("")
-    var scaleFormatSummary = ObservableField("")
+    var scaleFormat = NonNullObservableField("2")
+    var scaleFormatSummary = ObservableField("Zoom")
     var coordinatesFormat = NonNullObservableField("0")
     var coordinatesFormatSummary = ObservableField("00.000000")
     var coordinatesPrecision = NonNullObservableField("6")
@@ -56,7 +58,7 @@ class SettingsViewModel : ViewModel() {
     var mapBackgroundSummary = ObservableField("Bright")
 
     var locationAccuracy = NonNullObservableField("3")
-    var locationAccuracySummary = ObservableField("")
+    var locationAccuracySummary = ObservableField("Both")
     var locationTime = NonNullObservableField("10")
     var locationDistance = NonNullObservableField("5")
     var locationCount = NonNullObservableField("10")
@@ -80,6 +82,7 @@ class SettingsViewModel : ViewModel() {
         statusPanel.set(settingsModel.getBoolean(SettingsModel.STATUS_PANEL))
         mapPath.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                // TODO multiple sd cards
                 mapPathSummary.set(description(if (mapPath.get() == "external") R.string.external else R.string.internal))
             }
         })
@@ -165,11 +168,11 @@ class SettingsViewModel : ViewModel() {
         settingsModel.saveInt(SettingsModel.TRACK_COUNT, trackCount.get().toInt())
     }
 
-    private fun description(resource: Int): String? {
+    private fun description(@StringRes resource: Int): String? {
         return settingsModel.context?.getString(resource)
     }
 
-    private fun description(value: String, values: Int, resource: Int): String? {
+    private fun description(value: String, @ArrayRes values: Int, @ArrayRes resource: Int): String? {
         settingsModel.context?.resources?.getStringArray(values)?.let { it ->
             val id = it.indexOf(value)
             settingsModel.context?.resources?.getStringArray(resource)?.let {

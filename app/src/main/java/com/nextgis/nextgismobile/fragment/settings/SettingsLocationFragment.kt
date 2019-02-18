@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,10 @@ class SettingsLocationFragment : SettingsFragment() {
     }
 
     fun accuracy() {
-        toast(R.string.not_implemented)
+        binding.settings?.locationAccuracy?.get()?.let {
+            showDialog(R.array.location_accuracy, R.array.location_accuracy_value, it, R.string.location_accuracy)
+            { value -> binding.settings?.locationAccuracy?.set(value) }
+        }
     }
 
 }

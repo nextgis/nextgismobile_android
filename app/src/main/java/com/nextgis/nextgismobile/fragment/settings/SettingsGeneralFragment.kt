@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,11 @@ class SettingsGeneralFragment : SettingsFragment() {
     }
 
     fun storage() {
-        toast(R.string.not_implemented)
+        // TODO multiple sd cards
+        binding.settings?.mapPath?.get()?.let {
+            showDialog(R.array.data_storage_path, R.array.data_storage_path_value, it, R.string.data_storage)
+            { value -> binding.settings?.mapPath?.set(value) }
+        }
     }
 
 }

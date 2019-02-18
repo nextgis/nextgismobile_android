@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,8 +103,9 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun handleBackPress() {
-        if (supportFragmentManager.backStackEntryCount == 1)
+        if (supportFragmentManager.backStackEntryCount <= 2)
             supportActionBar?.setTitle(R.string.action_settings)
+
         if (supportFragmentManager.backStackEntryCount > 1)
             supportFragmentManager.popBackStack()
         else
