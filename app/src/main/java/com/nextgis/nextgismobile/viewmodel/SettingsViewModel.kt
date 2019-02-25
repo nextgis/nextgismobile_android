@@ -45,9 +45,9 @@ class SettingsViewModel : ViewModel() {
     var favorites = NonNullObservableField(true)
     var measurement = NonNullObservableField(true)
 
-    var fillColor = NonNullObservableField("D0021B")
+    var fillColor = NonNullObservableField("#")
     var strokeWidth = NonNullObservableField("4")
-    var strokeColor = NonNullObservableField("D0021B")
+    var strokeColor = NonNullObservableField("#")
 
     var scaleFormat = NonNullObservableField("2")
     var scaleFormatSummary = ObservableField("Zoom")
@@ -92,8 +92,8 @@ class SettingsViewModel : ViewModel() {
         favorites.set(settingsModel.getBoolean(SettingsModel.USE_FAVORITES))
         measurement.set(settingsModel.getBoolean(SettingsModel.MEASURE_TOOLS))
 
-        fillColor.set(settingsModel.getString(SettingsModel.FILL_COLOR))
-        strokeColor.set(settingsModel.getString(SettingsModel.STROKE_COLOR))
+        fillColor.set(color(settingsModel.getString(SettingsModel.FILL_COLOR)))
+        strokeColor.set(color(settingsModel.getString(SettingsModel.STROKE_COLOR)))
         strokeWidth.set(settingsModel.getInt(SettingsModel.STROKE_WIDTH).toString())
 
         scaleFormat.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
@@ -146,8 +146,8 @@ class SettingsViewModel : ViewModel() {
         settingsModel.saveBoolean(SettingsModel.USE_FAVORITES, favorites.get())
         settingsModel.saveBoolean(SettingsModel.MEASURE_TOOLS, measurement.get())
 
-        settingsModel.saveString(SettingsModel.FILL_COLOR, fillColor.get())
-        settingsModel.saveString(SettingsModel.STROKE_COLOR, strokeColor.get())
+        settingsModel.saveString(SettingsModel.FILL_COLOR, fillColor.get().substring(1))
+        settingsModel.saveString(SettingsModel.STROKE_COLOR, strokeColor.get().substring(1))
         settingsModel.saveInt(SettingsModel.STROKE_WIDTH, strokeWidth.get().toInt())
 
         settingsModel.saveString(SettingsModel.SCALE_FORMAT, scaleFormat.get())
@@ -185,5 +185,9 @@ class SettingsViewModel : ViewModel() {
 
     fun setCoordinatesFormat(value: String) {
         coordinatesFormat.set(value)
+    }
+
+    fun color(hexValue: String): String {
+        return "#$hexValue";
     }
 }

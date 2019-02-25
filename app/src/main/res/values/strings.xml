@@ -65,6 +65,7 @@
     <string name="use_favorites">Use favorites</string>
     <string name="map_measurement">Map measurement tools</string>
     <string name="selection_style">Selected feature style</string>
+    <string name="reset_style">Reset style</string>
     <string name="scale_format">Scale format</string>
     <string name="coordinate_format">Coordinate format</string>
     <string name="coordinate_precision">Coordinate precision, decimal places</string>
@@ -72,8 +73,11 @@
     <string name="degrees_min">Degrees - Minutes</string>
     <string name="degrees">Degrees</string>
     <string name="fill_color">Fill color</string>
+    <string name="fill_color_default" translatable="false">03A9F4</string>
     <string name="stroke_color">Stroke color</string>
+    <string name="stroke_color_default" translatable="false">01579B</string>
     <string name="stroke_width">Stroke width</string>
+    <string name="stroke_width_default" translatable="false">4</string>
     <string name="map_background">Map background</string>
     <string name="scale_text">Text «1 : 100 000»</string>
     <string name="scale_bar">Scale bar «10 km»</string>

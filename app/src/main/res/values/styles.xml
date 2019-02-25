@@ -88,4 +88,16 @@
         <item name="android:layout_marginBottom">8dp</item>
     </style>
 
+    <style name="OutlineButton">
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:background">@drawable/bg_btn_outline</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:src">@drawable/square</item>
+    </style>
+
 </resources>

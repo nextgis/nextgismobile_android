@@ -83,17 +83,17 @@
         android:title="@string/map_background" />
 
     <EditTextPreference
-        android:defaultValue="03A9F4"
+        android:defaultValue="@string/fill_color_default"
         android:key="fill_color"
         android:title="@string/fill_color" />
 
     <EditTextPreference
-        android:defaultValue="01579B"
+        android:defaultValue="@string/stroke_color_default"
         android:key="stroke_color"
         android:title="@string/stroke_color" />
 
     <com.nextgis.nextgismobile.util.IntEditPreference
-        android:defaultValue="4"
+        android:defaultValue="@string/stroke_width_default"
         android:key="coordinate_precision"
         android:title="@string/stroke_width" />
 

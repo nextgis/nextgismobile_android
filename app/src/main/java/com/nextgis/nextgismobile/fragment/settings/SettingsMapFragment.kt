@@ -48,7 +48,8 @@ class SettingsMapFragment : SettingsFragment() {
     }
 
     fun style() {
-        toast(R.string.not_implemented)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.container, SettingsStyleFragment()).addToBackStack("subsettings").commitAllowingStateLoss()
     }
 
     fun scale() {
