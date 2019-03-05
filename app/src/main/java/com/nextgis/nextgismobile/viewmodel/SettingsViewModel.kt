@@ -173,10 +173,11 @@ class SettingsViewModel : ViewModel() {
     }
 
     private fun description(value: String, @ArrayRes values: Int, @ArrayRes resource: Int): String? {
-        settingsModel.context?.resources?.getStringArray(values)?.let { it ->
+        settingsModel.context?.resources?.getStringArray(values)?.let {
             val id = it.indexOf(value)
-            settingsModel.context?.resources?.getStringArray(resource)?.let {
-                return it[id]
+            settingsModel.context?.resources?.getStringArray(resource)?.let { entries ->
+                if (id >= 0)
+                    return entries[id]
             }
         }
 
@@ -188,6 +189,6 @@ class SettingsViewModel : ViewModel() {
     }
 
     fun color(hexValue: String): String {
-        return "#$hexValue";
+        return "#$hexValue"
     }
 }

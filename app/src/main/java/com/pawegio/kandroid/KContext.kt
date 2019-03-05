@@ -242,6 +242,8 @@ inline val Context.defaultSharedPreferences
 
 inline fun <reified T : Any> Context.startActivity() = startActivity(IntentFor<T>(this))
 
+inline fun Context.getColorCompat(color: Int) = ContextCompat.getColor(this, color)
+
 inline fun Context.isPermissionGranted(permission: String): Boolean =
         ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 

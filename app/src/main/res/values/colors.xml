@@ -4,7 +4,7 @@
   ~ Purpose:  Mobile GIS for Android
   ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
   ~ *****************************************************************************
-  ~ Copyright © 2018 NextGIS, info@nextgis.com
+  ~ Copyright © 2018-2019 NextGIS, info@nextgis.com
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -27,4 +27,5 @@
     <color name="colorButton">#00b77e</color>
     <color name="indicatorActive">#798185</color>
     <color name="indicatorInactive">#D0D3D4</color>
+    <color name="white">#FFF</color>
 </resources>

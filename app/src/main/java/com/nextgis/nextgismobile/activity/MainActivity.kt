@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,22 +21,61 @@
 
 package com.nextgis.nextgismobile.activity
 
+import android.content.res.ColorStateList
+import android.databinding.DataBindingUtil
+import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
-import com.nextgis.maplib.*
+import com.nextgis.maplib.API
+import com.nextgis.maplib.Envelope
+import com.nextgis.maplib.GestureDelegate
+import com.nextgis.maplib.MapDocument
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.databinding.ActivityMainBinding
+import com.pawegio.kandroid.getColorCompat
 import com.pawegio.kandroid.startActivity
+import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import android.view.View
+import android.view.WindowManager
+
 
 class MainActivity : BaseActivity(), GestureDelegate {
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setSupportActionBar(bottomBar)
+
+        initMap()
+        binding.activity = this
+        binding.executePendingBindings()
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            fab.backgroundTintList = ColorStateList.valueOf(getColorCompat(R.color.colorButton))
+//        else
+//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//        getWindow().setStatusBarColor(getColor(R.color.whiteAlpha));
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+
+        fab.setOnClickListener {
+            Snackbar.make(coordinator, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).apply {
+                    view.layoutParams = (view.layoutParams as CoordinatorLayout.LayoutParams).apply {
+                        setMargins(leftMargin, topMargin, rightMargin, bottomBar.height + fab.height / 4 * 3)
+                    }
+                }.show()
+        }
+    }
+
+    private fun initMap() {
         API.init(this@MainActivity)
         val map = API.getMap("main")
         map?.let {
@@ -52,11 +91,6 @@ class MainActivity : BaseActivity(), GestureDelegate {
         }
         mapView.registerGestureRecognizers(this)
         mapView.freeze = false
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 
     private fun addOSMTo(map: MapDocument) {
@@ -87,8 +121,20 @@ class MainActivity : BaseActivity(), GestureDelegate {
                 startActivity<SettingsActivity>()
                 true
             }
+            R.id.action_null -> {
+                toast(R.string.not_implemented)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun layers() {
+        toast(R.string.not_implemented)
+    }
+
+    fun search() {
+        toast(R.string.not_implemented)
     }
 
     companion object {

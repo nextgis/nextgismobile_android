@@ -96,4 +96,6 @@
     <string name="location_count">Measure count</string>
     <string name="max_count">Values range: 1–20</string>
     <string name="device_id">Device ID</string>
+    <string name="layers">Layers</string>
+    <string name="search">Search</string>
 </resources>
