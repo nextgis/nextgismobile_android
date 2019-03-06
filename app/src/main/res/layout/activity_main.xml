@@ -73,12 +73,9 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorButton"
+            style="@style/FabButton"
             android:src="@drawable/ic_plus"
             app:layout_anchor="@id/bottomBar"
-            app:layout_behavior="com.nextgis.nextgismobile.util.FloatingActionButtonBehavior"
-            app:rippleColor="@color/colorButton" />
+            app:layout_behavior="com.nextgis.nextgismobile.util.FloatingActionButtonBehavior" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

@@ -40,8 +40,8 @@ import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import android.view.View
-import android.view.WindowManager
+import com.nextgis.nextgismobile.fragment.LayersFragment
+import com.nextgis.nextgismobile.util.tint
 
 
 class MainActivity : BaseActivity(), GestureDelegate {
@@ -56,14 +56,12 @@ class MainActivity : BaseActivity(), GestureDelegate {
         binding.activity = this
         binding.executePendingBindings()
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            fab.backgroundTintList = ColorStateList.valueOf(getColorCompat(R.color.colorButton))
-//        else
+        fab.tint(R.color.colorButton)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 //            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 //        getWindow().setStatusBarColor(getColor(R.color.whiteAlpha));
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
 //            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
 
         fab.setOnClickListener {
             Snackbar.make(coordinator, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -130,7 +128,8 @@ class MainActivity : BaseActivity(), GestureDelegate {
     }
 
     fun layers() {
-        toast(R.string.not_implemented)
+        val layers = LayersFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.coordinator, layers).addToBackStack("layers").commitAllowingStateLoss()
     }
 
     fun search() {

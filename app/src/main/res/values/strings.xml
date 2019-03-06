@@ -98,4 +98,6 @@
     <string name="device_id">Device ID</string>
     <string name="layers">Layers</string>
     <string name="search">Search</string>
+    <string name="layer_type">Layer type</string>
+    <string name="point">Point</string>
 </resources>
