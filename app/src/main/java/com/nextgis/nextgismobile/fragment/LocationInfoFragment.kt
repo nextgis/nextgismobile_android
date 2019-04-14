@@ -40,7 +40,7 @@ class LocationInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        locationModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
+        locationModel = ViewModelProviders.of(requireActivity()).get(LocationViewModel::class.java)
     }
 
     override fun onStart() {

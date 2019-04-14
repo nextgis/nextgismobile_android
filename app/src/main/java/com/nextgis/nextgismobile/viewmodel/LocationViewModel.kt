@@ -30,9 +30,11 @@ import com.nextgis.nextgismobile.model.LocationModel
 
 class LocationViewModel : ViewModel(), LocationListener {
     private var listener: ((location: Location?) -> Unit)? = null
+    var location: Location? = null
 
     override fun onLocationChanged(location: Location?) {
         listener?.invoke(location)
+        this.location = location
     }
 
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {

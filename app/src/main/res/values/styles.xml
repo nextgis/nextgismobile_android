@@ -108,4 +108,10 @@
         <item name="rippleColor">@color/colorButton</item>
     </style>
 
+    <style name="WhiteFabButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="rippleColor">@color/white</item>
+    </style>
+
 </resources>

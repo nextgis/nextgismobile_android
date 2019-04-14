@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.adapter.BackupAdapter
 import com.nextgis.nextgismobile.adapter.OnBackupClickListener
@@ -50,7 +51,7 @@ class SettingsBackupFragment : SettingsFragment(), OnBackupClickListener {
             def.add(Backup("1", "05.12.2018", "17:00"))
             list.adapter = BackupAdapter(def, this@SettingsBackupFragment)
             list.layoutManager =
-                LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         }
         binding.executePendingBindings()
         setTitle(R.string.backup)

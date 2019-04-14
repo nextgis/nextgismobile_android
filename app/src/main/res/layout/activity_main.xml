@@ -25,9 +25,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="activity"
             type="com.nextgis.nextgismobile.activity.MainActivity" />
+
+        <variable
+            name="settings"
+            type="com.nextgis.nextgismobile.viewmodel.SettingsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,7 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
+            android:layout_marginEnd="8dp"
+            android:visibility="@{settings.statusPanel ? View.VISIBLE : View.GONE}">
 
             <FrameLayout
                 android:id="@+id/location_info"
@@ -91,6 +98,33 @@
             android:src="@drawable/ic_plus"
             app:layout_anchor="@id/bottomBar"
             app:tint="@color/white" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/zoom_in"
+                style="@style/WhiteFabButton"
+                android:src="@drawable/ic_plus"
+                android:visibility="@{settings.zoomButtons ? View.VISIBLE : View.GONE}"
+                app:fabSize="mini" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/zoom_out"
+                style="@style/WhiteFabButton"
+                android:src="@drawable/ic_minus"
+                android:visibility="@{settings.zoomButtons ? View.VISIBLE : View.GONE}"
+                app:fabSize="mini" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/locate"
+                style="@style/WhiteFabButton"
+                android:src="@drawable/ic_gps_fixed"
+                app:fabSize="mini" />
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/container"
