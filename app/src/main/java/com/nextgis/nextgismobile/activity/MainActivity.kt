@@ -21,6 +21,7 @@
 
 package com.nextgis.nextgismobile.activity
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
@@ -37,6 +38,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import com.nextgis.nextgismobile.fragment.LayersFragment
 import com.nextgis.nextgismobile.util.tint
+import com.nextgis.nextgismobile.viewmodel.MapViewModel
 
 
 class MainActivity : BaseActivity(), GestureDelegate {
@@ -52,13 +54,13 @@ class MainActivity : BaseActivity(), GestureDelegate {
         binding.activity = this
         binding.executePendingBindings()
 
-        fab.tint(R.color.colorButton)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 //            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 //        getWindow().setStatusBarColor(getColor(R.color.whiteAlpha));
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
 //            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
+        fab.tint(R.color.colorButton)
         fab.setOnClickListener {
             Snackbar.make(coordinator, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).apply {
@@ -70,37 +72,13 @@ class MainActivity : BaseActivity(), GestureDelegate {
     }
 
     private fun initMap() {
-        API.init(this@MainActivity)
-        val map = API.getMap("main")
-        map?.let {
-            it.setExtentLimits(MIN_X, MIN_Y, MAX_X, MAX_Y)
-            mapView.setMap(it)
-            this.map = it
+        val mapModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
+        mapModel.init(this)
 
-            var hasOSM = false
-            for (i in 0 until it.layerCount) {
-                it.getLayer(i)?.let { layer ->
-                    if (layer.dataSource.name == OSM_NAME) {
-                        hasOSM = true
-                    }
-                }
-            }
-
-            if (!hasOSM)
-                addOSMTo(it)
-        }
+        map = mapModel.load()
+        map?.let { mapView.setMap(it) }
         mapView.registerGestureRecognizers(this)
         mapView.freeze = false
-    }
-
-    private fun addOSMTo(map: MapDocument) {
-        val dataDir = API.getDataDirectory()
-        if (dataDir != null) {
-            val bbox = Envelope(MIN_X, MAX_X, MIN_Y, MAX_Y)
-            val baseMap = dataDir.createTMS(OSM_NAME, OSM_URL, 3857, 0, 18, bbox, bbox, 14)
-            map.addLayer("OSM", baseMap!!)
-            map.save()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -134,14 +112,5 @@ class MainActivity : BaseActivity(), GestureDelegate {
     fun refresh() {
 //        mapView.refresh()
         mapView.invalidate(mapView.mapExtent)
-    }
-
-    companion object {
-        const val OSM_NAME = "osm.wconn"
-        const val OSM_URL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        const val MAX_X = 20037508.34
-        const val MIN_X = -MAX_X
-        const val MAX_Y = 20037508.34
-        const val MIN_Y = -MAX_Y
     }
 }
