@@ -21,7 +21,7 @@
 
 package com.nextgis.nextgismobile.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.nextgis.nextgismobile.data.User
 import com.nextgis.nextgismobile.model.UserModel
 import com.nextgis.nextgismobile.util.NonNullObservableField

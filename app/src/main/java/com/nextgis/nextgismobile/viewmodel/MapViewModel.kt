@@ -21,13 +21,13 @@
 
 package com.nextgis.nextgismobile.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import android.content.Context
 import com.nextgis.maplib.MapDocument
 import com.nextgis.nextgismobile.model.MapModel
 
 class MapViewModel : ViewModel() {
-    private var mapModel: MapModel = MapModel()
+    private var mapModel = MapModel()
 
     fun init(context: Context) {
         mapModel.init(context)

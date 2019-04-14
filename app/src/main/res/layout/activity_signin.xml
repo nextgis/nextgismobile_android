@@ -32,7 +32,7 @@
             type="com.nextgis.nextgismobile.viewmodel.AuthViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="40dp"
@@ -84,5 +84,5 @@
             android:textColor="#fff"
             android:visibility="@{auth.firstTime ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

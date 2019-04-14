@@ -22,11 +22,11 @@
 package com.nextgis.nextgismobile.viewmodel
 
 import android.app.Activity
-import android.arch.lifecycle.ViewModel
-import android.databinding.Observable
-import android.databinding.ObservableField
-import android.support.annotation.ArrayRes
-import android.support.annotation.StringRes
+import androidx.lifecycle.ViewModel
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
+import androidx.annotation.ArrayRes
+import androidx.annotation.StringRes
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.model.SettingsModel
 import com.nextgis.nextgismobile.util.NonNullObservableField

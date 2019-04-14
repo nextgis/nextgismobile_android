@@ -23,10 +23,10 @@ package com.nextgis.nextgismobile.viewmodel
 
 import android.accounts.AccountManager
 import android.accounts.AccountManagerCallback
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import android.content.Intent
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.nextgis.nextgismobile.data.Token
 import com.nextgis.nextgismobile.data.User
 import com.nextgis.nextgismobile.model.AuthModel

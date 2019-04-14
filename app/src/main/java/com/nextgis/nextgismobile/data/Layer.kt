@@ -21,10 +21,10 @@
 
 package com.nextgis.nextgismobile.data
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.nextgis.maplib.Layer
 import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.BR
@@ -45,7 +45,7 @@ class Layer(val id: Int, val title: String, val geometryType: Int, visible: Bool
         get() {
             return when (geometryType) {
                 Object.Type.RASTER_TMS.code -> R.drawable.ic_grid
-                else -> R.drawable.indicator_dot_grey
+                else -> R.drawable.appintro_indicator_dot_grey
             }
         }
 

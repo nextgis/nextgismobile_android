@@ -21,10 +21,10 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +49,8 @@ class SettingsBackupFragment : SettingsFragment(), OnBackupClickListener {
             def.add(Backup("0", "12.02.2018", "12:00"))
             def.add(Backup("1", "05.12.2018", "17:00"))
             list.adapter = BackupAdapter(def, this@SettingsBackupFragment)
-            list.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            list.layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         }
         binding.executePendingBindings()
         setTitle(R.string.backup)

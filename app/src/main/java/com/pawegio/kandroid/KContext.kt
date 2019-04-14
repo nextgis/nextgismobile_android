@@ -50,10 +50,10 @@ import android.os.*
 import android.os.storage.StorageManager
 import android.preference.PreferenceManager
 import android.print.PrintManager
-import android.support.annotation.LayoutRes
-import android.support.annotation.RequiresApi
-import android.support.annotation.StringRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.LayoutRes
+import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.view.LayoutInflater

@@ -22,16 +22,17 @@
 package com.nextgis.nextgismobile.fragment.settings
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
-import android.databinding.Observable
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nextgis.nextgismobile.R
@@ -40,6 +41,7 @@ import com.nextgis.nextgismobile.adapter.OnItemClickListener
 import com.nextgis.nextgismobile.adapter.SettingAdapter
 import com.nextgis.nextgismobile.data.Setting
 import com.nextgis.nextgismobile.databinding.FragmentHeadersBinding
+import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.nextgis.nextgismobile.viewmodel.UserViewModel
 import com.pawegio.kandroid.startActivity
@@ -72,8 +74,11 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             fragment = this@HeadersFragment
 
             list.adapter = SettingAdapter(settings, this@HeadersFragment)
-            list.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            list.layoutManager =
+                LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
             list.isNestedScrollingEnabled = false
+
+            authenticate.tint(R.color.white)
         }
 
         authModel.token.observe(this, Observer { token ->

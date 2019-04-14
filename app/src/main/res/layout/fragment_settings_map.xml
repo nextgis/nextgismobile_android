@@ -46,22 +46,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 style="@style/Switch.Settings"
                 android:checked="@={settings.statusPanel}"
                 android:text="@string/status_panel" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 style="@style/Switch.Settings"
                 android:checked="@={settings.zoomButtons}"
                 android:text="@string/zoom_buttons" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 style="@style/Switch.Settings"
                 android:checked="@={settings.favorites}"
                 android:text="@string/use_favorites" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 style="@style/Switch.Settings"
                 android:checked="@={settings.measurement}"
                 android:text="@string/map_measurement" />

@@ -22,10 +22,10 @@
 package com.nextgis.nextgismobile.fragment.settings
 
 import android.preference.PreferenceManager
-import android.support.annotation.ArrayRes
-import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
+import androidx.annotation.ArrayRes
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AlertDialog
 import com.nextgis.nextgismobile.activity.SettingsActivity
 
 open class SettingsFragment : Fragment() {

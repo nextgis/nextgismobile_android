@@ -48,50 +48,50 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     style="@style/Switch.Settings"
                     android:checked="@={settings.filterEmissions}"
                     android:text="@string/filter_emissions" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     style="@style/Switch.Settings"
                     android:checked="@={settings.splitDaily}"
                     android:text="@string/daily_split" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     style="@style/Switch.Settings"
                     android:checked="@={settings.cloudSync}"
                     android:text="@string/cloud_sync" />
 
-                <android.support.design.widget.TextInputLayout style="@style/SettingsEditText">
+                <com.google.android.material.textfield.TextInputLayout style="@style/SettingsEditText">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/location_time"
                         android:inputType="numberDecimal"
                         android:text="@={settings.trackTime}" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout style="@style/SettingsEditText">
+                <com.google.android.material.textfield.TextInputLayout style="@style/SettingsEditText">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/location_distance"
                         android:inputType="numberDecimal"
                         android:text="@={settings.trackDistance}" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout style="@style/SettingsEditText">
+                <com.google.android.material.textfield.TextInputLayout style="@style/SettingsEditText">
 
-                    <android.support.design.widget.TextInputEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/location_count"
                         android:inputType="numberDecimal"
                         android:text="@={settings.trackCount}" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     style="@style/SettingsSummary"

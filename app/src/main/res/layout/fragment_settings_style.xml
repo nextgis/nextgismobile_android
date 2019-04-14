@@ -42,12 +42,12 @@
         android:focusable="true"
         tools:context=".activity.SettingsActivity">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/fill"
                 style="@style/SettingsEditText"
                 android:layout_width="0dp"
@@ -56,7 +56,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fill_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                     android:maxLength="7"
                     android:text="@={settings.fillColor}"
                     tools:text="#445566" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
                 android:id="@+id/fill_badge"
@@ -76,7 +76,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/width"
                 style="@style/SettingsEditText"
                 android:layout_width="0dp"
@@ -85,16 +85,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/fill">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/stroke_width"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/stroke_width"
                     android:inputType="numberDecimal"
                     android:text="@={settings.strokeWidth}" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/width_color"
                 style="@style/SettingsEditText"
                 android:layout_width="0dp"
@@ -104,7 +104,7 @@
                 app:layout_constraintStart_toEndOf="@id/width"
                 app:layout_constraintTop_toBottomOf="@id/fill">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/stroke_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                     android:inputType="textCapCharacters"
                     android:maxLength="7"
                     android:text="@={settings.strokeColor}" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
                 android:id="@+id/width_badge"
@@ -135,6 +135,6 @@
                 android:text="@string/reset_style"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/width" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

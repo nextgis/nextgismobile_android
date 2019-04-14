@@ -21,24 +21,27 @@
 
 package com.nextgis.nextgismobile.activity
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
-import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
-import com.nextgis.maplib.*
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
+import com.nextgis.maplib.GestureDelegate
+import com.nextgis.maplib.MapDocument
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityMainBinding
+import com.nextgis.nextgismobile.fragment.LayersFragment
+import com.nextgis.nextgismobile.fragment.LocationInfoFragment
+import com.nextgis.nextgismobile.util.dpToPx
+import com.nextgis.nextgismobile.util.statusBarHeight
+import com.nextgis.nextgismobile.util.tint
+import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import com.nextgis.nextgismobile.fragment.LayersFragment
-import com.nextgis.nextgismobile.util.tint
-import com.nextgis.nextgismobile.viewmodel.MapViewModel
 
 
 class MainActivity : BaseActivity(), GestureDelegate {
@@ -63,11 +66,7 @@ class MainActivity : BaseActivity(), GestureDelegate {
         fab.tint(R.color.colorButton)
         fab.setOnClickListener {
             Snackbar.make(coordinator, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).apply {
-                    view.layoutParams = (view.layoutParams as CoordinatorLayout.LayoutParams).apply {
-                        setMargins(leftMargin, topMargin, rightMargin, bottomBar.height + fab.height / 4 * 3)
-                    }
-                }.show()
+                .setAction("Action", null).setAnchorView(R.id.fab).show()
         }
     }
 
@@ -102,7 +101,7 @@ class MainActivity : BaseActivity(), GestureDelegate {
 
     fun layers() {
         val layers = LayersFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.coordinator, layers).addToBackStack("layers").commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.container, layers).addToBackStack("layers").commitAllowingStateLoss()
     }
 
     fun search() {

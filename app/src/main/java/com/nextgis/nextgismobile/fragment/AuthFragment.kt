@@ -22,8 +22,8 @@
 package com.nextgis.nextgismobile.fragment
 
 import android.annotation.SuppressLint
-import android.support.design.widget.TextInputEditText
-import android.support.v4.app.Fragment
+import com.google.android.material.textfield.TextInputEditText
+import androidx.fragment.app.Fragment
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View

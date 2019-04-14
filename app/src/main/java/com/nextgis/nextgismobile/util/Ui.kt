@@ -23,14 +23,37 @@
 
 package com.nextgis.nextgismobile.util
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Build
-import android.support.annotation.ColorRes
-import android.support.design.widget.FloatingActionButton
+import androidx.annotation.ColorRes
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pawegio.kandroid.getColorCompat
+import android.util.DisplayMetrics
+import android.view.View
 
 
 inline fun FloatingActionButton.tint(@ColorRes resId: Int) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         this.backgroundTintList = ColorStateList.valueOf(this.context.getColorCompat(resId))
+}
+
+inline fun View.tint(@ColorRes resId: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        this.backgroundTintList = ColorStateList.valueOf(this.context.getColorCompat(resId))
+}
+
+inline val Context.statusBarHeight: Int
+    get() {
+        var result = 0
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId)
+        }
+        return result
+    }
+
+inline fun Context.dpToPx(dp: Int): Int {
+    val dm = resources.displayMetrics
+    return Math.round(dp * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 }

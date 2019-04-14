@@ -22,25 +22,27 @@
 package com.nextgis.nextgismobile.activity
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import com.github.paolorotolo.appintro.model.SliderPage
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.util.tint
+import com.pawegio.kandroid.getColorCompat
 import com.pawegio.kandroid.startActivity
 
 
-class IntroActivity: AppIntro() {
+class IntroActivity : AppIntro() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val page1 = SliderPage()
         page1.title = getString(R.string.intro_title_1)
         page1.titleColor = Color.BLACK
-        page1.description  = getString(R.string.intro_description_1)
+        page1.description = getString(R.string.intro_description_1)
         page1.descColor = Color.BLACK
         page1.imageDrawable = R.drawable.logo_color
         page1.bgColor = Color.WHITE
@@ -49,18 +51,24 @@ class IntroActivity: AppIntro() {
         val page2 = SliderPage()
         page2.title = getString(R.string.intro_title_2)
         page2.titleColor = Color.BLACK
-        page2.description  = getString(R.string.intro_description_2)
+        page2.description = getString(R.string.intro_description_2)
         page2.descColor = Color.BLACK
         page2.imageDrawable = R.drawable.under_construction
         page2.bgColor = Color.WHITE
         addSlide(AppIntroFragment.newInstance(page2))
 
-        val primary = ContextCompat.getColor(this, R.color.colorPrimary)
-        setColorSkipButton(primary)
+        val primary = getColorCompat(R.color.colorPrimary)
         setNextArrowColor(primary)
-        setColorDoneText(primary)
-        val active = ContextCompat.getColor(this, R.color.indicatorActive)
-        val inactive = ContextCompat.getColor(this, R.color.indicatorInactive)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            skipButton.tint(R.color.white)
+            doneButton.tint(R.color.white)
+            setColorSkipButton(primary)
+            setColorDoneText(primary)
+        }
+
+        val active = getColorCompat(R.color.indicatorActive)
+        val inactive = getColorCompat(R.color.indicatorInactive)
         setIndicatorColor(active, inactive)
 
         BaseActivity.hideStatusBar(window)

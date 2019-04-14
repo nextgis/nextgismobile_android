@@ -24,7 +24,7 @@ package com.nextgis.nextgismobile.auth
 import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 
 // https://android.googlesource.com/platform/frameworks/base.git/+/master/core/java/android/accounts/AccountAuthenticatorActivity.java
 abstract class AccountAuthenticatorActivity : FragmentActivity() {

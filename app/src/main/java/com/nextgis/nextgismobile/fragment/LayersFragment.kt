@@ -21,20 +21,22 @@
 
 package com.nextgis.nextgismobile.fragment
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.MainActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
+import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.util.tint
 import com.pawegio.kandroid.toast
 
@@ -42,18 +44,8 @@ import com.pawegio.kandroid.toast
 class LayersFragment : Fragment(), OnLayerClickListener {
     private lateinit var binding: FragmentLayersBinding
 
-    private val statusBarHeight: Int
-        get() {
-            var result = 0
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-            if (resourceId > 0) {
-                result = resources.getDimensionPixelSize(resourceId)
-            }
-            return result
-        }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.action_search -> {
                 toast(R.string.not_implemented)
                 true
@@ -81,10 +73,10 @@ class LayersFragment : Fragment(), OnLayerClickListener {
             }
 
             list.adapter = LayerAdapter(def, this@LayersFragment)
-            list.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
 
             val params = status.layoutParams
-            params.height = statusBarHeight
+            params.height = activity?.statusBarHeight ?: 0
             status.layoutParams = params
 
             toolbar.setTitle(R.string.layers)

@@ -22,8 +22,8 @@
 package com.nextgis.nextgismobile.fragment
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.text.InputType
 import android.text.method.LinkMovementMethod

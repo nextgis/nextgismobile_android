@@ -21,7 +21,7 @@
 
 package com.nextgis.nextgismobile.data
 
-import android.databinding.BaseObservable
+import androidx.databinding.BaseObservable
 import java.security.MessageDigest
 
 class User(var first_name: String, var last_name: String, var username: String, var email: String) : BaseObservable() {

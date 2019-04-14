@@ -42,17 +42,17 @@
         android:orientation="vertical"
         tools:context=".activity.SettingsActivity">
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             style="@style/Switch.Settings"
             android:checked="@={settings.analytics}"
             android:text="@string/collect_analytics" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             style="@style/Switch.Settings"
             android:checked="@={settings.keepScreen}"
             android:text="@string/keep_screen_on" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             style="@style/Switch.Settings"
             android:checked="@={settings.roaming}"
             android:text="@string/roaming_on" />

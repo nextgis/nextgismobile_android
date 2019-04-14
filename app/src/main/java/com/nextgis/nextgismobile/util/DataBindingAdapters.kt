@@ -22,9 +22,9 @@
 package com.nextgis.nextgismobile.util
 
 import android.content.res.ColorStateList
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.os.Build
-import android.support.v4.graphics.drawable.DrawableCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import android.widget.ImageView
 import com.pawegio.kandroid.getColorCompat
 
