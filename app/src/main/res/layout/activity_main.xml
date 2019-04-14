@@ -38,7 +38,21 @@
 
         <include layout="@layout/content_main" />
 
-        <android.support.design.bottomappbar.BottomAppBar
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
+
+            <FrameLayout
+                android:id="@+id/location_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp" />
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomBar"
             style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
             android:layout_width="match_parent"
@@ -69,7 +83,7 @@
                     android:padding="4dp"
                     android:src="@drawable/ic_layers" />
             </LinearLayout>
-        </android.support.design.bottomappbar.BottomAppBar>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

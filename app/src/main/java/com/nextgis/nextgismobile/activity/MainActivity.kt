@@ -54,7 +54,13 @@ class MainActivity : BaseActivity(), GestureDelegate {
         setSupportActionBar(bottomBar)
 
         initMap()
-        binding.activity = this
+        initLocation()
+
+        binding.apply {
+            activity = this@MainActivity
+            val params = card.layoutParams as CoordinatorLayout.LayoutParams
+            params.topMargin = statusBarHeight + dpToPx(8)
+        }
         binding.executePendingBindings()
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -68,6 +74,11 @@ class MainActivity : BaseActivity(), GestureDelegate {
             Snackbar.make(coordinator, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).setAnchorView(R.id.fab).show()
         }
+    }
+
+    private fun initLocation() {
+        val location = LocationInfoFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.location_info, location).addToBackStack("location").commitAllowingStateLoss()
     }
 
     private fun initMap() {
