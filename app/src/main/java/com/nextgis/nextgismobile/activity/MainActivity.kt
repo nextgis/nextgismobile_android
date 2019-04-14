@@ -21,7 +21,6 @@
 
 package com.nextgis.nextgismobile.activity
 
-import android.content.res.ColorStateList
 import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
@@ -29,13 +28,9 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
-import com.nextgis.maplib.API
-import com.nextgis.maplib.Envelope
-import com.nextgis.maplib.GestureDelegate
-import com.nextgis.maplib.MapDocument
+import com.nextgis.maplib.*
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityMainBinding
-import com.pawegio.kandroid.getColorCompat
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,6 +41,7 @@ import com.nextgis.nextgismobile.util.tint
 
 class MainActivity : BaseActivity(), GestureDelegate {
     private lateinit var binding: ActivityMainBinding
+    internal var map: MapDocument? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,15 +73,21 @@ class MainActivity : BaseActivity(), GestureDelegate {
         API.init(this@MainActivity)
         val map = API.getMap("main")
         map?.let {
-            it.setExtentLimits(
-                MIN_X,
-                MIN_Y,
-                MAX_X,
-                MAX_Y
-            )
+            it.setExtentLimits(MIN_X, MIN_Y, MAX_X, MAX_Y)
             mapView.setMap(it)
-            addOSMTo(it)
-//            it.save()
+            this.map = it
+
+            var hasOSM = false
+            for (i in 0 until it.layerCount) {
+                it.getLayer(i)?.let { layer ->
+                    if (layer.dataSource.name == OSM_NAME) {
+                        hasOSM = true
+                    }
+                }
+            }
+
+            if (!hasOSM)
+                addOSMTo(it)
         }
         mapView.registerGestureRecognizers(this)
         mapView.freeze = false
@@ -94,17 +96,10 @@ class MainActivity : BaseActivity(), GestureDelegate {
     private fun addOSMTo(map: MapDocument) {
         val dataDir = API.getDataDirectory()
         if (dataDir != null) {
-            val bbox = Envelope(
-                MIN_X,
-                MAX_X,
-                MIN_Y,
-                MAX_Y
-            )
-            val baseMap = dataDir.createTMS(
-                "osm.wconn",
-                OSM_URL, 3857, 0, 18, bbox, bbox, 14
-            )
+            val bbox = Envelope(MIN_X, MAX_X, MIN_Y, MAX_Y)
+            val baseMap = dataDir.createTMS(OSM_NAME, OSM_URL, 3857, 0, 18, bbox, bbox, 14)
             map.addLayer("OSM", baseMap!!)
+            map.save()
         }
     }
 
@@ -136,7 +131,13 @@ class MainActivity : BaseActivity(), GestureDelegate {
         toast(R.string.not_implemented)
     }
 
+    fun refresh() {
+//        mapView.refresh()
+        mapView.invalidate(mapView.mapExtent)
+    }
+
     companion object {
+        const val OSM_NAME = "osm.wconn"
         const val OSM_URL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         const val MAX_X = 20037508.34
         const val MIN_X = -MAX_X

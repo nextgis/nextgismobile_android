@@ -30,6 +30,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.activity.MainActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
@@ -67,8 +68,18 @@ class LayersFragment : Fragment(), OnLayerClickListener {
             fragment = this@LayersFragment
 
             val def = arrayListOf<Layer>()
-            def.add(Layer(0, "Test #1", 1))
-            def.add(Layer(1, "Layer with long title to wrap some lines", 0))
+            activity?.let { activity ->
+                val parent = activity as? MainActivity
+                val map = parent?.map
+                map?.let {
+                    for (i in 0 until it.layerCount) {
+                        it.getLayer(i)?.let { layer ->
+                            def.add(Layer(i, layer.name, layer.dataSource.type, layer.visible, layer))
+                        }
+                    }
+                }
+            }
+
             list.adapter = LayerAdapter(def, this@LayersFragment)
             list.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 
@@ -92,35 +103,41 @@ class LayersFragment : Fragment(), OnLayerClickListener {
         toast(R.string.not_implemented)
     }
 
-    override fun onVisibilityClick(id: Int) {
+    private fun refresh() {
+        val parent = activity as? MainActivity
+        parent?.refresh()
+    }
+
+    override fun onVisibilityClick(layer: Layer) {
+        layer.visible = !layer.visible
+        refresh()
+    }
+
+    override fun onZoomClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 
-    override fun onZoomClick(id: Int) {
+    override fun onTableClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 
-    override fun onTableClick(id: Int) {
+    override fun onSettingsClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 
-    override fun onSettingsClick(id: Int) {
+    override fun onSyncClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 
-    override fun onSyncClick(id: Int) {
+    override fun onShareClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 
-    override fun onShareClick(id: Int) {
+    override fun onDeleteClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 
-    override fun onDeleteClick(id: Int) {
-        toast(R.string.not_implemented)
-    }
-
-    override fun onMoreClick(id: Int) {
+    override fun onMoreClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 

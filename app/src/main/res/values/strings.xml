@@ -100,4 +100,5 @@
     <string name="search">Search</string>
     <string name="layer_type">Layer type</string>
     <string name="point">Point</string>
+    <string name="raster">Raster</string>
 </resources>

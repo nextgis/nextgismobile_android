@@ -41,7 +41,9 @@
             android:layout_margin="16dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/layer_type"
-            android:src="@drawable/indicator_dot_grey" />
+            android:src="@{layer.geometryIcon}"
+            android:tint="@color/grey"
+            tools:src="@drawable/ic_grid" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -76,8 +78,10 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:background="@null"
-            android:src="@drawable/ic_eye"
-            tools:ignore="ContentDescription" />
+            android:src="@{layer.visibility}"
+            android:tint="@{layer.tint}"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_eye" />
 
         <ImageButton
             android:id="@+id/more"
@@ -86,7 +90,7 @@
             android:adjustViewBounds="true"
             android:background="@null"
             android:src="@drawable/ic_dots_vertical"
-            android:tint="#bbb"
+            android:tint="@color/grey"
             tools:ignore="ContentDescription" />
     </LinearLayout>
 </layout>

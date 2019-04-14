@@ -28,14 +28,14 @@ import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.ItemLayerBinding
 
 interface OnLayerClickListener {
-    fun onVisibilityClick(id: Int)
-    fun onZoomClick(id: Int)
-    fun onTableClick(id: Int)
-    fun onSettingsClick(id: Int)
-    fun onSyncClick(id: Int)
-    fun onShareClick(id: Int)
-    fun onDeleteClick(id: Int)
-    fun onMoreClick(id: Int)
+    fun onVisibilityClick(layer: Layer)
+    fun onZoomClick(layer: Layer)
+    fun onTableClick(layer: Layer)
+    fun onSettingsClick(layer: Layer)
+    fun onSyncClick(layer: Layer)
+    fun onShareClick(layer: Layer)
+    fun onDeleteClick(layer: Layer)
+    fun onMoreClick(layer: Layer)
 }
 
 class LayerAdapter(val items: List<Layer>, val listener: OnLayerClickListener) :
@@ -54,8 +54,8 @@ class LayerAdapter(val items: List<Layer>, val listener: OnLayerClickListener) :
     class ViewHolder(private var binding: ItemLayerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: Layer, listener: OnLayerClickListener) {
             binding.layer = repo
-            binding.visibility.setOnClickListener { listener.onVisibilityClick(repo.id) }
-            binding.more.setOnClickListener { listener.onMoreClick(repo.id) }
+            binding.visibility.setOnClickListener { listener.onVisibilityClick(repo) }
+            binding.more.setOnClickListener { listener.onMoreClick(repo) }
             binding.executePendingBindings()
         }
     }
