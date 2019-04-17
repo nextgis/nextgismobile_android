@@ -21,9 +21,11 @@
 
 package com.nextgis.nextgismobile.adapter
 
+import android.os.Build
+import android.view.*
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.ItemLayerBinding
 
@@ -32,10 +34,9 @@ interface OnLayerClickListener {
     fun onZoomClick(layer: Layer)
     fun onTableClick(layer: Layer)
     fun onSettingsClick(layer: Layer)
-    fun onSyncClick(layer: Layer)
+    fun onCloudClick(layer: Layer)
     fun onShareClick(layer: Layer)
     fun onDeleteClick(layer: Layer)
-    fun onMoreClick(layer: Layer)
 }
 
 class LayerAdapter(val items: List<Layer>, val listener: OnLayerClickListener) :
@@ -55,7 +56,27 @@ class LayerAdapter(val items: List<Layer>, val listener: OnLayerClickListener) :
         fun bind(repo: Layer, listener: OnLayerClickListener) {
             binding.layer = repo
             binding.visibility.setOnClickListener { listener.onVisibilityClick(repo) }
-            binding.more.setOnClickListener { listener.onMoreClick(repo) }
+            binding.more.setOnClickListener {
+                val context = binding.root.context
+                val wrapper = ContextThemeWrapper(context, R.style.DarkPopup)
+                val menu = PopupMenu(wrapper, binding.visibility)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    menu.gravity = Gravity.END
+
+                menu.inflate(R.menu.menu_layer)
+                menu.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.action_zoom -> listener.onZoomClick(repo)
+                        R.id.action_table -> listener.onTableClick(repo)
+                        R.id.action_settings -> listener.onSettingsClick(repo)
+                        R.id.action_cloud -> listener.onCloudClick(repo)
+                        R.id.action_share -> listener.onShareClick(repo)
+                        R.id.action_delete -> listener.onDeleteClick(repo)
+                    }
+                    true
+                }
+                menu.show()
+            }
             binding.executePendingBindings()
         }
     }

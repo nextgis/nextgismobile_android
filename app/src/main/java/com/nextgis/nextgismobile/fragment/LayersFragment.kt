@@ -117,7 +117,7 @@ class LayersFragment : Fragment(), OnLayerClickListener {
         toast(R.string.not_implemented)
     }
 
-    override fun onSyncClick(layer: Layer) {
+    override fun onCloudClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 
@@ -126,10 +126,6 @@ class LayersFragment : Fragment(), OnLayerClickListener {
     }
 
     override fun onDeleteClick(layer: Layer) {
-        toast(R.string.not_implemented)
-    }
-
-    override fun onMoreClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
 

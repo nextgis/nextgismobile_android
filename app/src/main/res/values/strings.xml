@@ -101,4 +101,10 @@
     <string name="layer_type">Layer type</string>
     <string name="point">Point</string>
     <string name="raster">Raster</string>
+    <string name="zoom">Zoom to</string>
+    <string name="table">Attributes table</string>
+    <string name="params">Parameters</string>
+    <string name="send_to_cloud">Send to cloud</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
 </resources>
