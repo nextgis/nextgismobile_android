@@ -46,6 +46,7 @@ import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.LocationViewModel
 import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
+import com.pawegio.kandroid.runDelayed
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -134,7 +135,7 @@ class MainActivity : BaseActivity(), GestureDelegate {
 
     override fun onStart() {
         super.onStart()
-        binding.settings?.load()
+        runDelayed(1500) { binding.settings?.load() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
