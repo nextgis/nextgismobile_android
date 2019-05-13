@@ -24,8 +24,9 @@ package com.nextgis.nextgismobile.fragment.settings
 import android.preference.PreferenceManager
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.SettingsActivity
 
 open class SettingsFragment : Fragment() {
@@ -42,7 +43,7 @@ open class SettingsFragment : Fragment() {
             val array = context.resources.getStringArray(entries)
             val value = context.resources.getStringArray(values)
             val id = value.indexOf(default)
-            val builder = AlertDialog.Builder(context)
+            val builder = AlertDialog.Builder(context, R.style.AlertDialog)
                 .setTitle(title)
                 .setSingleChoiceItems(array, id) { _, i -> listener(value[i]) }
                 .setPositiveButton(android.R.string.ok, null).create()

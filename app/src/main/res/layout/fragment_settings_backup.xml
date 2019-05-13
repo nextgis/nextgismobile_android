@@ -3,7 +3,7 @@
   ~ Purpose:  Mobile GIS for Android
   ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
   ~ *****************************************************************************
-  ~ Copyright © 2018 NextGIS, info@nextgis.com
+  ~ Copyright © 2018-2019 NextGIS, info@nextgis.com
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -49,13 +49,11 @@
             tools:listitem="@layout/item_backup" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/FabButton"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:onClick="@{()->fragment.sync()}"
             android:src="@drawable/ic_cloud_upload"
-            app:backgroundTint="@color/colorButton"
-            app:fabSize="normal" />
+            app:tint="@color/white" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

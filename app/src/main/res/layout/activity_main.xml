@@ -108,6 +108,7 @@
                 style="@style/WhiteFabButton"
                 android:src="@drawable/ic_plus"
                 android:visible="@{settings.zoomButtons}"
+                app:backgroundTint="@color/white"
                 app:fabSize="mini" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -115,12 +116,14 @@
                 style="@style/WhiteFabButton"
                 android:src="@drawable/ic_minus"
                 android:visible="@{settings.zoomButtons}"
+                app:backgroundTint="@color/white"
                 app:fabSize="mini" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/locate"
                 style="@style/WhiteFabButton"
                 android:src="@drawable/ic_gps_fixed"
+                app:backgroundTint="@color/white"
                 app:fabSize="mini" />
         </LinearLayout>
 

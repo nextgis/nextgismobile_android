@@ -3,7 +3,7 @@
   ~ Purpose:  Mobile GIS for Android
   ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
   ~ *****************************************************************************
-  ~ Copyright © 2018 NextGIS, info@nextgis.com
+  ~ Copyright © 2018-2019 NextGIS, info@nextgis.com
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -24,8 +24,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <import type="android.view.View" />
 
         <variable
             name="auth"
@@ -58,7 +56,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:paddingBottom="24dp"
-                android:visibility="@{auth.isAuthorized() ? View.VISIBLE : View.GONE}"
+                android:visible="@{auth.isAuthorized()}"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -105,7 +103,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="24dp"
-                android:visibility="@{!auth.isAuthorized() || !user.isSupported() ? View.VISIBLE : View.GONE}"
+                android:visible="@{!auth.isAuthorized() || !user.isSupported()}"
                 app:layout_constraintTop_toBottomOf="@id/info">
 
                 <TextView
@@ -119,14 +117,14 @@
 
                 <Button
                     android:id="@+id/authenticate"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/white"
                     android:onClick="@{()->fragment.action()}"
                     android:text="@{auth.isAuthorized() ? @string/unlock : @string/sign_in}"
                     android:textColor="@color/colorPrimary"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:backgroundTint="@color/white"
                     tools:text="@string/unlock" />
             </LinearLayout>
 
