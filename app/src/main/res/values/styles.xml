@@ -23,7 +23,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -114,4 +113,11 @@
         <item name="rippleColor">@color/white</item>
     </style>
 
+    <style name="DarkPopupStyle" parent="Widget.MaterialComponents.PopupMenu.Dark">
+    </style>
+
+    <style name="DarkPopup" parent="Widget.MaterialComponents.PopupMenu.Dark">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:itemBackground">@color/deep_blue</item>
+    </style>
 </resources>

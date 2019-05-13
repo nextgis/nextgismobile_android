@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Project:  NextGIS Mobile
   ~ Purpose:  Mobile GIS for Android
   ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
   ~ *****************************************************************************
-  ~ Copyright © 2018-2019 NextGIS, info@nextgis.com
+  ~ Copyright © 2019 NextGIS, info@nextgis.com
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -20,15 +19,32 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#01579B</color>
-    <color name="colorAccent">#03A9F4</color>
-    <color name="colorButton">#00b77e</color>
-    <color name="indicatorActive">#798185</color>
-    <color name="indicatorInactive">#D0D3D4</color>
-    <color name="white">#FFF</color>
-    <color name="black">#000</color>
-    <color name="grey">#C5C9CA</color>
-    <color name="deep_blue">#1D3741</color>
-</resources>
+<menu
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.nextgis.nextgismobile.activity.MainActivity">
+
+    <item
+            android:id="@+id/action_zoom"
+            android:title="@string/zoom"/>
+
+    <item
+            android:id="@+id/action_table"
+            android:title="@string/table"/>
+
+    <item
+            android:id="@+id/action_settings"
+            android:title="@string/params"/>
+
+    <item
+            android:id="@+id/action_cloud"
+            android:title="@string/send_to_cloud"/>
+
+    <item
+            android:id="@+id/action_share"
+            android:title="@string/share"/>
+
+    <item
+            android:id="@+id/action_delete"
+            android:title="@string/delete"/>
+</menu>

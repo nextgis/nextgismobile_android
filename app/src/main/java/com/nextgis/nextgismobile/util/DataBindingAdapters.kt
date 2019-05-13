@@ -24,9 +24,13 @@ package com.nextgis.nextgismobile.util
 import android.content.res.ColorStateList
 import androidx.databinding.BindingAdapter
 import android.os.Build
+import android.view.View
 import androidx.core.graphics.drawable.DrawableCompat
 import android.widget.ImageView
 import com.pawegio.kandroid.getColorCompat
+import androidx.databinding.BindingConversion
+
+
 
 // https://stackoverflow.com/a/35809319
 @BindingAdapter("android:src")
@@ -46,3 +50,13 @@ fun setImageTintList(imageView: ImageView, resource: Int) {
         imageView.setImageDrawable(drawable)
     }
 }
+
+@BindingAdapter("android:visible")
+fun setViewVisibility(view: View, visible: Boolean) {
+    view.visibility = if (visible) View.VISIBLE else View.GONE
+}
+
+//@BindingConversion
+//fun convertBooleanToVisibility(visible: Boolean): Int {
+//    return if (visible) View.VISIBLE else View.GONE
+//}
