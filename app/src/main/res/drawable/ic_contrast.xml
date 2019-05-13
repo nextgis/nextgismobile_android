@@ -1,0 +1,31 @@
+<!--
+  ~ Project:  NextGIS Mobile
+  ~ Purpose:  Mobile GIS for Android
+  ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
+  ~ *****************************************************************************
+  ~ Copyright © 2019 NextGIS, info@nextgis.com
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#000"
+        android:pathData="M12 22C6.477153 22 2 17.522847 2 12 2 6.477153 6.477153 2 12 2c5.522847 0 10 4.477153 10 10 0 5.522847 -4.477153 10 -10 10m0 -2c4.418278 0 8 -3.581722 8 -8 0 -4.418278 -3.581722 -8 -8 -8 -4.418278 0 -8 3.581722 -8 8 0 4.418278 3.581722 8 8 8M4.883844 19.036294c-1.3 -1.2 -2.877058 -5.141138 -2.877058 -7.041138 0 -1.9 2.156227 -6.190654 3.356227 -7.490654C6.563013 3.204502 10.1 2 12 2V12 22C10.1 22 6.083844 20.336294 4.883844 19.036294Z" />
+</vector>

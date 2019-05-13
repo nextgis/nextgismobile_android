@@ -119,8 +119,7 @@ class MainActivity : BaseActivity(), GestureDelegate {
 
     private fun initLocation() {
         val location = LocationInfoFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.location_info, location, LOCATION_INFO)
-            .addToBackStack("location").commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.location_info, location, LOCATION_INFO).commitAllowingStateLoss()
     }
 
     private fun initMap() {
@@ -136,6 +135,11 @@ class MainActivity : BaseActivity(), GestureDelegate {
     override fun onStart() {
         super.onStart()
         runDelayed(1500) { binding.settings?.load() }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        map?.save()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

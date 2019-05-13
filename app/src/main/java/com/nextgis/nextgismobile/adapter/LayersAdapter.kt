@@ -39,7 +39,7 @@ interface OnLayerClickListener {
     fun onDeleteClick(layer: Layer)
 }
 
-class LayerAdapter(val items: List<Layer>, val listener: OnLayerClickListener) :
+class LayerAdapter(private val items: List<Layer>, val listener: OnLayerClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -64,6 +64,11 @@ class LayerAdapter(val items: List<Layer>, val listener: OnLayerClickListener) :
                     menu.gravity = Gravity.END
 
                 menu.inflate(R.menu.menu_layer)
+                menu.menu.findItem(R.id.action_zoom)?.isVisible = !repo.isRaster
+                menu.menu.findItem(R.id.action_table)?.isVisible = !repo.isRaster
+                menu.menu.findItem(R.id.action_cloud)?.isVisible = !repo.isRaster
+                menu.menu.findItem(R.id.action_share)?.isVisible = !repo.isRaster
+
                 menu.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.action_zoom -> listener.onZoomClick(repo)

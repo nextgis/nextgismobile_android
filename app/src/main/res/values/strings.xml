@@ -107,4 +107,17 @@
     <string name="send_to_cloud">Send to cloud</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
+    <string name="visual_settings">Visual settings</string>
+    <string name="brightness">Brightness</string>
+    <string name="contrast">Contrast</string>
+    <string name="opacity">Opacity</string>
+    <string name="grayscale">Grayscale</string>
+    <string name="layer_settings">Layer parameters</string>
+    <string name="style">Style</string>
+    <string name="fields">Fields</string>
+    <string name="main_settings">Main settings</string>
+    <string name="layer_info">Layer info (local path)</string>
+    <string name="layer_name">Layer name</string>
+    <string name="zoom_levels">Visibility zoom levels</string>
+    <string name="zoom_hint">Selected interval: %1$d (%2$.2f %3$s) - %4$d (%5$.2f %6$s)</string>
 </resources>

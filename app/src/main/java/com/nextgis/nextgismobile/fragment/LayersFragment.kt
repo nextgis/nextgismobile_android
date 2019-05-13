@@ -27,7 +27,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
@@ -36,12 +35,11 @@ import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
-import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.util.tint
 import com.pawegio.kandroid.toast
 
 
-class LayersFragment : Fragment(), OnLayerClickListener {
+class LayersFragment : BaseFragment(), OnLayerClickListener {
     private lateinit var binding: FragmentLayersBinding
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -66,7 +64,7 @@ class LayersFragment : Fragment(), OnLayerClickListener {
                 map?.let {
                     for (i in 0 until it.layerCount) {
                         it.getLayer(i)?.let { layer ->
-                            def.add(Layer(i, layer.name, layer.dataSource.type, layer.visible, layer))
+                            def.add(Layer(i, layer))
                         }
                     }
                 }
@@ -75,13 +73,8 @@ class LayersFragment : Fragment(), OnLayerClickListener {
             list.adapter = LayerAdapter(def, this@LayersFragment)
             list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
 
-            val params = status.layoutParams
-            params.height = activity?.statusBarHeight ?: 0
-            status.layoutParams = params
-
-            toolbar.setTitle(R.string.layers)
-            toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
-            toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+            setupStatus(status)
+            setupToolbar(toolbar, R.string.layers)
             toolbar.inflateMenu(R.menu.menu_layers)
             toolbar.setOnMenuItemClickListener { onOptionsItemSelected(it) }
 
@@ -114,7 +107,9 @@ class LayersFragment : Fragment(), OnLayerClickListener {
     }
 
     override fun onSettingsClick(layer: Layer) {
-        toast(R.string.not_implemented)
+        val settings = LayerSettingsFragment(layer)
+        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        transaction?.add(R.id.container, settings)?.addToBackStack("layer_settings")?.commitAllowingStateLoss()
     }
 
     override fun onCloudClick(layer: Layer) {

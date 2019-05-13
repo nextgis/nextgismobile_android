@@ -51,4 +51,5 @@ dependencies {
 
     implementation 'com.github.paolorotolo:appintro:5.1.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'com.appyvet:materialrangebar:1.4.6'
 }

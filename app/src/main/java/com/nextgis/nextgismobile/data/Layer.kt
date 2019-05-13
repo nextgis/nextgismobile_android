@@ -30,11 +30,13 @@ import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
 
-class Layer(val id: Int, val title: String, val geometryType: Int, visible: Boolean, val handle: Layer) : BaseObservable() {
+open class Layer(val id: Int, val handle: Layer) : BaseObservable() {
+    val type = handle.dataSource.type
+
     val geometryTypeStr: Int
         @StringRes
         get() {
-            return when (geometryType) {
+            return when (type) {
                 Object.Type.RASTER_TMS.code -> R.string.raster
                 else -> R.string.not_implemented
             }
@@ -43,18 +45,38 @@ class Layer(val id: Int, val title: String, val geometryType: Int, visible: Bool
     val geometryIcon: Int
         @DrawableRes
         get() {
-            return when (geometryType) {
+            return when (type) {
                 Object.Type.RASTER_TMS.code -> R.drawable.ic_grid
                 else -> R.drawable.appintro_indicator_dot_grey
             }
         }
 
-    var visible = visible
+    var visible = handle.visible
         set(value) {
             field = value
             handle.visible = value
             notifyPropertyChanged(BR.visibility)
             notifyPropertyChanged(BR.tint)
+        }
+
+    var minZoom = 1
+        set(value) {
+            field = value
+//            handle.visible = value
+        }
+
+    var opacity = handle.style.getInteger("transparency", 0)
+        set(value) {
+            field = value
+            handle.style.setInteger("transparency", value)
+        }
+
+    @get:Bindable
+    var title = handle.name
+        set(value) {
+            field = value
+            handle.name = value
+            notifyPropertyChanged(BR.title)
         }
 
     @get:Bindable
@@ -64,4 +86,7 @@ class Layer(val id: Int, val title: String, val geometryType: Int, visible: Bool
     @get:Bindable
     val tint
         get() = if (visible) R.color.colorPrimary else R.color.grey
+
+    val isRaster
+        get() = type in 1000..1499
 }
