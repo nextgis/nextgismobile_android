@@ -29,11 +29,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.MainActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
+import com.nextgis.nextgismobile.data.RasterLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
 import com.nextgis.nextgismobile.util.tint
 import com.pawegio.kandroid.toast
@@ -64,7 +66,8 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
                 map?.let {
                     for (i in 0 until it.layerCount) {
                         it.getLayer(i)?.let { layer ->
-                            def.add(Layer(i, layer))
+                            val wrapper = if (Object.isRaster(layer.dataSource.type)) RasterLayer(i, layer) else Layer(i, layer)
+                            def.add(wrapper)
                         }
                     }
                 }

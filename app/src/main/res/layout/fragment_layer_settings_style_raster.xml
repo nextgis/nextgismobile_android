@@ -26,7 +26,7 @@
 
         <variable
             name="layer"
-            type="com.nextgis.nextgismobile.data.Layer" />
+            type="com.nextgis.nextgismobile.data.RasterLayer" />
     </data>
 
     <ScrollView
@@ -75,7 +75,8 @@
                 <SeekBar
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:progress="@={layer.brightness}" />
             </LinearLayout>
 
             <TextView
@@ -101,7 +102,8 @@
                 <SeekBar
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:progress="@={layer.contrast}" />
             </LinearLayout>
 
             <TextView
@@ -135,8 +137,8 @@
             <androidx.appcompat.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="@={layer.visible}"
-                android:enabled="false"
+                android:layout_marginTop="8dp"
+                android:checked="@={layer.grayscale}"
                 android:text="@string/grayscale"
                 android:textSize="16sp" />
         </LinearLayout>

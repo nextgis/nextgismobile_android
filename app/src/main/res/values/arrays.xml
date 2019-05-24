@@ -74,4 +74,14 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string-array name="lifetime" translatable="false">
+        <item>@string/hour</item>
+        <item>@string/day</item>
+        <item>@string/week</item>
+    </string-array>
+    <string-array name="lifetime_value" translatable="false">
+        <item>3600</item>
+        <item>86400</item>
+        <item>604800</item>
+    </string-array>
 </resources>

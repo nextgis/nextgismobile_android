@@ -29,6 +29,7 @@ import com.nextgis.maplib.Layer
 import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
+import kotlin.math.roundToInt
 
 open class Layer(val id: Int, val handle: Layer) : BaseObservable() {
     val type = handle.dataSource.type
@@ -59,16 +60,24 @@ open class Layer(val id: Int, val handle: Layer) : BaseObservable() {
             notifyPropertyChanged(BR.tint)
         }
 
-    var minZoom = 1
+    var minZoom = 0
+        get() {
+            val min = handle.minZoom.roundToInt()
+            return if (min < 0) 0 else min
+        }
         set(value) {
             field = value
-//            handle.visible = value
+            handle.minZoom = value.toFloat()
         }
 
-    var opacity = handle.style.getInteger("transparency", 0)
+    var maxZoom = 25
+        get() {
+            val max = handle.maxZoom.roundToInt()
+            return if (max > 25) 25 else max
+        }
         set(value) {
             field = value
-            handle.style.setInteger("transparency", value)
+            handle.maxZoom = value.toFloat()
         }
 
     @get:Bindable
@@ -88,5 +97,13 @@ open class Layer(val id: Int, val handle: Layer) : BaseObservable() {
         get() = if (visible) R.color.colorPrimary else R.color.grey
 
     val isRaster
-        get() = type in 1000..1499
+        get() = Object.isRaster(type)
+
+    protected fun getProperty(domain: String, name: String): String? {
+        return handle.dataSource.getProperties(domain)[name]
+    }
+
+    protected fun setProperty(domain: String, name: String, value: String) {
+        handle.dataSource.setProperty(name, value, domain)
+    }
 }

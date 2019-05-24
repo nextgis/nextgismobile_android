@@ -32,15 +32,15 @@ import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsGeneralBinding
 
 
-class LayerSettingsGeneralFragment(layer: Layer) : LayerSettingsBaseFragment(layer) {
+open class LayerSettingsGeneralFragment(layer: Layer) : LayerSettingsBaseFragment(layer) {
     private lateinit var binding: FragmentLayerSettingsGeneralBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_general, container, false)
         binding.layer = layer
 
-        updateHint(layer.minZoom, 18)
-        binding.zoomRange.setRangePinsByIndices(layer.minZoom, 18)
+        updateHint(layer.minZoom, layer.maxZoom)
+        binding.zoomRange.setRangePinsByIndices(layer.minZoom, layer.maxZoom)
         binding.zoomRange.setOnRangeBarChangeListener(object : RangeBar.OnRangeBarChangeListener {
             override fun onTouchEnded(rangeBar: RangeBar?) {
 

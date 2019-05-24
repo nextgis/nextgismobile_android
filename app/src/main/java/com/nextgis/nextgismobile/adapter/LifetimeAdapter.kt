@@ -19,26 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.fragment
+package com.nextgis.nextgismobile.adapter
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.data.RasterLayer
-import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleRasterBinding
+import android.content.Context
+import android.widget.ArrayAdapter
+import android.widget.Filter
 
+class LifetimeAdapter(context: Context, resource: Int, val objects: Array<String>) : ArrayAdapter<Any>(context, resource, objects) {
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun publishResults(constraint: CharSequence, results: FilterResults) {
+                if (results.count > 0) {
+                    notifyDataSetChanged()
+                } else {
+                    notifyDataSetInvalidated()
+                }
+            }
 
-class LayerSettingsStyleRasterFragment(private val rasterLayer: RasterLayer) : LayerSettingsBaseFragment(rasterLayer) {
-    private lateinit var binding: FragmentLayerSettingsStyleRasterBinding
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_raster, container, false)
-        binding.layer = rasterLayer
-        binding.executePendingBindings()
-        return binding.root
+            override fun performFiltering(constraint: CharSequence): FilterResults {
+                val result = FilterResults()
+                result.values = objects
+                result.count = objects.size
+                return result
+            }
+        }
     }
-
 }

@@ -33,6 +33,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Layer
+import com.nextgis.nextgismobile.data.RasterLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsBinding
 
 
@@ -66,19 +67,21 @@ class LayerSettingsFragment() : BaseFragment() {
         }
     }
 
-    class SettingsPagerAdapter(fm: FragmentManager, val context: Context, private val layer: Layer) : FragmentStatePagerAdapter(fm) {
-        override fun getCount(): Int  = if (layer.isRaster) 2 else 3
+    class SettingsPagerAdapter(fm: FragmentManager, val context: Context, private val layer: Layer) :
+        FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+        override fun getCount(): Int = if (layer.isRaster) 2 else 3
 
         override fun getItem(position: Int): Fragment {
-            return when(position) {
-                0 -> LayerSettingsGeneralFragment(layer)
-                1 -> if (layer.isRaster) LayerSettingsStyleRasterFragment(layer) else LayerSettingsGeneralFragment(layer)
+            return when (position) {
+                0 -> if (layer.isRaster) LayerSettingsGeneralRasterFragment(layer as RasterLayer) else LayerSettingsGeneralFragment(layer)
+                1 -> if (layer.isRaster) LayerSettingsStyleRasterFragment(layer as RasterLayer) else LayerSettingsGeneralFragment(layer)
                 else -> LayerSettingsGeneralFragment(layer)
             }
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return when(position) {
+            return when (position) {
                 0 -> context.getString(R.string.general)
                 1 -> context.getString(R.string.style)
                 else -> context.getString(R.string.fields)

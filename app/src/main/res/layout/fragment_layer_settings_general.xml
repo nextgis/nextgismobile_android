@@ -30,86 +30,93 @@
             type="com.nextgis.nextgismobile.data.Layer" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         tools:context=".activity.MainActivity">
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/layer_info"
-            android:textColor="@color/colorPrimary" />
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@{layer.handle.dataSource.path}"
-            tools:text="/local/layer/path" />
-
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/main_settings"
-            android:textColor="@color/colorPrimary" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/layer_name"
-                android:inputType="text"
-                android:text="@={layer.title}" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/layer_info"
+                android:textColor="@color/colorPrimary" />
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/zoom_levels" />
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@{layer.handle.dataSource.path}"
+                tools:text="/local/layer/path" />
 
-        <com.appyvet.materialrangebar.RangeBar
-            android:id="@+id/zoom_range"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-12dp"
-            android:layout_marginStart="-6dp"
-            android:layout_marginEnd="-6dp"
-            app:mrb_connectingLineColor="@color/colorPrimary"
-            app:mrb_leftSelectorColor="@color/colorPrimary"
-            app:mrb_pinColor="@color/colorPrimary"
-            app:mrb_pinMaxFont="12sp"
-            app:mrb_rightSelectorColor="@color/colorPrimary"
-            app:mrb_selectorBoundaryColor="@color/colorPrimary"
-            app:mrb_selectorSize="6dp"
-            app:mrb_temporaryPins="true"
-            app:mrb_tickEnd="25"
-            app:mrb_tickInterval="1"
-            app:mrb_tickStart="0" />
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/main_settings"
+                android:textColor="@color/colorPrimary" />
 
-        <TextView
-            android:id="@+id/hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            tools:text="Selected interval: 14 (4 km) - 16 (936 m)" />
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/layer_name"
+                    android:inputType="text"
+                    android:text="@={layer.title}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/zoom_levels" />
+
+            <com.appyvet.materialrangebar.RangeBar
+                android:id="@+id/zoom_range"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-6dp"
+                android:layout_marginTop="-12dp"
+                android:layout_marginEnd="-6dp"
+                app:mrb_connectingLineColor="@color/colorPrimary"
+                app:mrb_leftSelectorColor="@color/colorPrimary"
+                app:mrb_pinColor="@color/colorPrimary"
+                app:mrb_pinMaxFont="12sp"
+                app:mrb_rightSelectorColor="@color/colorPrimary"
+                app:mrb_selectorBoundaryColor="@color/colorPrimary"
+                app:mrb_selectorSize="6dp"
+                app:mrb_temporaryPins="true"
+                app:mrb_tickEnd="25"
+                app:mrb_tickInterval="1"
+                app:mrb_tickStart="0" />
+
+            <TextView
+                android:id="@+id/hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                tools:text="Selected interval: 14 (4 km) - 16 (936 m)" />
+        </LinearLayout>
+    </ScrollView>
 </layout>
