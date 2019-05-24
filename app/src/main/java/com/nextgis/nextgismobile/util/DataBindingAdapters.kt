@@ -27,9 +27,6 @@ import android.os.Build
 import android.view.View
 import androidx.core.graphics.drawable.DrawableCompat
 import android.widget.ImageView
-import com.pawegio.kandroid.getColorCompat
-import androidx.databinding.BindingConversion
-
 
 
 // https://stackoverflow.com/a/35809319

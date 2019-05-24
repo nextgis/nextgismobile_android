@@ -7,7 +7,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.nextgis.nextgismobile"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -43,11 +43,12 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
 
-    implementation 'com.nextgis.maplib:maplib:3.2.1'
+    implementation 'com.nextgis.maplib:maplib:3.2.5'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.pawegio.kandroid:kandroid:0.8.8@aar'
 
     implementation 'com.github.paolorotolo:appintro:5.1.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'

@@ -28,10 +28,12 @@ import android.content.res.ColorStateList
 import android.os.Build
 import androidx.annotation.ColorRes
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.pawegio.kandroid.getColorCompat
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.core.content.ContextCompat
 
+
+inline fun Context.getColorCompat(color: Int) = ContextCompat.getColor(this, color)
 
 inline fun FloatingActionButton.tint(@ColorRes resId: Int) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)

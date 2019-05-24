@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@ import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
 import com.github.paolorotolo.appintro.model.SliderPage
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.util.getColorCompat
 import com.nextgis.nextgismobile.util.tint
-import com.pawegio.kandroid.getColorCompat
 import com.pawegio.kandroid.startActivity
 
 
