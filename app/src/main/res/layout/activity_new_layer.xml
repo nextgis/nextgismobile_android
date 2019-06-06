@@ -30,8 +30,8 @@
             type="com.nextgis.nextgismobile.activity.NewEmptyLayerActivity" />
 
         <variable
-            name="layer"
-            type="com.nextgis.nextgismobile.data.VectorLayer" />
+            name="model"
+            type="com.nextgis.nextgismobile.viewmodel.LayerViewModel" />
     </data>
 
     <FrameLayout
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/layer_name"
                         android:inputType="text"
-                        android:text="@={layer.title}" />
+                        android:text="@={model.vectorLayer.title}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -110,9 +110,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_layer" />
+                    tools:listitem="@layout/item_field" />
 
                 <Button
                     style="@style/Widget.MaterialComponents.Button.TextButton"

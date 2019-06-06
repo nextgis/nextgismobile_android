@@ -23,27 +23,38 @@ package com.nextgis.nextgismobile.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.maplib.API
-import com.nextgis.maplib.Field
 import com.nextgis.maplib.Geometry
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.adapter.DropdownAdapter
-import com.nextgis.nextgismobile.data.VectorLayer
+import com.nextgis.nextgismobile.adapter.*
+import com.nextgis.nextgismobile.data.Field
 import com.nextgis.nextgismobile.databinding.ActivityNewLayerBinding
+import com.nextgis.nextgismobile.fragment.AddFieldDialog
 import com.nextgis.nextgismobile.util.setup
 import com.nextgis.nextgismobile.util.tint
+import com.nextgis.nextgismobile.viewmodel.LayerViewModel
 import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_new_layer.*
 
-class NewEmptyLayerActivity : AppCompatActivity() {
+class NewEmptyLayerActivity : AppCompatActivity(), OnFieldClickListener {
+    override fun onEditClick(field: Field) {
+        AddFieldDialog().show(this, field)
+    }
+
+    override fun onDeleteClick(field: Field) {
+        binding.model?.deleteField(field)
+        binding.list.adapter?.notifyDataSetChanged()
+    }
+
     private lateinit var binding: ActivityNewLayerBinding
-    private val vectorLayer = VectorLayer(0, null)
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,12 +64,10 @@ class NewEmptyLayerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
-//        val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
-//        settingsModel.setup(this)
-//        settingsModel.load()
+        val layerModel = ViewModelProviders.of(this).get(LayerViewModel::class.java)
 
         binding.apply {
-            layer = vectorLayer
+            model = layerModel
             activity = this@NewEmptyLayerActivity
 
             val entries = resources.getStringArray(R.array.geometry_type)
@@ -67,9 +76,21 @@ class NewEmptyLayerActivity : AppCompatActivity() {
             type.setAdapter(adapter)
 
             type.setText(entries[0])
-            vectorLayer.geometryType = Geometry.Type.POINT
-            type.setOnItemClickListener { _, _, position, _ -> vectorLayer.geometryType = Geometry.Type.from(values[position].toInt()) }
+            layerModel.vectorLayer.geometryType = Geometry.Type.POINT
+            type.setOnItemClickListener { _, _, position, _ -> layerModel.vectorLayer.geometryType = Geometry.Type.from(values[position].toInt()) }
             type.setup()
+
+            layerModel.fields.observe(this@NewEmptyLayerActivity, Observer { fields ->
+                fields?.let {
+                    (list.adapter as? FieldsAdapter)?.items?.clear()
+                    (list.adapter as? FieldsAdapter)?.items?.addAll(fields)
+                    list.adapter?.notifyDataSetChanged()
+                }
+            })
+
+            list.adapter = FieldsAdapter(arrayListOf(), this@NewEmptyLayerActivity)
+            list.layoutManager = LinearLayoutManager(this@NewEmptyLayerActivity, RecyclerView.VERTICAL, false)
+            layerModel.init()
 
             fab.tint(R.color.white)
         }
@@ -78,39 +99,45 @@ class NewEmptyLayerActivity : AppCompatActivity() {
     }
 
     fun save() {
-        API.getStore()?.let {
+        API.getStore()?.let { store ->
             val options = mapOf(
                 "CREATE_OVERVIEWS" to "ON",
                 "ZOOM_LEVELS" to "2,3,4,5,6,7,8,9,10,11,12,13,14"
             )
 
-            val fields = listOf(
-                Field("long", "long", Field.Type.REAL),
-                Field("lat", "lat", Field.Type.REAL),
-                Field("datetime", "datetime", Field.Type.DATE, "CURRENT_TIMESTAMP"),
-                Field("name", "name", Field.Type.STRING)
-            )
-
-            val newLayer = it.createFeatureClass(vectorLayer.title, vectorLayer.geometryType, fields, options)
-            if (newLayer != null) {
-                val mapModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
-                val map = mapModel.load()
-                map?.addLayer(vectorLayer.title, newLayer)
-                map?.save()?.let { success ->
-                    if (success) {
-                        setResult(Activity.RESULT_OK)
-                        finish()
-                    } else {
-                        toast(R.string.not_implemented)
-                    }
+            binding.model?.let {
+                val fields = arrayListOf<com.nextgis.maplib.Field>()
+                for (field in it.fields.value!!) {
+                    fields.add(com.nextgis.maplib.Field(field.name, field.alias, field.type, field.def))
                 }
-            } else {
-                toast(R.string.not_implemented)
+
+                val newLayer = store.createFeatureClass(it.vectorLayer.title, it.vectorLayer.geometryType, fields, options)
+                if (newLayer != null) {
+                    val mapModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
+                    val map = mapModel.load()
+                    map?.addLayer(it.vectorLayer.title, newLayer)
+                    map?.save()?.let { success ->
+                        if (success) {
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        } else {
+                            toast(R.string.not_implemented)
+                        }
+                    }
+                } else {
+                    toast(R.string.not_implemented)
+                }
             }
         }
     }
 
     fun addField() {
-        toast(R.string.not_implemented)
+        AddFieldDialog().show(this)
+    }
+
+    fun addField(field: Field, change: Boolean = false) {
+        if (!change)
+            binding.model?.addField(field)
+        binding.list.adapter?.notifyDataSetChanged()
     }
 }

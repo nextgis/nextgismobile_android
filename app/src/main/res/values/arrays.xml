@@ -100,4 +100,16 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+    <string-array name="field_type" translatable="false">
+        <item>@string/integer</item>
+        <item>@string/real</item>
+        <item>@string/string</item>
+        <item>@string/datetime</item>
+    </string-array>
+    <string-array name="field_type_value" translatable="false">
+        <item>0</item>
+        <item>2</item>
+        <item>4</item>
+        <item>11</item>
+    </string-array>
 </resources>
