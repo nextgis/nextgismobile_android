@@ -100,6 +100,11 @@
     <string name="search">Search</string>
     <string name="layer_type">Layer type</string>
     <string name="point">Point</string>
+    <string name="line">Line</string>
+    <string name="polygon">Polygon</string>
+    <string name="multipoint">Multipoint</string>
+    <string name="multiline">Multiline</string>
+    <string name="multipolygon">Multipolygon</string>
     <string name="raster">Raster</string>
     <string name="zoom">Zoom to</string>
     <string name="table">Attributes table</string>
@@ -132,4 +137,9 @@
     <string name="add_from_file">Add from file</string>
     <string name="add_from_qms">Add geoservice</string>
     <string name="add_from_ngw">Add from Nextgis.com</string>
+    <string name="new_layer">New layer</string>
+    <string name="geometry_type">Geometry type</string>
+    <string name="add_field">Add field</string>
+    <string name="layer_created">New layer created successfully</string>
+    <string name="vector">Vector</string>
 </resources>

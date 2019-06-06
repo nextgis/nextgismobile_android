@@ -23,13 +23,16 @@
 
 package com.nextgis.nextgismobile.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Build
+import android.text.InputType
 import androidx.annotation.ColorRes
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.AutoCompleteTextView
 import androidx.core.content.ContextCompat
 
 
@@ -58,4 +61,19 @@ inline val Context.statusBarHeight: Int
 inline fun Context.dpToPx(dp: Int): Int {
     val dm = resources.displayMetrics
     return Math.round(dp * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+}
+
+@SuppressLint("ClickableViewAccessibility")
+inline fun AutoCompleteTextView.setup() {
+    this.setOnTouchListener { spinner, _ ->
+        (spinner as AutoCompleteTextView).showDropDown()
+        false
+    }
+    this.onFocusChangeListener = View.OnFocusChangeListener { v, b ->
+        val spinner = v as AutoCompleteTextView
+        if (b && spinner.text.isEmpty()) {
+            spinner.showDropDown()
+        }
+    }
+    this.inputType = InputType.TYPE_NULL
 }

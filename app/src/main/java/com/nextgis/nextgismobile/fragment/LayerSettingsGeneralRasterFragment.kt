@@ -23,7 +23,6 @@ package com.nextgis.nextgismobile.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +31,8 @@ import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsGeneralRasterBinding
 import com.nextgis.nextgismobile.data.RasterLayer
 import android.widget.*
-import com.nextgis.nextgismobile.adapter.LifetimeAdapter
+import com.nextgis.nextgismobile.adapter.DropdownAdapter
+import com.nextgis.nextgismobile.util.setup
 
 
 class LayerSettingsGeneralRasterFragment(private val rasterLayer: RasterLayer) : LayerSettingsGeneralFragment(rasterLayer) {
@@ -48,7 +48,7 @@ class LayerSettingsGeneralRasterFragment(private val rasterLayer: RasterLayer) :
             val entries = resources.getStringArray(R.array.lifetime)
             val values = resources.getStringArray(R.array.lifetime_value)
             context?.let {
-                val adapter = LifetimeAdapter(it, R.layout.item_dropdown, entries)
+                val adapter = DropdownAdapter(it, R.layout.item_dropdown, entries)
                 lifetime.setAdapter(adapter)
             }
 
@@ -57,17 +57,7 @@ class LayerSettingsGeneralRasterFragment(private val rasterLayer: RasterLayer) :
             lifetime.setText(entries[id])
 
             lifetime.setOnItemClickListener { _, _, position, _ -> rasterLayer.lifetime = values[position] }
-            lifetime.setOnTouchListener { spinner, _ ->
-                (spinner as AutoCompleteTextView).showDropDown()
-                false
-            }
-            lifetime.onFocusChangeListener = View.OnFocusChangeListener { v, b ->
-                val spinner = v as AutoCompleteTextView
-                if (b && spinner.text.isEmpty()) {
-                    spinner.showDropDown()
-                }
-            }
-            lifetime.inputType = InputType.TYPE_NULL
+            lifetime.setup()
         }
 
         binding.executePendingBindings()

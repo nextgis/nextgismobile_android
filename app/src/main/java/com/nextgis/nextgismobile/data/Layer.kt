@@ -31,10 +31,10 @@ import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
 import kotlin.math.roundToInt
 
-open class Layer(val id: Int, val handle: Layer) : BaseObservable() {
-    val type = handle.dataSource.type
+open class Layer(val id: Int, val handle: Layer?) : BaseObservable() {
+    val type = handle?.dataSource?.type
 
-    val geometryTypeStr: Int
+    open val typeStr: Int
         @StringRes
         get() {
             return when (type) {
@@ -43,48 +43,48 @@ open class Layer(val id: Int, val handle: Layer) : BaseObservable() {
             }
         }
 
-    val geometryIcon: Int
+    open val typeIcon: Int
         @DrawableRes
         get() {
             return when (type) {
                 Object.Type.RASTER_TMS.code -> R.drawable.ic_grid
-                else -> R.drawable.appintro_indicator_dot_grey
+                else -> R.drawable.ic_delete
             }
         }
 
-    var visible = handle.visible
+    var visible = handle?.visible ?: true
         set(value) {
             field = value
-            handle.visible = value
+            handle?.visible = value
             notifyPropertyChanged(BR.visibility)
             notifyPropertyChanged(BR.tint)
         }
 
     var minZoom = 0
         get() {
-            val min = handle.minZoom.roundToInt()
+            val min = handle?.minZoom?.roundToInt() ?: 0
             return if (min < 0) 0 else min
         }
         set(value) {
             field = value
-            handle.minZoom = value.toFloat()
+            handle?.minZoom = value.toFloat()
         }
 
     var maxZoom = 25
         get() {
-            val max = handle.maxZoom.roundToInt()
+            val max = handle?.maxZoom?.roundToInt() ?: 25
             return if (max > 25) 25 else max
         }
         set(value) {
             field = value
-            handle.maxZoom = value.toFloat()
+            handle?.maxZoom = value.toFloat()
         }
 
     @get:Bindable
-    var title = handle.name
+    var title = handle?.name ?: ""
         set(value) {
             field = value
-            handle.name = value
+            handle?.name = value
             notifyPropertyChanged(BR.title)
         }
 
@@ -97,13 +97,13 @@ open class Layer(val id: Int, val handle: Layer) : BaseObservable() {
         get() = if (visible) R.color.colorPrimary else R.color.grey
 
     val isRaster
-        get() = Object.isRaster(type)
+        get() = Object.isRaster(type ?: Object.Type.UNKNOWN.ordinal)
 
     protected fun getProperty(domain: String, name: String): String? {
-        return handle.dataSource.getProperties(domain)[name]
+        return handle?.dataSource?.getProperties(domain)?.get(name)
     }
 
     protected fun setProperty(domain: String, name: String, value: String) {
-        handle.dataSource.setProperty(name, value, domain)
+        handle?.dataSource?.setProperty(name, value, domain)
     }
 }

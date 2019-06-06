@@ -25,7 +25,7 @@ import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Filter
 
-class LifetimeAdapter(context: Context, resource: Int, val objects: Array<String>) : ArrayAdapter<Any>(context, resource, objects) {
+class DropdownAdapter(context: Context, resource: Int, val objects: Array<String>) : ArrayAdapter<Any>(context, resource, objects) {
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun publishResults(constraint: CharSequence, results: FilterResults) {

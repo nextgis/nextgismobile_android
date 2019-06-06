@@ -21,6 +21,8 @@
 
 package com.nextgis.nextgismobile.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -32,12 +34,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.MainActivity
+import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.data.RasterLayer
+import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
 import com.nextgis.nextgismobile.util.tint
+import com.pawegio.kandroid.IntentFor
 import com.pawegio.kandroid.toast
 
 
@@ -67,7 +72,12 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
                 map?.let {
                     for (i in 0 until it.layerCount) {
                         it.getLayer(i)?.let { layer ->
-                            val wrapper = if (Object.isRaster(layer.dataSource.type)) RasterLayer(i, layer) else Layer(i, layer)
+                            val wrapper: Layer
+                            when {
+                                Object.isRaster(layer.dataSource.type) -> wrapper = RasterLayer(i, layer)
+                                Object.isFeatureClass(layer.dataSource.type) -> wrapper = VectorLayer(i, layer)
+                                else -> wrapper = Layer(i, layer)
+                            }
                             def.add(wrapper)
                         }
                     }
@@ -99,8 +109,21 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     }
 
     fun createEmpty() {
-        toast(R.string.not_implemented)
+        activity?.let {
+            startActivityForResult(IntentFor<NewEmptyLayerActivity>(it), NEW_EMPTY_LAYER_REQUEST)
+        }
         hideBottomSheet()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            NEW_EMPTY_LAYER_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    (activity as? MainActivity)?.snackbar(R.string.layer_created)
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     fun createFromFile() {
@@ -152,5 +175,9 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
     override fun onDeleteClick(layer: Layer) {
         toast(R.string.not_implemented)
+    }
+
+    companion object {
+        const val NEW_EMPTY_LAYER_REQUEST = 733
     }
 }

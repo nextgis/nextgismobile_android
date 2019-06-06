@@ -41,7 +41,7 @@
             android:layout_margin="16dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/layer_type"
-            android:src="@{layer.geometryIcon}"
+            android:src="@{layer.typeIcon}"
             android:tint="@color/grey"
             tools:src="@drawable/ic_grid" />
 
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.5"
                 android:fontFamily="sans-serif"
-                android:text="@{layer.geometryTypeStr}"
+                android:text="@{layer.typeStr}"
                 android:textColor="#000"
                 android:textSize="16sp"
                 tools:text="Multipoint" />

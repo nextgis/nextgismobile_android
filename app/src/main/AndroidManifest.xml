@@ -61,6 +61,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.WhiteTranslucentStatus" />
 
         <activity
@@ -77,6 +78,12 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/action_settings"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.NewEmptyLayerActivity"
+            android:label="@string/new_layer"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 

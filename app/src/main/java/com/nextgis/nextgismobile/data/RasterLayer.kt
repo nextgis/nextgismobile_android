@@ -21,34 +21,34 @@
 
 package com.nextgis.nextgismobile.data
 
-class RasterLayer(id: Int, handle: com.nextgis.maplib.Layer) :
+class RasterLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
     Layer(id, handle) {
 
-    var opacity = handle.style.getInteger("transparency", 0)
+    var opacity = handle?.style?.getInteger("transparency", 0) ?: 0
         set(value) {
             field = value
-            handle.style.setInteger("transparency", value)
+            handle?.style?.setInteger("transparency", value)
         }
 
     // TODO
-    var contrast = handle.style.getInteger("contrast", 0)
+    var contrast = handle?.style?.getInteger("contrast", 0) ?: 0
         set(value) {
             field = value
-            handle.style.setInteger("contrast", value)
+            handle?.style?.setInteger("contrast", value)
         }
 
     // TODO
-    var brightness = handle.style.getInteger("brightness", 0)
+    var brightness = handle?.style?.getInteger("brightness", 0) ?: 0
         set(value) {
             field = value
-            handle.style.setInteger("brightness", value)
+            handle?.style?.setInteger("brightness", value)
         }
 
     // TODO
-    var grayscale = handle.style.getBool("grayscale", false)
+    var grayscale = handle?.style?.getBool("grayscale", false) ?: false
         set(value) {
             field = value
-            handle.style.setBoolean("grayscale", value)
+            handle?.style?.setBoolean("grayscale", value)
         }
 
     var lifetime = "604800"

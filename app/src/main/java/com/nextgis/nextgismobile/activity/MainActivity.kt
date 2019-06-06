@@ -26,6 +26,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -72,8 +73,7 @@ class MainActivity : BaseActivity(), GestureDelegate {
 
             fab.tint(R.color.colorButton)
             fab.setOnClickListener {
-                Snackbar.make(coordinator, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).setAnchorView(R.id.fab).show()
+                snackbar(R.string.not_implemented)
             }
 
             zoomIn.setOnClickListener { mapView.zoomIn() }
@@ -173,6 +173,10 @@ class MainActivity : BaseActivity(), GestureDelegate {
     fun refresh() {
 //        mapView.refresh()
         mapView.invalidate(mapView.mapExtent)
+    }
+
+    fun snackbar(@StringRes text: Int) {
+        Snackbar.make(coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.fab).show()
     }
 
     companion object {

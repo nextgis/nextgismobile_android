@@ -37,9 +37,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.WhiteTranslucentStatus" parent="AppTheme" />
+    <style name="AppTheme.NoActionBar.WhiteTranslucentStatus" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 
-    <style name="AppTheme.NoActionBar.TranslucentStatus" parent="AppTheme.NoActionBar" />
+    <style name="AppTheme.NoActionBar.TranslucentStatus" parent="AppTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
