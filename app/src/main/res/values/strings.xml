@@ -127,4 +127,9 @@
     <string name="hour">Hour</string>
     <string name="day">Day</string>
     <string name="week">Week</string>
+    <string name="add_layer">Add layer</string>
+    <string name="create_new">Create new empty layer</string>
+    <string name="add_from_file">Add from file</string>
+    <string name="add_from_qms">Add geoservice</string>
+    <string name="add_from_ngw">Add from Nextgis.com</string>
 </resources>

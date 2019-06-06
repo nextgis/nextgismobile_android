@@ -43,6 +43,7 @@ import com.pawegio.kandroid.toast
 
 class LayersFragment : BaseFragment(), OnLayerClickListener {
     private lateinit var binding: FragmentLayersBinding
+    private var bottomSheet: AddLayerDialog? = null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -82,13 +83,39 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
             toolbar.setOnMenuItemClickListener { onOptionsItemSelected(it) }
 
             fab.tint(R.color.colorButton)
+            hideBottomSheet()
         }
         binding.executePendingBindings()
         return binding.root
     }
 
+    private fun hideBottomSheet() {
+        bottomSheet?.dismiss()
+    }
+
     fun create() {
+        bottomSheet = AddLayerDialog()
+        bottomSheet?.show(this)
+    }
+
+    fun createEmpty() {
         toast(R.string.not_implemented)
+        hideBottomSheet()
+    }
+
+    fun createFromFile() {
+        toast(R.string.not_implemented)
+        hideBottomSheet()
+    }
+
+    fun addFromQMS() {
+        toast(R.string.not_implemented)
+        hideBottomSheet()
+    }
+
+    fun addFromNGW() {
+        toast(R.string.not_implemented)
+        hideBottomSheet()
     }
 
     private fun refresh() {
@@ -126,5 +153,4 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     override fun onDeleteClick(layer: Layer) {
         toast(R.string.not_implemented)
     }
-
 }
