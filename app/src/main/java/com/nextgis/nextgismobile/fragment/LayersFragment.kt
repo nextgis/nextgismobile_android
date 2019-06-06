@@ -29,19 +29,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.MainActivity
 import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
-import com.nextgis.nextgismobile.data.RasterLayer
-import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
 import com.nextgis.nextgismobile.util.tint
+import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.pawegio.kandroid.IntentFor
 import com.pawegio.kandroid.toast
 
@@ -62,29 +62,23 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layers, container, false)
+
         binding.apply {
             fragment = this@LayersFragment
 
-            val def = arrayListOf<Layer>()
             activity?.let { activity ->
-                val parent = activity as? MainActivity
-                val map = parent?.map
-                map?.let {
-                    for (i in 0 until it.layerCount) {
-                        it.getLayer(i)?.let { layer ->
-                            val wrapper: Layer
-                            when {
-                                Object.isRaster(layer.dataSource.type) -> wrapper = RasterLayer(i, layer)
-                                Object.isFeatureClass(layer.dataSource.type) -> wrapper = VectorLayer(i, layer)
-                                else -> wrapper = Layer(i, layer)
-                            }
-                            def.add(wrapper)
-                        }
+                val mapModel = ViewModelProviders.of(activity).get(MapViewModel::class.java)
+                mapModel.layers.observe(this@LayersFragment, Observer { layers ->
+                    layers?.let {
+                        (list.adapter as? LayerAdapter)?.items?.clear()
+                        (list.adapter as? LayerAdapter)?.items?.addAll(layers)
+                        list.adapter?.notifyDataSetChanged()
                     }
-                }
+                })
+                mapModel.getLayers()
             }
 
-            list.adapter = LayerAdapter(def, this@LayersFragment)
+            list.adapter = LayerAdapter(arrayListOf(), this@LayersFragment)
             list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
 
             setupStatus(status)
@@ -119,7 +113,11 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
         when (requestCode) {
             NEW_EMPTY_LAYER_REQUEST -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    (activity as? MainActivity)?.snackbar(R.string.layer_created)
+                    (activity as? MainActivity)?.let {
+                        it.snackbar(R.string.layer_created)
+                        val mapModel = ViewModelProviders.of(it).get(MapViewModel::class.java)
+                        mapModel.getLayers()
+                    }
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
@@ -174,7 +172,12 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     }
 
     override fun onDeleteClick(layer: Layer) {
-        toast(R.string.not_implemented)
+        activity?.let { activity ->
+            val mapModel = ViewModelProviders.of(activity).get(MapViewModel::class.java)
+            val map = mapModel.load()
+            map?.deleteLayer(layer.id)
+            mapModel.getLayers()
+        }
     }
 
     companion object {

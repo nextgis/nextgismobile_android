@@ -39,7 +39,7 @@ interface OnLayerClickListener {
     fun onDeleteClick(layer: Layer)
 }
 
-class LayerAdapter(private val items: List<Layer>, val listener: OnLayerClickListener) :
+class LayerAdapter(val items: ArrayList<Layer>, val listener: OnLayerClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
