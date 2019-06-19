@@ -33,7 +33,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.AutoCompleteTextView
+import androidx.annotation.ArrayRes
 import androidx.core.content.ContextCompat
+import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.adapter.DropdownAdapter
 
 
 inline fun Context.getColorCompat(color: Int) = ContextCompat.getColor(this, color)
@@ -61,6 +64,22 @@ inline val Context.statusBarHeight: Int
 inline fun Context.dpToPx(dp: Int): Int {
     val dm = resources.displayMetrics
     return Math.round(dp * (dm.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+}
+
+fun AutoCompleteTextView.setupDropdown(@ArrayRes entriesArray: Int, @ArrayRes valuesArray: Int,
+                                              defaultValue: String, callback: (value: String) -> Unit) {
+    val entries = resources.getStringArray(entriesArray)
+    val values = resources.getStringArray(valuesArray)
+    context?.let {
+        val adapter = DropdownAdapter(it, R.layout.item_dropdown, entries)
+        this.setAdapter(adapter)
+    }
+
+    val id = values.indexOfFirst { it == defaultValue }
+    this.setText(entries[if (id >= 0) id else 0])
+
+    this.setOnItemClickListener { _, _, position, _ -> callback(values[position]) }
+    this.setup()
 }
 
 @SuppressLint("ClickableViewAccessibility")

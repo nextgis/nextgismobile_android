@@ -23,8 +23,10 @@ package com.nextgis.nextgismobile.data
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.databinding.Bindable
 import com.nextgis.maplib.Geometry
 import com.nextgis.maplib.Object
+import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
 
 class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
@@ -50,6 +52,132 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
                 Object.Type.FC_GPKG.code -> R.drawable.appintro_indicator_dot_grey
                 else -> R.drawable.appintro_indicator_dot_grey
             }
+        }
+
+    // TODO
+    var editable = getProperty("user", "editable")?.equals("true") ?: true
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("editable", if (value) "true" else "false", "user")
+        }
+
+    // TODO
+    @get:Bindable
+    var sticking = getProperty("user", "sticking")?.equals("true") ?: true
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("sticking", if (value) "true" else "false", "user")
+            notifyPropertyChanged(BR.sticking)
+        }
+
+    // TODO
+    var stickingMode = getProperty("user", "stickingMode") ?: "3"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("stickingMode", value, "user")
+        }
+
+    // TODO
+    var stickingThreshold = getProperty("user", "stickingThreshold") ?: "10"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("stickingThreshold", value, "user")
+        }
+
+    // TODO
+    var stickingUnits = getProperty("user", "stickingUnits") ?: "px"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("stickingUnits", value, "user")
+        }
+
+    @get:Bindable
+    var stickingLayers = 0
+
+    // TODO
+    @get:Bindable
+    var caption = getProperty("user", "caption")?.equals("true") ?: true
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("caption", if (value) "true" else "false", "user")
+            notifyPropertyChanged(BR.caption)
+        }
+
+    // TODO
+    var clustering = getProperty("user", "clustering")?.equals("true") ?: true
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("clustering", if (value) "true" else "false", "user")
+        }
+
+    // TODO
+    var fillColor = getProperty("user", "fillColor")?.equals("true") ?: true
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("fillColor", if (value) "true" else "false", "user")
+        }
+
+    // TODO
+    var strokeWidth = getProperty("user", "strokeWidth")?.equals("true") ?: true
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("strokeWidth", if (value) "true" else "false", "user")
+        }
+
+    // TODO
+    var strokeColor = getProperty("user", "strokeColor")?.equals("true") ?: true
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("strokeColor", if (value) "true" else "false", "user")
+        }
+
+    // TODO
+    var styleMode = getProperty("user", "style") ?: "simple"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("style", value, "user")
+        }
+
+    // TODO
+    var sourceField = getProperty("user", "sourceField") ?: "id"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("sourceField", value, "user")
+        }
+
+    // TODO
+    var font = getProperty("user", "font") ?: "roboto"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("font", value, "user")
+        }
+
+    // TODO
+    var fontSize = getProperty("user", "style") ?: "simple"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("style", value, "user")
+        }
+
+    // TODO
+    var alignment = getProperty("user", "alignment") ?: "center"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("alignment", value, "user")
+        }
+
+    // TODO
+    var figure = getProperty("user", "figure") ?: "circle"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("figure", value, "user")
+        }
+
+    // TODO
+    var figureSize = getProperty("user", "figureSize") ?: "16"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("figureSize", value, "user")
         }
 
 }

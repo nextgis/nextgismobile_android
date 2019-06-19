@@ -34,6 +34,7 @@ import androidx.viewpager.widget.ViewPager
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.data.RasterLayer
+import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsBinding
 
 
@@ -73,10 +74,18 @@ class LayerSettingsFragment() : BaseFragment() {
         override fun getCount(): Int = if (layer.isRaster) 2 else 3
 
         override fun getItem(position: Int): Fragment {
-            return when (position) {
-                0 -> if (layer.isRaster) LayerSettingsGeneralRasterFragment(layer as RasterLayer) else LayerSettingsGeneralFragment(layer)
-                1 -> if (layer.isRaster) LayerSettingsStyleRasterFragment(layer as RasterLayer) else LayerSettingsGeneralFragment(layer)
-                else -> LayerSettingsGeneralFragment(layer)
+            return if (layer.isRaster) {
+                when (position) {
+                    0 -> LayerSettingsGeneralRasterFragment(layer as RasterLayer)
+                    1 -> LayerSettingsStyleRasterFragment(layer as RasterLayer)
+                    else -> LayerSettingsGeneralFragment(layer)
+                }
+            } else {
+                when (position) {
+                    0 -> LayerSettingsGeneralVectorFragment(layer as VectorLayer)
+                    1 -> LayerSettingsStyleVectorFragment(layer as VectorLayer)
+                    else -> LayerSettingsGeneralFragment(layer)
+                }
             }
         }
 

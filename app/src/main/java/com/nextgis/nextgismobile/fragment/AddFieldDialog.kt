@@ -28,10 +28,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
-import com.nextgis.nextgismobile.adapter.DropdownAdapter
 import com.nextgis.nextgismobile.data.Field
 import com.nextgis.nextgismobile.databinding.DialogAddFieldBinding
-import com.nextgis.nextgismobile.util.setup
+import com.nextgis.nextgismobile.util.setupDropdown
 
 class AddFieldDialog : DialogFragment() {
     private lateinit var binding: DialogAddFieldBinding
@@ -48,17 +47,8 @@ class AddFieldDialog : DialogFragment() {
             binding.fragment = this@AddFieldDialog
             binding.field = newField
 
-            context?.let {
-                val entries = resources.getStringArray(R.array.field_type)
-                val values = resources.getStringArray(R.array.field_type_value)
-                val adapter = DropdownAdapter(it, R.layout.item_dropdown, entries)
-                type.setAdapter(adapter)
-
-                val id = values.indexOfFirst { it.toInt() == newField.type.code }
-                type.setText(entries[if (id >= 0) id else 0])
-                type.setOnItemClickListener { _, _, position, _ -> newField.type = com.nextgis.maplib.Field.Type.from(values[position].toInt()) }
-                type.setup()
-            }
+            val callback = { value: String -> newField.type = com.nextgis.maplib.Field.Type.from(value.toInt()) }
+            type.setupDropdown(R.array.field_type, R.array.field_type_value, newField.type.code.toString(), callback)
         }
 
         return dialog

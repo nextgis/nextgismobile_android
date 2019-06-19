@@ -112,4 +112,82 @@
         <item>4</item>
         <item>11</item>
     </string-array>
+    <string-array name="style_mode" translatable="false">
+        <item>@string/simple_feature</item>
+        <item>@string/rule_feature</item>
+    </string-array>
+    <string-array name="style_mode_value" translatable="false">
+        <item>simple</item>
+        <item>rule</item>
+    </string-array>
+    <string-array name="font" translatable="false">
+        <item>@string/roboto</item>
+        <item>@string/sans_serif</item>
+    </string-array>
+    <string-array name="font_value" translatable="false">
+        <item>roboto</item>
+        <item>sans-serif</item>
+    </string-array>
+    <string-array name="font_size" translatable="false">
+        <item>@string/size12</item>
+        <item>@string/size16</item>
+        <item>@string/size20</item>
+    </string-array>
+    <string-array name="font_size_value" translatable="false">
+        <item>12</item>
+        <item>16</item>
+        <item>20</item>
+    </string-array>
+    <string-array name="alignment" translatable="false">
+        <item>@string/left</item>
+        <item>@string/top</item>
+        <item>@string/right</item>
+        <item>@string/bottom</item>
+    </string-array>
+    <string-array name="alignment_value" translatable="false">
+        <item>left</item>
+        <item>top</item>
+        <item>right</item>
+        <item>bottom</item>
+    </string-array>
+    <string-array name="figure" translatable="false">
+        <item>@string/circle</item>
+        <item>@string/box</item>
+        <item>@string/triangle</item>
+        <item>@string/diamond</item>
+    </string-array>
+    <string-array name="figure_value" translatable="false">
+        <item>circle</item>
+        <item>box</item>
+        <item>triangle</item>
+        <item>diamond</item>
+    </string-array>
+    <string-array name="sticking_mode" translatable="false">
+        <item>@string/vertices_and_edges</item>
+        <item>@string/vertices</item>
+        <item>@string/edges</item>
+    </string-array>
+    <string-array name="sticking_mode_value" translatable="false">
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="sticking_threshold" translatable="false">
+        <item>@string/threshold10</item>
+        <item>@string/threshold15</item>
+        <item>@string/threshold20</item>
+    </string-array>
+    <string-array name="sticking_threshold_value" translatable="false">
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+    <string-array name="sticking_units" translatable="false">
+        <item>@string/pixels</item>
+        <item>@string/centimeters</item>
+    </string-array>
+    <string-array name="sticking_units_value" translatable="false">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Project:  NextGIS Mobile
+  ~ Purpose:  Mobile GIS for Android
+  ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
+  ~ *****************************************************************************
+  ~ Copyright © 2019 NextGIS, info@nextgis.com
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="layer"
+            type="com.nextgis.nextgismobile.data.VectorLayer" />
+
+        <variable
+            name="fragment"
+            type="com.nextgis.nextgismobile.fragment.LayerSettingsStyleVectorPointFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/figure_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toStartOf="@id/size_layout"
+                app:layout_constraintHorizontal_weight="4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/figure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="false"
+                    android:hint="@string/figure"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/size_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toEndOf="@id/figure_layout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="false"
+                    android:hint="@string/size"
+                    android:imeOptions="actionNext|flagNoExtractUi"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/color_layout"
+                style="@style/SettingsEditText"
+                android:layout_width="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toStartOf="@id/color_badge"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/figure_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789ABCDEF#"
+                    android:hint="@string/fill_color"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="7"
+                    android:text="@={layer.fillColor}"
+                    tools:text="#445566" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/color_badge"
+                style="@style/OutlineButton"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="0dp"
+                android:onClick="@{()->fragment.color()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/figure_layout"
+                tools:ignore="ContentDescription" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/stroke_width_layout"
+                style="@style/SettingsEditText"
+                android:layout_width="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toStartOf="@id/stroke_color_layout"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/color_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/stroke_width"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789"
+                    android:hint="@string/stroke_width"
+                    android:inputType="numberDecimal"
+                    android:maxLength="7"
+                    android:text="@={layer.strokeWidth}"
+                    tools:text="4" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/stroke_color_layout"
+                style="@style/SettingsEditText"
+                android:layout_width="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toStartOf="@id/stroke_color_badge"
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintStart_toEndOf="@id/stroke_width_layout"
+                app:layout_constraintTop_toBottomOf="@id/color_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/stroke_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789ABCDEF#"
+                    android:hint="@string/stroke_color"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="7"
+                    android:text="@={layer.strokeColor}"
+                    tools:text="#445566" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/stroke_color_badge"
+                style="@style/OutlineButton"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="0dp"
+                android:onClick="@{()->fragment.strokeColor()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/color_badge"
+                tools:ignore="ContentDescription" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/clustering"
+            android:textColor="@color/colorPrimary" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:checked="@={layer.clustering}"
+            android:text="@string/enable_clustering"
+            android:textSize="16sp" />
+    </LinearLayout>
+</layout>

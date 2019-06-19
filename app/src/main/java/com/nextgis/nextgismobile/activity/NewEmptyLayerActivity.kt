@@ -33,11 +33,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.maplib.API
 import com.nextgis.maplib.Geometry
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.adapter.*
+import com.nextgis.nextgismobile.adapter.FieldsAdapter
+import com.nextgis.nextgismobile.adapter.OnFieldClickListener
 import com.nextgis.nextgismobile.data.Field
 import com.nextgis.nextgismobile.databinding.ActivityNewLayerBinding
 import com.nextgis.nextgismobile.fragment.AddFieldDialog
-import com.nextgis.nextgismobile.util.setup
+import com.nextgis.nextgismobile.util.setupDropdown
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.LayerViewModel
 import com.nextgis.nextgismobile.viewmodel.MapViewModel
@@ -70,16 +71,10 @@ class NewEmptyLayerActivity : AppCompatActivity(), OnFieldClickListener {
             model = layerModel
             activity = this@NewEmptyLayerActivity
 
-            val entries = resources.getStringArray(R.array.geometry_type)
-            val values = resources.getStringArray(R.array.geometry_type_value)
-            val adapter = DropdownAdapter(this@NewEmptyLayerActivity, R.layout.item_dropdown, entries)
-            type.setAdapter(adapter)
+            val callback = { value: String -> layerModel.vectorLayer.geometryType = Geometry.Type.from(value.toInt()) }
+            type.setupDropdown(R.array.geometry_type, R.array.geometry_type_value, "", callback)
 
-            type.setText(entries[0])
             layerModel.vectorLayer.geometryType = Geometry.Type.POINT
-            type.setOnItemClickListener { _, _, position, _ -> layerModel.vectorLayer.geometryType = Geometry.Type.from(values[position].toInt()) }
-            type.setup()
-
             layerModel.fields.observe(this@NewEmptyLayerActivity, Observer { fields ->
                 fields?.let {
                     (list.adapter as? FieldsAdapter)?.items?.clear()
