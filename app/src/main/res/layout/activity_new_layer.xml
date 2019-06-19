@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     tools:layout_height="100dp"
-                    tools:listitem="@layout/item_field" />
+                    tools:listitem="@layout/item_field_new" />
 
                 <Button
                     style="@style/Widget.MaterialComponents.Button.TextButton"

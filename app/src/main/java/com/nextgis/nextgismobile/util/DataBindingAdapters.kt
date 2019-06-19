@@ -27,12 +27,19 @@ import android.os.Build
 import android.view.View
 import androidx.core.graphics.drawable.DrawableCompat
 import android.widget.ImageView
+import android.widget.RadioButton
+import androidx.core.content.ContextCompat
 
 
 // https://stackoverflow.com/a/35809319
 @BindingAdapter("android:src")
 fun setImageResource(imageView: ImageView, resource: Int) {
     imageView.setImageResource(resource)
+}
+
+@BindingAdapter("android:drawableEnd")
+fun setDrawableEndResource(radioButton: RadioButton, resource: Int) {
+    radioButton.setCompoundDrawables(null, null, ContextCompat.getDrawable(radioButton.context, resource), null)
 }
 
 @BindingAdapter("android:tint")

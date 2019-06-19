@@ -25,7 +25,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.data.Field
-import com.nextgis.nextgismobile.databinding.ItemFieldBinding
+import com.nextgis.nextgismobile.databinding.ItemFieldNewBinding
 
 interface OnFieldClickListener {
     fun onEditClick(field: Field)
@@ -36,7 +36,7 @@ class FieldsAdapter(val items: ArrayList<Field>, val listener: OnFieldClickListe
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemFieldBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemFieldNewBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -45,7 +45,7 @@ class FieldsAdapter(val items: ArrayList<Field>, val listener: OnFieldClickListe
 
     override fun getItemCount(): Int = items.size
 
-    class ViewHolder(private var binding: ItemFieldBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private var binding: ItemFieldNewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: Field, listener: OnFieldClickListener) {
             binding.field = repo
             binding.edit.setOnClickListener { listener.onEditClick(repo) }

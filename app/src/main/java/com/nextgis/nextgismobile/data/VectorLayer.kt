@@ -26,7 +26,6 @@ import androidx.annotation.StringRes
 import androidx.databinding.Bindable
 import com.nextgis.maplib.FeatureClass
 import com.nextgis.maplib.Geometry
-import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
 
@@ -37,8 +36,13 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
     override val typeStr: Int
         @StringRes
         get() {
-            return when (type) { // TODO proper geometry type
-                Object.Type.FC_GPKG.code -> R.string.vector
+            return when (geometryType) {
+                Geometry.Type.POINT -> R.string.point
+                Geometry.Type.MULTIPOINT -> R.string.multipoint
+                Geometry.Type.LINESTRING -> R.string.line
+                Geometry.Type.MULTILINESTRING -> R.string.multiline
+                Geometry.Type.POLYGON -> R.string.polygon
+                Geometry.Type.MULTIPOLYGON -> R.string.multipolygon
 //                Object.Type.FC_GPKG.code -> {
 //                    when ()
 //                }
@@ -49,8 +53,14 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
     override val typeIcon: Int
         @DrawableRes
         get() {
-            return when (type) { // TODO proper geometry type
-                Object.Type.FC_GPKG.code -> R.drawable.appintro_indicator_dot_grey
+            return when (geometryType) {
+                Geometry.Type.POINT -> R.drawable.ic_point
+                Geometry.Type.MULTIPOINT -> R.drawable.ic_multipoint
+                Geometry.Type.LINESTRING -> R.drawable.ic_line
+                Geometry.Type.MULTILINESTRING -> R.drawable.ic_multiline
+                Geometry.Type.POLYGON -> R.drawable.ic_polygon
+                Geometry.Type.MULTIPOLYGON -> R.drawable.ic_multipolygon
+//                Object.Type.FC_GPKG.code -> R.drawable.appintro_indicator_dot_grey
                 else -> R.drawable.appintro_indicator_dot_grey
             }
         }
@@ -60,6 +70,13 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
         set(value) {
             field = value
             handle?.dataSource?.setProperty("editable", if (value) "true" else "false", "user")
+        }
+
+    // TODO
+    var alias = getProperty("user", "alias") ?: "id"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("alias", value, "user")
         }
 
     // TODO

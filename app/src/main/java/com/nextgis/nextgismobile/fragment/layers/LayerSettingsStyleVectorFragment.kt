@@ -26,10 +26,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.nextgis.maplib.FeatureClass
 import com.nextgis.maplib.Geometry
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.adapter.DropdownAdapter
 import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleVectorBinding
+import com.nextgis.nextgismobile.util.setup
 import com.nextgis.nextgismobile.util.setupDropdown
 import com.pawegio.kandroid.toast
 
@@ -46,19 +49,18 @@ open class LayerSettingsStyleVectorFragment(private val vectorLayer: VectorLayer
             val modeCallback = { value: String -> vectorLayer.styleMode = value }
             mode.setupDropdown(R.array.style_mode, R.array.style_mode_value, vectorLayer.styleMode, modeCallback)
 
-            // TODO
-//            val sourceCallback = { value: String -> vectorLayer.sourceField = value }
-//            field.setupDropdown(R.array.source_field, R.array.source_field_value, vectorLayer.sourceField, sourceCallback)
-//            context?.let {
-//                val entries = resources.getStringArray(entriesArray)
-//                val values = resources.getStringArray(valuesArray)
-//                val adapter = DropdownAdapter(it, R.layout.item_dropdown, entries)
-//                field.setAdapter(adapter)
-//                val id = values.indexOfFirst { it == vectorLayer.sourceField }
-//                field.setText(entries[if (id >= 0) id else 0])
-//                field.setOnItemClickListener { _, _, position, _ -> callback(values[position]) }
-//                field.setup()
-//            }
+            context?.let { context ->
+                (vectorLayer.handle?.dataSource as? FeatureClass)?.fields?.let { fields ->
+                    val entries = fields.map { it.alias }.toTypedArray()
+                    val values = fields.map { it.name }.toTypedArray()
+                    val adapter = DropdownAdapter(context, R.layout.item_dropdown, entries)
+                    field.setAdapter(adapter)
+                    val id = values.indexOfFirst { it == vectorLayer.sourceField }
+                    field.setText(entries[if (id >= 0) id else 0])
+                    field.setOnItemClickListener { _, _, position, _ -> vectorLayer.sourceField = values[position] }
+                    field.setup()
+                }
+            }
 
             val fontCallback = { value: String -> vectorLayer.font = value }
             font.setupDropdown(R.array.font, R.array.font_value, vectorLayer.font, fontCallback)
