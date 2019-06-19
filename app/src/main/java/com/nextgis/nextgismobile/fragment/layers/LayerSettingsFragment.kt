@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.fragment
+package com.nextgis.nextgismobile.fragment.layers
 
 import android.content.Context
 import android.os.Bundle
@@ -36,6 +36,7 @@ import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.data.RasterLayer
 import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsBinding
+import com.nextgis.nextgismobile.fragment.BaseFragment
 
 
 class LayerSettingsFragment() : BaseFragment() {

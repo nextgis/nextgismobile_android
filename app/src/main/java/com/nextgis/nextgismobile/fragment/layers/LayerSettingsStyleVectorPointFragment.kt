@@ -19,39 +19,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.fragment
+package com.nextgis.nextgismobile.fragment.layers
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import android.widget.ScrollView
 import androidx.databinding.DataBindingUtil
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.data.RasterLayer
-import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsGeneralRasterBinding
+import com.nextgis.nextgismobile.data.VectorLayer
+import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleVectorPointBinding
 import com.nextgis.nextgismobile.util.setupDropdown
+import com.pawegio.kandroid.toast
 
 
-class LayerSettingsGeneralRasterFragment(private val rasterLayer: RasterLayer) : LayerSettingsGeneralFragment(rasterLayer) {
-    private lateinit var binding: FragmentLayerSettingsGeneralRasterBinding
+class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer) : LayerSettingsStyleVectorFragment(vectorLayer) {
+    private lateinit var binding: FragmentLayerSettingsStyleVectorPointBinding
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) as? ScrollView
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_general_raster, container, false)
-        binding.layer = rasterLayer
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_vector_point, container, false)
+        binding.layer = vectorLayer
+        binding.fragment = this
 
         binding.apply {
-            val callback = { value: String -> rasterLayer.lifetime = value }
-            lifetime.setupDropdown(R.array.lifetime, R.array.lifetime_value, rasterLayer.lifetime, callback)
+            val figureCallback = { value: String -> vectorLayer.figure = value }
+            figure.setupDropdown(R.array.figure, R.array.figure_value, vectorLayer.figure, figureCallback)
+            val sizeCallback = { value: String -> vectorLayer.figureSize= value }
+            size.setupDropdown(R.array.font_size, R.array.font_size_value, vectorLayer.figureSize, sizeCallback)
         }
 
         binding.executePendingBindings()
-        (view?.getChildAt(0) as? LinearLayout)?.addView(binding.root)
+        view?.findViewById<FrameLayout>(R.id.style)?.addView(binding.root)
         return view
     }
 
+    fun color() {
+        toast(R.string.not_implemented)
+    }
+
+    fun strokeColor() {
+        toast(R.string.not_implemented)
+    }
 }

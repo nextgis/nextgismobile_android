@@ -19,41 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.fragment
+package com.nextgis.nextgismobile.fragment.layers
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ScrollView
 import androidx.databinding.DataBindingUtil
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.data.VectorLayer
-import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleVectorPointBinding
-import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleVectorPolygonBinding
-import com.nextgis.nextgismobile.util.setupDropdown
-import com.pawegio.kandroid.toast
+import com.nextgis.nextgismobile.data.RasterLayer
+import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleRasterBinding
 
 
-class LayerSettingsStyleVectorPolygonFragment(private val vectorLayer: VectorLayer) : LayerSettingsStyleVectorFragment(vectorLayer) {
-    private lateinit var binding: FragmentLayerSettingsStyleVectorPolygonBinding
+class LayerSettingsStyleRasterFragment(private val rasterLayer: RasterLayer) : LayerSettingsBaseFragment(rasterLayer) {
+    private lateinit var binding: FragmentLayerSettingsStyleRasterBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState) as? ScrollView
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_vector_polygon, container, false)
-        binding.layer = vectorLayer
-        binding.fragment = this
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_raster, container, false)
+        binding.layer = rasterLayer
         binding.executePendingBindings()
-        view?.findViewById<FrameLayout>(R.id.style)?.addView(binding.root)
-        return view
+        return binding.root
     }
 
-    fun color() {
-        toast(R.string.not_implemented)
-    }
-
-    fun strokeColor() {
-        toast(R.string.not_implemented)
-    }
 }

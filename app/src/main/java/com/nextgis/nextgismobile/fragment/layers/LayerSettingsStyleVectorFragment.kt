@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.fragment
+package com.nextgis.nextgismobile.fragment.layers
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,10 +28,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.nextgis.maplib.Geometry
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.adapter.DropdownAdapter
 import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleVectorBinding
-import com.nextgis.nextgismobile.util.setup
 import com.nextgis.nextgismobile.util.setupDropdown
 import com.pawegio.kandroid.toast
 

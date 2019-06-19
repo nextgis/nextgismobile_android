@@ -31,7 +31,7 @@
 
         <variable
             name="fragment"
-            type="com.nextgis.nextgismobile.fragment.LayerSettingsStyleVectorFragment" />
+            type="com.nextgis.nextgismobile.fragment.layers.LayerSettingsStyleVectorFragment" />
     </data>
 
     <ScrollView

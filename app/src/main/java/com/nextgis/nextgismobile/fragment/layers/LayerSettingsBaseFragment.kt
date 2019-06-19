@@ -19,9 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nextgis.nextgismobile.fragment
+package com.nextgis.nextgismobile.fragment.layers
 
 import com.nextgis.nextgismobile.data.Layer
+import com.nextgis.nextgismobile.fragment.BaseFragment
 
 
 open class LayerSettingsBaseFragment() : BaseFragment() {

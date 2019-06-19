@@ -40,6 +40,7 @@ import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
+import com.nextgis.nextgismobile.fragment.layers.LayerSettingsFragment
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.pawegio.kandroid.IntentFor

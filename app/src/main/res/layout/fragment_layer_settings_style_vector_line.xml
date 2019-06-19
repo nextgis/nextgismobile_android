@@ -31,7 +31,7 @@
 
         <variable
             name="fragment"
-            type="com.nextgis.nextgismobile.fragment.LayerSettingsStyleVectorLineFragment" />
+            type="com.nextgis.nextgismobile.fragment.layers.LayerSettingsStyleVectorLineFragment" />
     </data>
 
     <LinearLayout
