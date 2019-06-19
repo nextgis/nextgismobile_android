@@ -51,13 +51,17 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/editing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@={layer.editable}" />
+                android:checked="@={layer.notEditable}" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:onClick="@{()->fragment.editing()}"
                 android:text="@string/deny_editing"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -68,20 +72,27 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/sticking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@={layer.sticking}" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:onClick="@{()->fragment.sticking()}"
                 android:text="@string/sticking"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
 
         <FrameLayout
-            style="@style/SettingsItem"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:clickable="true"
+            android:focusable="true"
             android:onClick="@{()->fragment.stickLayers()}"
             android:visible="@{layer.sticking}">
 
@@ -168,6 +179,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:onClick="@{()->fragment.rebuildCache()}"
             android:text="@string/rebuild_cache" />
 

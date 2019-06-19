@@ -42,6 +42,7 @@ class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer
         val view = super.onCreateView(inflater, container, savedInstanceState) as? ScrollView
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_vector_point, container, false)
         binding.layer = vectorLayer
+        binding.fragment = this
 
         binding.apply {
             val figureCallback = { value: String -> vectorLayer.figure = value }

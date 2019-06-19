@@ -24,6 +24,7 @@ package com.nextgis.nextgismobile.data
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.databinding.Bindable
+import com.nextgis.maplib.FeatureClass
 import com.nextgis.maplib.Geometry
 import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.BR
@@ -31,7 +32,7 @@ import com.nextgis.nextgismobile.R
 
 class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
     Layer(id, handle) {
-    var geometryType = Geometry.Type.NONE
+    var geometryType = (handle?.dataSource as? FeatureClass)?.geometryType ?: Geometry.Type.NONE
 
     override val typeStr: Int
         @StringRes
@@ -55,7 +56,7 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
         }
 
     // TODO
-    var editable = getProperty("user", "editable")?.equals("true") ?: true
+    var notEditable = getProperty("user", "editable")?.equals("true") ?: false
         set(value) {
             field = value
             handle?.dataSource?.setProperty("editable", if (value) "true" else "false", "user")
@@ -111,24 +112,31 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
         }
 
     // TODO
-    var fillColor = getProperty("user", "fillColor")?.equals("true") ?: true
+    var fillColor = getProperty("user", "fillColor") ?: "#03A9F4"
         set(value) {
             field = value
-            handle?.dataSource?.setProperty("fillColor", if (value) "true" else "false", "user")
+            handle?.dataSource?.setProperty("fillColor", value.replace("#", ""), "user")
         }
 
     // TODO
-    var strokeWidth = getProperty("user", "strokeWidth")?.equals("true") ?: true
+    var width = getProperty("user", "width") ?: "16"
         set(value) {
             field = value
-            handle?.dataSource?.setProperty("strokeWidth", if (value) "true" else "false", "user")
+            handle?.dataSource?.setProperty("width", value, "user")
         }
 
     // TODO
-    var strokeColor = getProperty("user", "strokeColor")?.equals("true") ?: true
+    var strokeWidth = getProperty("user", "strokeWidth") ?: "4"
         set(value) {
             field = value
-            handle?.dataSource?.setProperty("strokeColor", if (value) "true" else "false", "user")
+            handle?.dataSource?.setProperty("strokeWidth", value, "user")
+        }
+
+    // TODO
+    var strokeColor = getProperty("user", "strokeColor") ?: "#03A9F4"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("strokeColor", value.replace("#", ""), "user")
         }
 
     // TODO
@@ -157,6 +165,20 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
         set(value) {
             field = value
             handle?.dataSource?.setProperty("style", value, "user")
+        }
+
+    // TODO
+    var fontColor = getProperty("user", "fontColor") ?: "#03A9F4"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("fontColor", value.replace("#", ""), "user")
+        }
+
+    // TODO
+    var fontStrokeColor = getProperty("user", "fontStrokeColor") ?: "#03A9F4"
+        set(value) {
+            field = value
+            handle?.dataSource?.setProperty("fontStrokeColor", value.replace("#", ""), "user")
         }
 
     // TODO

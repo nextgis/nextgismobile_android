@@ -83,7 +83,7 @@ class LayerSettingsFragment() : BaseFragment() {
             } else {
                 when (position) {
                     0 -> LayerSettingsGeneralVectorFragment(layer as VectorLayer)
-                    1 -> LayerSettingsStyleVectorFragment(layer as VectorLayer)
+                    1 -> LayerSettingsStyleVectorFragment.fragmentStyleForGeometryType(layer as VectorLayer)
                     else -> LayerSettingsGeneralFragment(layer)
                 }
             }
