@@ -202,4 +202,10 @@
     <string name="pixels">Pixels</string>
     <string name="centimeters">Centimeters</string>
     <string name="default_field">Selected field will be shown while you are interacting with feature (while editing for example). To set up a caption for object on a map choose one in «Style» tab.</string>
+    <string name="list">List</string>
+    <string name="sync_period">Sync period</string>
+    <string name="sync_notification">Sync notifications</string>
+    <string name="sync_attachments">Sync attachments</string>
+    <string name="sync_max_size">Maximum attachment size (Mb)</string>
+    <string name="over_wifi_only">Oversized attachments will be sent over Wi-Fi only</string>
 </resources>

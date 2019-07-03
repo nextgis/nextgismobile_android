@@ -74,6 +74,18 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string-array name="sync_period_value" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="sync_period" translatable="false">
+        <item>@string/hourly</item>
+        <item>@string/daily</item>
+        <item>@string/weekly</item>
+        <item>@string/monthly</item>
+    </string-array>
     <string-array name="lifetime" translatable="false">
         <item>@string/hour</item>
         <item>@string/day</item>
@@ -157,10 +169,10 @@
         <item>@string/diamond</item>
     </string-array>
     <string-array name="figure_value" translatable="false">
-        <item>circle</item>
-        <item>box</item>
-        <item>triangle</item>
-        <item>diamond</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
     <string-array name="sticking_mode" translatable="false">
         <item>@string/vertices_and_edges</item>
@@ -190,4 +202,8 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string name="hourly">Hourly</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
 </resources>

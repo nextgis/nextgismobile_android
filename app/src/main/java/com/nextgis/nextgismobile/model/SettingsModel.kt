@@ -54,6 +54,11 @@ class SettingsModel {
         const val LOCATION_DISTANCE = "location_distance"
         const val LOCATION_COUNT = "location_count"
 
+        const val SYNC_PERIOD = "sync_period"
+        const val SYNC_NOTIFICATION = "sync_notification"
+        const val SYNC_ATTACHMENTS = "sync_attachments"
+        const val SYNC_MAX_SIZE = "sync_max_size"
+
         const val FILTER_EMISSIONS = "filter_emissions"
         const val SPLIT_DAILY = "split_daily"
         const val CLOUD_SYNC = "cloud_sync"
@@ -85,8 +90,8 @@ class SettingsModel {
         preferences.edit().putString(key, value).apply()
     }
 
-    fun getInt(key: String): Int {
-        return preferences.getInt(key, 0)
+    fun getInt(key: String, default: Int? = null): Int {
+        return preferences.getInt(key, default ?: 0)
     }
 
     fun saveInt(key: String, value: Int) {

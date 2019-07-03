@@ -63,6 +63,12 @@ class SettingsViewModel : ViewModel() {
     var locationDistance = NonNullObservableField("5")
     var locationCount = NonNullObservableField("10")
 
+    var syncPeriod = NonNullObservableField("1")
+    var syncPeriodSummary = ObservableField("Daily")
+    var syncNotification = NonNullObservableField(true)
+    var syncAttachments = NonNullObservableField(true)
+    var syncAttachMaxSize = NonNullObservableField("5")
+
     var filterEmissions = NonNullObservableField(true)
     var splitDaily = NonNullObservableField(true)
     var cloudSync = NonNullObservableField(true)
@@ -126,6 +132,16 @@ class SettingsViewModel : ViewModel() {
         locationDistance.set(settingsModel.getInt(SettingsModel.LOCATION_DISTANCE).toString())
         locationCount.set(settingsModel.getInt(SettingsModel.LOCATION_COUNT).toString())
 
+        syncPeriod.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                syncPeriodSummary.set(description(syncPeriod.get(), R.array.sync_period_value, R.array.sync_period))
+            }
+        })
+        syncPeriod.set(settingsModel.getInt(SettingsModel.SYNC_PERIOD, 1).toString())
+        syncNotification.set(settingsModel.getBoolean(SettingsModel.SYNC_NOTIFICATION))
+        syncAttachments.set(settingsModel.getBoolean(SettingsModel.SYNC_ATTACHMENTS))
+        syncAttachMaxSize.set(settingsModel.getInt(SettingsModel.SYNC_MAX_SIZE, 5).toString())
+
         filterEmissions.set(settingsModel.getBoolean(SettingsModel.FILTER_EMISSIONS))
         splitDaily.set(settingsModel.getBoolean(SettingsModel.SPLIT_DAILY))
         cloudSync.set(settingsModel.getBoolean(SettingsModel.CLOUD_SYNC))
@@ -159,6 +175,11 @@ class SettingsViewModel : ViewModel() {
         settingsModel.saveInt(SettingsModel.LOCATION_TIME, locationTime.get().toInt())
         settingsModel.saveInt(SettingsModel.LOCATION_DISTANCE, locationDistance.get().toInt())
         settingsModel.saveInt(SettingsModel.LOCATION_COUNT, locationCount.get().toInt())
+
+        settingsModel.saveInt(SettingsModel.SYNC_PERIOD, syncPeriod.get().toInt())
+        settingsModel.saveBoolean(SettingsModel.SYNC_NOTIFICATION, syncNotification.get())
+        settingsModel.saveBoolean(SettingsModel.SYNC_ATTACHMENTS, syncAttachments.get())
+        settingsModel.saveInt(SettingsModel.SYNC_MAX_SIZE, syncAttachMaxSize.get().toInt())
 
         settingsModel.saveBoolean(SettingsModel.FILTER_EMISSIONS, filterEmissions.get())
         settingsModel.saveBoolean(SettingsModel.SPLIT_DAILY, splitDaily.get())

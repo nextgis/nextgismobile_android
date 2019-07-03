@@ -107,6 +107,7 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             "general" -> SettingsGeneralFragment()
             "map" -> SettingsMapFragment()
             "location" -> SettingsLocationFragment()
+            "webgis" -> SettingsWebFragment()
             "tracking" -> SettingsTracksFragment()
             "backup" -> SettingsBackupFragment()
             else -> SettingsGeneralFragment()
