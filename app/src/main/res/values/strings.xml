@@ -208,4 +208,8 @@
     <string name="sync_attachments">Sync attachments</string>
     <string name="sync_max_size">Maximum attachment size (Mb)</string>
     <string name="over_wifi_only">Oversized attachments will be sent over Wi-Fi only</string>
+    <string name="description">Description</string>
+    <string name="account">Account</string>
+    <string name="check_connection">Check connection</string>
+    <string name="login">Login</string>
 </resources>

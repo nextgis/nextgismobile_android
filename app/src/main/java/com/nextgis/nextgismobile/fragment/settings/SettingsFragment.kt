@@ -38,6 +38,10 @@ open class SettingsFragment : Fragment() {
         (activity as? SettingsActivity)?.let { it.supportActionBar?.setTitle(res) }
     }
 
+    protected fun setTitle(title: String) {
+        (activity as? SettingsActivity)?.let { it.supportActionBar?.setTitle(title) }
+    }
+
     protected fun showDialog(@ArrayRes entries: Int, @ArrayRes values: Int, default: String, @StringRes title: Int, listener: (value: String) -> Unit) {
         context?.let { context ->
             val array = context.resources.getStringArray(entries)

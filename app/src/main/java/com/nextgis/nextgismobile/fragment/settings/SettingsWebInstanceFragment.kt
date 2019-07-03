@@ -26,40 +26,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.adapter.InstanceAdapter
-import com.nextgis.nextgismobile.adapter.OnInstanceClickListener
+import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.data.Instance
-import com.nextgis.nextgismobile.databinding.FragmentSettingsWebListBinding
-import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
+import com.nextgis.nextgismobile.data.Layer
+import com.nextgis.nextgismobile.databinding.FragmentSettingsWebInstanceBinding
 import com.pawegio.kandroid.toast
 
-class SettingsWebListFragment : SettingsFragment(), OnInstanceClickListener {
-    private lateinit var binding: FragmentSettingsWebListBinding
+class SettingsWebInstanceFragment(val instance: Instance) : SettingsFragment() {
+    private lateinit var binding: FragmentSettingsWebInstanceBinding
+    private lateinit var adapter: LayerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_web_list, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
-        binding.settings = settingsModel
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_web_instance, container, false)
+        binding.instance = instance
         binding.fragment = this
-
-        binding.list.adapter = InstanceAdapter(arrayListOf(Instance("", "Test", "test", "test", "Long description")), this)
-        binding.list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
-
+        adapter = LayerAdapter(arrayListOf(Layer(1, null)), null)
+        binding.layers.adapter = adapter
+        binding.layers.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         binding.executePendingBindings()
+        setTitle(instance.title)
         return binding.root
     }
 
-    override fun onInstanceClick(instance: Instance) {
-        val settings = SettingsWebInstanceFragment(instance)
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.add(R.id.container, settings)?.addToBackStack("instance_settings")?.commitAllowingStateLoss()
+    fun checkConnection() {
+        toast(R.string.not_implemented)
     }
 
-    fun add() {
-        toast(R.string.not_implemented)
+    override fun onDestroy() {
+        setTitle(R.string.webgis)
+        super.onDestroy()
     }
 }

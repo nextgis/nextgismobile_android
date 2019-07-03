@@ -40,8 +40,16 @@ interface OnLayerClickListener {
     fun onDeleteClick(layer: Layer)
 }
 
-class LayerAdapter(val items: ArrayList<Layer>, val listener: OnLayerClickListener) :
+class LayerAdapter(val items: ArrayList<Layer>, val listener: OnLayerClickListener?) :
     DragDropSwipeAdapter<Layer, LayerAdapter.ViewHolder>(items) {
+    override fun canBeSwiped(item: Layer, viewHolder: ViewHolder, position: Int): Boolean {
+        return false
+    }
+
+    override fun canBeDragged(item: Layer, viewHolder: ViewHolder, position: Int): Boolean {
+        return listener != null
+    }
+
     override fun getViewHolder(itemView: View): ViewHolder {
         return newInstance(itemView.context, null)
     }
@@ -65,9 +73,11 @@ class LayerAdapter(val items: ArrayList<Layer>, val listener: OnLayerClickListen
     }
 
     class ViewHolder(private var binding: ItemLayerBinding) : DragDropSwipeAdapter.ViewHolder(binding.root) {
-        fun bind(repo: Layer, listener: OnLayerClickListener) {
+        fun bind(repo: Layer, listener: OnLayerClickListener?) {
             binding.layer = repo
-            binding.visibility.setOnClickListener { listener.onVisibilityClick(repo) }
+            binding.visibility.setOnClickListener { listener?.onVisibilityClick(repo) }
+            binding.visibility.visibility = if (listener != null) View.VISIBLE else View.GONE
+            binding.more.visibility = if (listener != null) View.VISIBLE else View.GONE
             binding.more.setOnClickListener {
                 val context = binding.root.context
                 val wrapper = ContextThemeWrapper(context, R.style.DarkPopup)
@@ -83,12 +93,12 @@ class LayerAdapter(val items: ArrayList<Layer>, val listener: OnLayerClickListen
 
                 menu.setOnMenuItemClickListener {
                     when (it.itemId) {
-                        R.id.action_zoom -> listener.onZoomClick(repo)
-                        R.id.action_table -> listener.onTableClick(repo)
-                        R.id.action_settings -> listener.onSettingsClick(repo)
-                        R.id.action_cloud -> listener.onCloudClick(repo)
-                        R.id.action_share -> listener.onShareClick(repo)
-                        R.id.action_delete -> listener.onDeleteClick(repo)
+                        R.id.action_zoom -> listener?.onZoomClick(repo)
+                        R.id.action_table -> listener?.onTableClick(repo)
+                        R.id.action_settings -> listener?.onSettingsClick(repo)
+                        R.id.action_cloud -> listener?.onCloudClick(repo)
+                        R.id.action_share -> listener?.onShareClick(repo)
+                        R.id.action_delete -> listener?.onDeleteClick(repo)
                     }
                     true
                 }
