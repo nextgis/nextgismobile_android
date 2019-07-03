@@ -33,6 +33,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.MainActivity
 import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
@@ -73,7 +74,7 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
                     layers?.let {
                         (list.adapter as? LayerAdapter)?.items?.clear()
                         (list.adapter as? LayerAdapter)?.items?.addAll(layers)
-                        list.adapter?.notifyDataSetChanged()
+                        (list.adapter as? LayerAdapter)?.dataSet = layers
                     }
                 })
                 mapModel.getLayers()
@@ -81,6 +82,7 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
             list.adapter = LayerAdapter(arrayListOf(), this@LayersFragment)
             list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
+            list.orientation = DragDropSwipeRecyclerView.ListOrientation.VERTICAL_LIST_WITH_VERTICAL_DRAGGING
 
             setupStatus(status)
             setupToolbar(toolbar, R.string.layers)

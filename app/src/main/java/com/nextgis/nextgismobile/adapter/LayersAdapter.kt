@@ -21,10 +21,11 @@
 
 package com.nextgis.nextgismobile.adapter
 
+import android.content.Context
 import android.os.Build
 import android.view.*
 import android.widget.PopupMenu
-import androidx.recyclerview.widget.RecyclerView
+import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.ItemLayerBinding
@@ -40,19 +41,30 @@ interface OnLayerClickListener {
 }
 
 class LayerAdapter(val items: ArrayList<Layer>, val listener: OnLayerClickListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
+    DragDropSwipeAdapter<Layer, LayerAdapter.ViewHolder>(items) {
+    override fun getViewHolder(itemView: View): ViewHolder {
+        return newInstance(itemView.context, null)
+    }
+
+    override fun getViewToTouchToStartDraggingItem(item: Layer, viewHolder: ViewHolder, position: Int): View? {
+        return viewHolder.itemView
+    }
+
+    override fun onBindViewHolder(item: Layer, viewHolder: ViewHolder, position: Int) {
+        viewHolder.bind(items[position], listener)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return newInstance(parent.context, parent)
+    }
+
+    private fun newInstance(context: Context, parent: ViewGroup?): ViewHolder {
+        val layoutInflater = LayoutInflater.from(context)
         val binding = ItemLayerBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as ViewHolder).bind(items[position], listener)
-
-    override fun getItemCount(): Int = items.size
-
-    class ViewHolder(private var binding: ItemLayerBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private var binding: ItemLayerBinding) : DragDropSwipeAdapter.ViewHolder(binding.root) {
         fun bind(repo: Layer, listener: OnLayerClickListener) {
             binding.layer = repo
             binding.visibility.setOnClickListener { listener.onVisibilityClick(repo) }
