@@ -22,9 +22,7 @@
 package com.nextgis.nextgismobile.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -41,11 +39,10 @@ import com.nextgis.nextgismobile.fragment.AddFieldDialog
 import com.nextgis.nextgismobile.util.setupDropdown
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.LayerViewModel
-import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_new_layer.*
 
-class NewEmptyLayerActivity : AppCompatActivity(), OnFieldClickListener {
+class NewEmptyLayerActivity : BaseActivity(), OnFieldClickListener {
     override fun onEditClick(field: Field) {
         AddFieldDialog().show(this, field)
     }
@@ -108,19 +105,9 @@ class NewEmptyLayerActivity : AppCompatActivity(), OnFieldClickListener {
 
                 val newLayer = store.createFeatureClass(it.vectorLayer.title, it.vectorLayer.geometryType, fields, options)
                 if (newLayer != null) {
-                    val mapModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
-                    val map = mapModel.load()
-                    map?.addLayer(it.vectorLayer.title, newLayer)
-                    map?.save()?.let { success ->
-                        if (success) {
-                            setResult(Activity.RESULT_OK)
-                            finish()
-                        } else {
-                            toast(R.string.not_implemented)
-                        }
-                    }
+                    addLayer(it.vectorLayer.title, newLayer)
                 } else {
-                    toast(R.string.not_implemented)
+                    toast(R.string.cannot_create_layer)
                 }
             }
         }

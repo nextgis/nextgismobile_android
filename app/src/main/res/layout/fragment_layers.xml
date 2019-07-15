@@ -65,9 +65,8 @@
             <com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="?attr/actionBarSize"
-                android:layout_weight="1"
                 tools:listitem="@layout/item_layer" />
 
             <com.google.android.material.bottomappbar.BottomAppBar

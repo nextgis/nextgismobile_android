@@ -21,14 +21,18 @@
 
 package com.nextgis.nextgismobile.activity
 
+import android.app.Activity
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
+import com.nextgis.maplib.Object
+import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.viewmodel.MapViewModel
+import com.pawegio.kandroid.toast
 
 abstract class BaseActivity : AppCompatActivity() {
     protected lateinit var preferences: SharedPreferences
@@ -40,10 +44,21 @@ abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
         fun hideStatusBar(window: Window) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-                window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            else
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
+    }
+
+    protected fun addLayer(title: String, layer: Object) {
+        val mapModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
+        val map = mapModel.load()
+        map?.addLayer(title, layer)
+        map?.save()?.let { success ->
+            if (success) {
+                setResult(Activity.RESULT_OK)
+                finish()
+            } else {
+                toast(R.string.add_layer_failed)
+            }
         }
     }
 }

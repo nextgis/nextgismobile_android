@@ -142,6 +142,8 @@
     <string name="geometry_type">Geometry type</string>
     <string name="add_field">Add field</string>
     <string name="layer_created">New layer created successfully</string>
+    <string name="layer_loaded">Layer imported successfully</string>
+    <string name="percentage">%d\%%</string>
     <string name="integer">Integer</string>
     <string name="real">Real</string>
     <string name="string">String</string>
@@ -212,4 +214,11 @@
     <string name="account">Account</string>
     <string name="check_connection">Check connection</string>
     <string name="login">Login</string>
+    <string name="add_layer_from_file">Add layer from file</string>
+    <string name="load">Load</string>
+    <string name="back">Back</string>
+    <string name="layer_loading">Layer loading</string>
+    <string name="cancel_loading">Cancel loading</string>
+    <string name="add_layer_failed">Add layer failed</string>
+    <string name="cannot_create_layer">Cannot create layer</string>
 </resources>

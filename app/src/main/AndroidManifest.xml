@@ -37,6 +37,7 @@
         android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
@@ -86,6 +87,12 @@
             android:label="@string/new_layer"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.SelectFileActivity"
+            android:label="@string/add_from_file"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.WhiteTranslucentStatus" />
 
         <service
             android:name=".auth.AuthService"

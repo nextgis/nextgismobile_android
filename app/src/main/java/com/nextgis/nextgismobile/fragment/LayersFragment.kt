@@ -28,6 +28,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -37,6 +38,7 @@ import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.MainActivity
 import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
+import com.nextgis.nextgismobile.activity.SelectFileActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
 import com.nextgis.nextgismobile.data.Layer
@@ -107,28 +109,25 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
     fun createEmpty() {
         activity?.let {
-            startActivityForResult(IntentFor<NewEmptyLayerActivity>(it), NEW_EMPTY_LAYER_REQUEST)
+            val intent = IntentFor<NewEmptyLayerActivity>(it)
+            startActivityForResult(intent, NEW_EMPTY_LAYER_REQUEST)
         }
         hideBottomSheet()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            NEW_EMPTY_LAYER_REQUEST -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    (activity as? MainActivity)?.let {
-                        it.snackbar(R.string.layer_created)
-                        val mapModel = ViewModelProviders.of(it).get(MapViewModel::class.java)
-                        mapModel.getLayers()
-                    }
-                }
-            }
+            NEW_EMPTY_LAYER_REQUEST -> { checkResult(resultCode, R.string.layer_created) }
+            SELECT_FILE_REQUEST -> { checkResult(resultCode, R.string.layer_loaded) }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
     fun createFromFile() {
-        toast(R.string.not_implemented)
+        activity?.let {
+            val intent = IntentFor<SelectFileActivity>(it)
+            startActivityForResult(intent, SELECT_FILE_REQUEST)
+        }
         hideBottomSheet()
     }
 
@@ -140,6 +139,16 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     fun addFromNGW() {
         toast(R.string.not_implemented)
         hideBottomSheet()
+    }
+
+    private fun checkResult(resultCode: Int, @StringRes info: Int) {
+        if (resultCode == Activity.RESULT_OK) {
+            (activity as? MainActivity)?.let {
+                it.snackbar(info)
+                val mapModel = ViewModelProviders.of(it).get(MapViewModel::class.java)
+                mapModel.getLayers()
+            }
+        }
     }
 
     private fun refresh() {
@@ -179,11 +188,13 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
             val mapModel = ViewModelProviders.of(activity).get(MapViewModel::class.java)
             val map = mapModel.load()
             map?.deleteLayer(layer.id)
+            map?.save()
             mapModel.getLayers()
         }
     }
 
     companion object {
         const val NEW_EMPTY_LAYER_REQUEST = 733
+        const val SELECT_FILE_REQUEST = 537
     }
 }

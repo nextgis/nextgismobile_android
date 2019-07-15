@@ -23,6 +23,7 @@ package com.nextgis.nextgismobile.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -176,7 +177,11 @@ class MainActivity : BaseActivity(), GestureDelegate {
     }
 
     fun snackbar(@StringRes text: Int) {
-        Snackbar.make(coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.fab).show()
+        val snackbar = Snackbar.make(coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.fab)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            snackbar.view.elevation = dpToPx(8).toFloat()
+        }
+        snackbar.show()
     }
 
     companion object {
