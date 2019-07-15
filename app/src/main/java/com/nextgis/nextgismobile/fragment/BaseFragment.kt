@@ -21,14 +21,74 @@
 
 package com.nextgis.nextgismobile.fragment
 
+import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.ImageButton
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputEditText
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.util.statusBarHeight
 
 open class BaseFragment : Fragment() {
+    protected val watcher = object : TextWatcher {
+        var isFormatting = false
+
+        private fun set(editable: Editable, value: String) {
+            editable.clear()
+            editable.append("#")
+            editable.append(value)
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            s?.let {
+                if (!isFormatting && it.isNotEmpty()) {
+                    isFormatting = true
+                    if (!it.startsWith("#")) {
+                        val previous = it.toString()
+                        set(it, previous)
+                    }
+                    if (it.length > 1 && it.indexOf("#", 1, true) > 0) {
+                        var previous = it.toString().substring(1)
+                        previous = previous.replace("#", "")
+                        set(it, previous)
+                    }
+                    isFormatting = false
+                }
+            }
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+    }
+
+    protected val focusListener = View.OnFocusChangeListener { view, _ ->
+        while ((view as TextInputEditText).length() < 9)
+            view.append("F")
+    }
+
+    protected fun tintBadge(badge: ImageButton, color: String) {
+        if (color.length > 1) {
+            try {
+                val value = Color.parseColor(color)
+                var drawable = badge.drawable
+                drawable = DrawableCompat.wrap(drawable)
+                DrawableCompat.setTint(drawable, value)
+                badge.setImageDrawable(drawable)
+            } catch (e: IllegalArgumentException) {
+            }
+        }
+    }
+
     protected fun setupStatus(status: View) {
         val params = status.layoutParams
         params.height = activity?.statusBarHeight ?: 0

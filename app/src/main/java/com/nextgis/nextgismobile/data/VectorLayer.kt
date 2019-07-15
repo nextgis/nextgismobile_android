@@ -136,10 +136,12 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
         }
 
     // TODO
-    var fillColor = style?.getString("color", "03A9F4") ?: "#03A9F4"
+    @get:Bindable
+    var fillColor = style?.getString("color", "FF03A9F4") ?: "#FF03A9F4"
         set(value) {
             field = value
             style?.setString("color", value.replace("#", ""))
+            notifyPropertyChanged(BR.fillColor)
         }
 
     // TODO
@@ -157,10 +159,12 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
         }
 
     // TODO
-    var strokeColor = getProperty("user", "strokeColor") ?: "#03A9F4"
+    @get:Bindable
+    var strokeColor = getProperty("user", "strokeColor") ?: "#FF03A9F4"
         set(value) {
             field = value
             handle?.dataSource?.setProperty("strokeColor", value.replace("#", ""), "user")
+            notifyPropertyChanged(BR.strokeColor)
         }
 
     // TODO
@@ -192,17 +196,21 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
         }
 
     // TODO
-    var fontColor = getProperty("user", "fontColor") ?: "#03A9F4"
+    @get:Bindable
+    var fontColor = getProperty("user", "fontColor") ?: "#FF03A9F4"
         set(value) {
             field = value
             handle?.dataSource?.setProperty("fontColor", value.replace("#", ""), "user")
+            notifyPropertyChanged(BR.fontColor)
         }
 
     // TODO
-    var fontStrokeColor = getProperty("user", "fontStrokeColor") ?: "#03A9F4"
+    @get:Bindable
+    var fontStrokeColor = getProperty("user", "fontStrokeColor") ?: "#FF03A9F4"
         set(value) {
             field = value
             handle?.dataSource?.setProperty("fontStrokeColor", value.replace("#", ""), "user")
+            notifyPropertyChanged(BR.fontStrokeColor)
         }
 
     // TODO

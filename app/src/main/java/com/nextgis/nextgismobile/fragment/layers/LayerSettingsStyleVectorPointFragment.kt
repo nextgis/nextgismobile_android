@@ -28,11 +28,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ScrollView
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleVectorPointBinding
+import com.nextgis.nextgismobile.fragment.ColorPickerDialog
 import com.nextgis.nextgismobile.util.setupDropdown
-import com.pawegio.kandroid.toast
 
 
 class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer) : LayerSettingsStyleVectorFragment(vectorLayer) {
@@ -49,6 +51,21 @@ class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer
             figure.setupDropdown(R.array.figure, R.array.figure_value, vectorLayer.figure.toString(), figureCallback)
             val sizeCallback = { value: String -> vectorLayer.figureSize = value.toDouble() }
             size.setupDropdown(R.array.figure_size, R.array.figure_size_value, vectorLayer.figureSize.toInt().toString(), sizeCallback)
+
+            color.addTextChangedListener(watcher)
+            color.onFocusChangeListener = focusListener
+            strokeColor.addTextChangedListener(watcher)
+            strokeColor.onFocusChangeListener = focusListener
+            tintBadge(colorBadge, vectorLayer.fillColor)
+            tintBadge(strokeColorBadge, vectorLayer.strokeColor)
+            vectorLayer.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                    if (propertyId == BR.fillColor)
+                        tintBadge(colorBadge, vectorLayer.fillColor)
+                    if (propertyId == BR.strokeColor)
+                        tintBadge(strokeColorBadge, vectorLayer.strokeColor)
+                }
+            })
         }
 
         binding.executePendingBindings()
@@ -57,10 +74,16 @@ class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer
     }
 
     fun color() {
-        toast(R.string.not_implemented)
+        binding.layer?.let {
+            val dialog = ColorPickerDialog()
+            dialog.show(activity, it.fillColor) { color -> it.fillColor = color }
+        }
     }
 
     fun strokeColor() {
-        toast(R.string.not_implemented)
+        binding.layer?.let {
+            val dialog = ColorPickerDialog()
+            dialog.show(activity, it.strokeColor) { color -> it.strokeColor = color }
+        }
     }
 }

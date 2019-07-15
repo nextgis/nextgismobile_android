@@ -21,67 +21,20 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
-import android.graphics.Color
 import android.os.Bundle
-import com.google.android.material.textfield.TextInputEditText
-import androidx.core.graphics.drawable.DrawableCompat
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import androidx.lifecycle.ViewModelProviders
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsStyleBinding
+import com.nextgis.nextgismobile.fragment.ColorPickerDialog
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
-import com.pawegio.kandroid.toast
 
 class SettingsStyleFragment : SettingsFragment() {
     private lateinit var binding: FragmentSettingsStyleBinding
-
-    private val watcher = object : TextWatcher {
-        var isFormatting = false
-
-        private fun set(editable: Editable, value: String) {
-            editable.clear()
-            editable.append("#")
-            editable.append(value)
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            s?.let {
-                if (!isFormatting && it.isNotEmpty()) {
-                    isFormatting = true
-                    if (!it.startsWith("#")) {
-                        val previous = it.toString()
-                        set(it, previous)
-                    }
-                    if (it.length > 1 && it.indexOf("#", 1, true) > 0) {
-                        var previous = it.toString().substring(1)
-                        previous = previous.replace("#", "")
-                        set(it, previous)
-                    }
-                    isFormatting = false
-                }
-            }
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-    }
-
-    private val focusListener = View.OnFocusChangeListener { view, _ ->
-        while ((view as TextInputEditText).length() < 7)
-            view.append("0")
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_style, container, false)
@@ -132,24 +85,19 @@ class SettingsStyleFragment : SettingsFragment() {
         tintBadge(binding.widthBadge, color)
     }
 
-    private fun tintBadge(badge: ImageButton, color: String) {
-        if (color.length > 1) {
-            try {
-                val value = Color.parseColor(color)
-                var drawable = badge.drawable
-                drawable = DrawableCompat.wrap(drawable)
-                DrawableCompat.setTint(drawable, value)
-                badge.setImageDrawable(drawable)
-            } catch (e: IllegalArgumentException) {
-            }
+    fun fillColor() {
+        activity?.let {
+            val dialog = ColorPickerDialog()
+            val settingsModel = ViewModelProviders.of(it).get(SettingsViewModel::class.java)
+            dialog.show(it, settingsModel.fillColor.get()) { color -> settingsModel.fillColor.set(color) }
         }
     }
 
-    fun fillColor() {
-        toast(R.string.not_implemented)
-    }
-
     fun strokeColor() {
-        toast(R.string.not_implemented)
+        activity?.let {
+            val dialog = ColorPickerDialog()
+            val settingsModel = ViewModelProviders.of(it).get(SettingsViewModel::class.java)
+            dialog.show(it, settingsModel.strokeColor.get()) { color -> settingsModel.strokeColor.set(color) }
+        }
     }
 }

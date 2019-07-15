@@ -26,15 +26,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import com.nextgis.maplib.FeatureClass
 import com.nextgis.maplib.Geometry
+import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.adapter.DropdownAdapter
 import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleVectorBinding
+import com.nextgis.nextgismobile.fragment.ColorPickerDialog
 import com.nextgis.nextgismobile.util.setup
 import com.nextgis.nextgismobile.util.setupDropdown
-import com.pawegio.kandroid.toast
 
 
 open class LayerSettingsStyleVectorFragment(private val vectorLayer: VectorLayer) : LayerSettingsBaseFragment(vectorLayer) {
@@ -69,17 +71,37 @@ open class LayerSettingsStyleVectorFragment(private val vectorLayer: VectorLayer
             val alignmentCallback = { value: String -> vectorLayer.alignment = value }
             alignment.setupDropdown(R.array.alignment, R.array.alignment_value, vectorLayer.alignment, alignmentCallback)
 
+            textColor.addTextChangedListener(watcher)
+            textColor.onFocusChangeListener = focusListener
+            strokeColor.addTextChangedListener(watcher)
+            strokeColor.onFocusChangeListener = focusListener
+            tintBadge(textColorBadge, vectorLayer.fontColor)
+            tintBadge(strokeColorBadge, vectorLayer.fontStrokeColor)
+            vectorLayer.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                    if (propertyId == BR.fontColor)
+                        tintBadge(textColorBadge, vectorLayer.fontColor)
+                    if (propertyId == BR.fontStrokeColor)
+                        tintBadge(strokeColorBadge, vectorLayer.fontStrokeColor)
+                }
+            })
         }
         binding.executePendingBindings()
         return binding.root
     }
 
     fun fontColor() {
-        toast(R.string.not_implemented)
+        binding.layer?.let {
+            val dialog = ColorPickerDialog()
+            dialog.show(activity, it.fontColor) { color -> it.fontColor = color }
+        }
     }
 
     fun fontStrokeColor() {
-        toast(R.string.not_implemented)
+        binding.layer?.let {
+            val dialog = ColorPickerDialog()
+            dialog.show(activity, it.fontStrokeColor) { color -> it.fontStrokeColor = color }
+        }
     }
 
     override fun onDestroy() {
@@ -89,9 +111,9 @@ open class LayerSettingsStyleVectorFragment(private val vectorLayer: VectorLayer
 
     companion object {
         fun fragmentStyleForGeometryType(layer: VectorLayer): LayerSettingsStyleVectorFragment {
-            return when(layer.geometryType) {
+            return when (layer.geometryType) {
                 Geometry.Type.POINT, Geometry.Type.MULTIPOINT -> LayerSettingsStyleVectorPointFragment(layer)
-                Geometry.Type.LINESTRING, Geometry.Type.MULTILINESTRING-> LayerSettingsStyleVectorLineFragment(layer)
+                Geometry.Type.LINESTRING, Geometry.Type.MULTILINESTRING -> LayerSettingsStyleVectorLineFragment(layer)
                 Geometry.Type.POLYGON, Geometry.Type.MULTIPOLYGON -> LayerSettingsStyleVectorPolygonFragment(layer)
                 else -> LayerSettingsStyleVectorFragment(layer)
             }

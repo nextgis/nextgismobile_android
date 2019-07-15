@@ -73,9 +73,9 @@
     <string name="degrees_min">Degrees - Minutes</string>
     <string name="degrees">Degrees</string>
     <string name="fill_color">Fill color</string>
-    <string name="fill_color_default" translatable="false">03A9F4</string>
+    <string name="fill_color_default" translatable="false">FF03A9F4</string>
     <string name="stroke_color">Stroke color</string>
-    <string name="stroke_color_default" translatable="false">01579B</string>
+    <string name="stroke_color_default" translatable="false">FF01579B</string>
     <string name="stroke_width">Stroke width</string>
     <string name="stroke_width_default" translatable="false">4</string>
     <string name="map_background">Map background</string>
@@ -221,4 +221,8 @@
     <string name="cancel_loading">Cancel loading</string>
     <string name="add_layer_failed">Add layer failed</string>
     <string name="cannot_create_layer">Cannot create layer</string>
+    <string name="refresh">Refresh</string>
+    <string name="apply">Apply</string>
+    <string name="color">Color</string>
+    <string name="select_color">Select color</string>
 </resources>

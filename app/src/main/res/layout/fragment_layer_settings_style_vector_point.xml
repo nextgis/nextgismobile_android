@@ -105,7 +105,7 @@
                     android:digits="0123456789ABCDEF#"
                     android:hint="@string/fill_color"
                     android:inputType="textCapCharacters"
-                    android:maxLength="7"
+                    android:maxLength="9"
                     android:text="@={layer.fillColor}"
                     tools:text="#445566" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -138,7 +138,7 @@
                     android:digits="0123456789"
                     android:hint="@string/stroke_width"
                     android:inputType="numberDecimal"
-                    android:maxLength="7"
+                    android:maxLength="2"
                     android:text="@={layer.strokeWidth}"
                     tools:text="4" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -161,7 +161,7 @@
                     android:digits="0123456789ABCDEF#"
                     android:hint="@string/stroke_color"
                     android:inputType="textCapCharacters"
-                    android:maxLength="7"
+                    android:maxLength="9"
                     android:text="@={layer.strokeColor}"
                     tools:text="#445566" />
             </com.google.android.material.textfield.TextInputLayout>

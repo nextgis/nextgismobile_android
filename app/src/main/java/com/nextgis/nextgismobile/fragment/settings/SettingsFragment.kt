@@ -25,11 +25,11 @@ import android.preference.PreferenceManager
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.SettingsActivity
+import com.nextgis.nextgismobile.fragment.BaseFragment
 
-open class SettingsFragment : Fragment() {
+open class SettingsFragment : BaseFragment() {
     open fun switch(checked: Boolean, key: String) {
         PreferenceManager.getDefaultSharedPreferences(requireActivity()).edit().putBoolean(key, checked).apply()
     }
