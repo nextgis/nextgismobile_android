@@ -26,6 +26,7 @@ import androidx.annotation.StringRes
 import androidx.databinding.Bindable
 import com.nextgis.maplib.FeatureClass
 import com.nextgis.maplib.Geometry
+import com.nextgis.maplib.JsonObject
 import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
 
@@ -128,11 +129,17 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
             handle?.dataSource?.setProperty("clustering", if (value) "true" else "false", "user")
         }
 
+    var style: JsonObject?
+        get() = handle?.style
+        set(value) {
+            handle?.style = value!!
+        }
+
     // TODO
-    var fillColor = getProperty("user", "fillColor") ?: "#03A9F4"
+    var fillColor = style?.getString("color", "03A9F4") ?: "#03A9F4"
         set(value) {
             field = value
-            handle?.dataSource?.setProperty("fillColor", value.replace("#", ""), "user")
+            style?.setString("color", value.replace("#", ""))
         }
 
     // TODO
@@ -205,18 +212,16 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
             handle?.dataSource?.setProperty("alignment", value, "user")
         }
 
-    // TODO
-    var figure = getProperty("user", "figure") ?: "circle"
+    var figure = style?.getInteger("type", 0) ?: 0
         set(value) {
             field = value
-            handle?.dataSource?.setProperty("figure", value, "user")
+            style?.setInteger("type", value)
         }
 
-    // TODO
-    var figureSize = getProperty("user", "figureSize") ?: "16"
+    var figureSize = style?.getDouble("size", 8.0) ?: 8.0
         set(value) {
             field = value
-            handle?.dataSource?.setProperty("figureSize", value, "user")
+            style?.setDouble("size", value)
         }
 
 }

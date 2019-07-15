@@ -82,6 +82,11 @@ open class LayerSettingsStyleVectorFragment(private val vectorLayer: VectorLayer
         toast(R.string.not_implemented)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.layer?.style = binding.layer?.style
+    }
+
     companion object {
         fun fragmentStyleForGeometryType(layer: VectorLayer): LayerSettingsStyleVectorFragment {
             return when(layer.geometryType) {

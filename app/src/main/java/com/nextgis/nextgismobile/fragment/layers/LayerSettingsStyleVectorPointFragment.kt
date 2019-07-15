@@ -45,10 +45,10 @@ class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer
         binding.fragment = this
 
         binding.apply {
-            val figureCallback = { value: String -> vectorLayer.figure = value }
-            figure.setupDropdown(R.array.figure, R.array.figure_value, vectorLayer.figure, figureCallback)
-            val sizeCallback = { value: String -> vectorLayer.figureSize= value }
-            size.setupDropdown(R.array.font_size, R.array.font_size_value, vectorLayer.figureSize, sizeCallback)
+            val figureCallback = { value: String -> vectorLayer.figure = value.toInt() }
+            figure.setupDropdown(R.array.figure, R.array.figure_value, vectorLayer.figure.toString(), figureCallback)
+            val sizeCallback = { value: String -> vectorLayer.figureSize = value.toDouble() }
+            size.setupDropdown(R.array.figure_size, R.array.figure_size_value, vectorLayer.figureSize.toInt().toString(), sizeCallback)
         }
 
         binding.executePendingBindings()
