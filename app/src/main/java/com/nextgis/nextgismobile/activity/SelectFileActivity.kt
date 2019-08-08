@@ -22,9 +22,13 @@
 package com.nextgis.nextgismobile.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -40,6 +44,7 @@ import com.nextgis.nextgismobile.adapter.OnFileClickListener
 import com.nextgis.nextgismobile.databinding.ActivitySelectFileBinding
 import com.nextgis.nextgismobile.fragment.AddFromFileDialog
 import com.nextgis.nextgismobile.fragment.FileLoadingDialog
+import com.nextgis.nextgismobile.fragment.ProFeatureDialog
 import com.nextgis.nextgismobile.util.NonNullObservableField
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.pawegio.kandroid.runAsync
@@ -51,6 +56,8 @@ import kotlin.math.roundToInt
 class SelectFileActivity : BaseActivity(), OnFileClickListener {
     private lateinit var binding: ActivitySelectFileBinding
     private val stack = Stack<Object>()
+    private var file: Object? = null
+    private var layerTitle = ""
     val path = NonNullObservableField("/")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +74,23 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
         addItems()
 
         binding.executePendingBindings()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_picker, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_refresh -> {
+                val file = stack.pop()
+                file.refresh()
+                onFileClick(file)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun addItems() {
@@ -98,13 +122,26 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
     override fun onFileClick(file: Object) {
         (list.adapter as? FilesAdapter)?.items?.clear()
         val children = arrayListOf<Object>()
-        if (file.type == 55) {
+        // TODO gpkg/ngrc type
+//        if (file.type == 501) { // TODO shp type
+//            toast(R.string.not_implemented)
+//            return
+//        }
+        if (file.type == 55) { // TODO zip type
             toast(R.string.not_implemented)
             return
         }
-        if (file.type == 55 || file.type == 507) { // TODO zip&gpkg types
+        if (file.type == 507 || file.type == 501) { // geojson
             val dialog = AddFromFileDialog(file.name.substringBeforeLast("."))
-            dialog.show(this, DialogInterface.OnClickListener { _, _ -> addLayer(file, dialog.layerTitle) })
+            dialog.show(this, DialogInterface.OnClickListener { _, _ ->
+                this.file = file
+                this.layerTitle = dialog.layerTitle
+                addLayer()
+            })
+            return
+        }
+        if (file.type == 1002) { // TODO tif type
+            toast(R.string.not_implemented)
             return
         }
 
@@ -129,34 +166,49 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
         list.adapter?.notifyDataSetChanged()
     }
 
-    private fun addLayer(file: Object, title: String) {
-        val copyOptions = mapOf(
-            "CREATE_OVERVIEWS" to "ON",
-            "NEW_NAME" to title
-        )
-
+    private fun addLayer() {
         API.getStore()?.let { store ->
+            val copyOptions = mapOf(
+                "CREATE_OVERVIEWS" to "ON",
+                "NEW_NAME" to layerTitle
+            )
+
             val dialog = FileLoadingDialog()
             dialog.show(this, DialogInterface.OnCancelListener { toast(R.string.not_implemented) })
             runAsync {
-                val result = file.copy(Object.Type.FC_GEOJSON, store, false, copyOptions) { status, complete, message ->
+                val result = file?.copy(Object.Type.FC_GEOJSON, store, false, copyOptions) { status, complete, _ ->
                     runOnUiThread {
                         dialog.progress.set((complete * 100).roundToInt())
                         if (status == StatusCode.FINISHED) { // TODO statuses
                             dialog.dismiss()
-                            val layer = store.child(title)!!
-                            addLayer(title, layer)
+                            val layer = store.child(layerTitle)!!
+                            addLayer(layerTitle, layer)
                         }
                     }
                     true
                 }
 
                 runOnUiThread {
-                    if (!result) {
-                        toast(R.string.cannot_create_layer)
+                    if (result == null || !result) {
+                        val error = API.lastError()
+                        if (error.contains("Cannot copy") && error.contains("on your plan"))
+                            ProFeatureDialog().show(this, getString(R.string.add_layer), getString(R.string.feature_more_1000))
+                        else
+                            toast(R.string.cannot_create_layer)
+                        dialog.dismiss()
                     }
                 }
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            PRO_FEATURE_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK)
+                    addLayer()
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -170,5 +222,6 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
 
     companion object {
         const val REQUEST_READ_PERMISSIONS = 8346
+        const val PRO_FEATURE_REQUEST_CODE = 940
     }
 }
