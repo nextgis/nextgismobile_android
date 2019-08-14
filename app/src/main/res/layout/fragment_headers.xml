@@ -30,10 +30,6 @@
             type="com.nextgis.nextgismobile.viewmodel.AuthViewModel" />
 
         <variable
-            name="user"
-            type="com.nextgis.nextgismobile.viewmodel.UserViewModel" />
-
-        <variable
             name="fragment"
             type="com.nextgis.nextgismobile.fragment.settings.HeadersFragment" />
     </data>
@@ -56,7 +52,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:paddingBottom="24dp"
-                android:visible="@{auth.isAuthorized()}"
+                android:visible="@{auth.account.authorized}"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -80,7 +76,7 @@
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{user.fullName}"
+                        android:text="@{auth.fullName}"
                         android:textColor="#000"
                         android:textSize="16sp"
                         tools:text="Firstname Lastname (f.n)" />
@@ -89,7 +85,7 @@
                         android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{user.email}"
+                        android:text="@{auth.login}"
                         android:textSize="12sp"
                         tools:text="fname@test.com" />
                 </LinearLayout>
@@ -103,14 +99,14 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="24dp"
-                android:visible="@{!auth.isAuthorized() || !user.isSupported()}"
+                android:visible="@{!auth.account.authorized || !auth.account.supported}"
                 app:layout_constraintTop_toBottomOf="@id/info">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@{auth.isAuthorized() ? @string/upgrade : @string/unidentified}"
+                    android:text="@{auth.account.authorized ? @string/upgrade : @string/unidentified}"
                     android:textColor="#fff"
                     android:textSize="16sp"
                     tools:text="@string/upgrade" />
@@ -123,7 +119,7 @@
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/white"
                     android:onClick="@{()->fragment.action()}"
-                    android:text="@{auth.isAuthorized() ? @string/unlock : @string/sign_in}"
+                    android:text="@{auth.account.authorized ? @string/unlock : @string/sign_in}"
                     android:textColor="@color/colorPrimary"
                     tools:text="@string/unlock" />
             </LinearLayout>

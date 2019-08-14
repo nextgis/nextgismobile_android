@@ -59,37 +59,14 @@ class SettingsActivity : BaseActivity() {
         authModel.init(accountManager, true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_settings, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_signing -> {
-                binding.auth?.let {
-                    if (it.isAuthorized.get())
-                        showConfirmation(it)
-                    else
-                        startActivity<NGIDSigninActivity>()
-                }
-                true
-            }
             android.R.id.home -> {
                 handleBackPress()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun showConfirmation(auth: AuthViewModel) {
-        val builder = AlertDialog.Builder(this)
-            .setTitle(R.string.confirmation)
-            .setMessage(R.string.ngid_disconnect)
-            .setPositiveButton(android.R.string.ok) { _, _ -> auth.deleteAccount() }
-            .setNegativeButton(android.R.string.cancel, null).create()
-        builder.show()
     }
 
     override fun onStop() {

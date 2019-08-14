@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
         authModel.init(accountManager, false)
         authModel.firstTime.set(!preferences.getBoolean("ngid_shown", false))
 
-        if (authModel.isAuthorized.get()) {
+        if (authModel.account.get().authorized) {
             val newAccount = intent.getBooleanExtra("add_account", false)
             showInfo(newAccount)
             return
@@ -72,14 +72,14 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
         authModel.token.observe(this, Observer { token ->
             token?.let {
                 val account = getString(R.string.app_name)
-                val intent = authModel.buildIntent(account, it.access_token)
+                val intent = authModel.buildIntent(account, it.accessToken)
                 val added = authModel.addAccount(account, it)
                 if (added) {
                     setAccountAuthenticatorResult(intent.extras)
                     setResult(Activity.RESULT_OK, intent)
-                    startActivity<MainActivity>()
+                    startActivity<MainActivity>() // TODO diff targets
                     finish()
-                }
+                } // TODO error
             }
         })
         authModel.error.observe(this, Observer {

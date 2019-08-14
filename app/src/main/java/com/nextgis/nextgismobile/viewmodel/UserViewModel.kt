@@ -51,10 +51,10 @@ class UserViewModel : ViewModel() {
 
     private fun formatFullName(user: User): String {
         var fullName = ""
-        if (user.first_name.isNotBlank())
-            fullName += user.first_name + " "
-        if (user.last_name.isNotBlank())
-            fullName += user.last_name + " "
+        if (user.firstName.isNotBlank())
+            fullName += user.firstName + " "
+        if (user.lastName.isNotBlank())
+            fullName += user.lastName + " "
         if (user.username.isNotBlank()) {
             fullName += if (fullName.isNotBlank()) {
                 "(" + user.username + ")"

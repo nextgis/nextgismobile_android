@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,12 @@ package com.nextgis.nextgismobile.viewmodel
 
 import android.accounts.AccountManager
 import android.accounts.AccountManagerCallback
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.content.Intent
-import androidx.databinding.ObservableField
+import com.nextgis.maplib.Account
 import com.nextgis.nextgismobile.data.Token
-import com.nextgis.nextgismobile.data.User
+import com.nextgis.nextgismobile.data.UserCreate
 import com.nextgis.nextgismobile.model.AuthModel
 import com.nextgis.nextgismobile.util.APIService
 import com.nextgis.nextgismobile.util.NonNullObservableField
@@ -48,22 +48,35 @@ class AuthViewModel : ViewModel() {
     var password = NonNullObservableField("")
     var token = MutableLiveData<Token>()
     var error = MutableLiveData<String>()
-    val isAuthorized = NonNullObservableField(false)
     val passwordVisible = NonNullObservableField(false)
+    val account = NonNullObservableField(Account("", "", ""))
+    val fullName = NonNullObservableField("")
 
     fun init(accountManager: AccountManager?, load: Boolean) {
         authModel.accountManager = accountManager
         if (!load)
             return
 
-        authModel.getToken(AccountManagerCallback {
-            val token = it.result.getString(AccountManager.KEY_AUTHTOKEN, "")
-            val type = authModel.getUserData("token_type")
-            this.token.value = Token(token, "", type) // TODO refresh
+        val type = authModel.getUserData("tokenType")
+        val expiresIn = authModel.getUserData("expiresIn")
+        token.value = Token("", "", type, expiresIn)
+        authModel.getToken(type, AccountManagerCallback { callback ->
+            val token = callback.result.getString(AccountManager.KEY_AUTHTOKEN, "")
+            this.token.value?.accessToken = token
             APIService.TOKEN = "$type $token"
+            this.token.value?.let {
+                if (it.refreshToken.isNotBlank())
+                    addAuth(it)
+            }
         })
-        login.set(authModel.getUserData("login"))
-        isAuthorized.set(login.get().isNotBlank())
+        authModel.getToken("refreshToken", AccountManagerCallback { callback ->
+            val token = callback.result.getString(AccountManager.KEY_AUTHTOKEN, "")
+            this.token.value?.refreshToken = token
+            this.token.value?.let {
+                if (it.accessToken.isNotBlank())
+                    addAuth(it)
+            }
+        })
     }
 
     fun buildIntent(account: String, token: String): Intent {
@@ -91,7 +104,10 @@ class AuthViewModel : ViewModel() {
             override fun onDataReady(data: Any?) {
                 isLoading.set(false)
                 token.value = data as Token?
-                token.value?.let { APIService.TOKEN = "${it.token_type} ${it.access_token}" }
+                token.value?.let {
+                    addAuth(it)
+                    APIService.TOKEN = "${it.tokenType} ${it.accessToken}"
+                }
             }
 
             override fun onRequestFailed(error: String?) {
@@ -106,6 +122,9 @@ class AuthViewModel : ViewModel() {
             override fun onDataReady(data: Any?) {
                 isLoading.set(false)
                 token.value = data as Token?
+                token.value?.let {
+                    addAuth(it)
+                }
             }
 
             override fun onRequestFailed(error: String?) {
@@ -114,13 +133,26 @@ class AuthViewModel : ViewModel() {
         })
     }
 
+    private fun addAuth(token: Token) {
+//        val url = "http://source.nextgis.com"
+//        val authUrl = "https://my.nextgis.com"
+//        API.addAuth(Auth(url, authUrl, token.accessToken, token.refreshToken, token.expiresIn, UserCreate.client_id, {}))
+        val account = Account(UserCreate.client_id_old, token.accessToken, token.refreshToken)
+        account.updateSupportInfo()
+        account.updateInfo()
+        fullName.set((account.firstName + " " + account.lastName).trim())
+        login.set(account.email)
+        this.account.set(account)
+    }
+
     fun addAccount(account: String, token: Token): Boolean {
         return authModel.addAccount(account, login.get(), token)
     }
 
     fun deleteAccount() {
         authModel.deleteAccount()
-        isAuthorized.set(false)
+        account.get().exit()
+        account.set(Account("", "", ""))
         login.set("")
         this.token.value = null
         APIService.TOKEN = ""

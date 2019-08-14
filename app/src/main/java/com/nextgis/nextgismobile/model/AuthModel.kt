@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ import android.os.Bundle
 import android.os.Handler
 import com.nextgis.nextgismobile.BuildConfig
 import com.nextgis.nextgismobile.data.Token
-import com.nextgis.nextgismobile.data.UserAuth
 import com.nextgis.nextgismobile.data.UserCreate
 import com.nextgis.nextgismobile.data.Username
 import com.nextgis.nextgismobile.util.AuthService
@@ -42,7 +41,7 @@ class AuthModel {
     }
 
     var accountManager: AccountManager? = null
-    private val tokenType: String get() = getUserData("token_type")
+    private val tokenType: String get() = getUserData("tokenType")
 
     private val authService by lazy {
         AuthService.create()
@@ -96,11 +95,11 @@ class AuthModel {
         return intent
     }
 
-    fun getToken(callback: AccountManagerCallback<Bundle>) {
+    fun getToken(type: String, callback: AccountManagerCallback<Bundle>) {
         val account = getAccount()
         if (account != null) {
             try {
-                accountManager?.getAuthToken(account, tokenType, null, false, callback, null)
+                accountManager?.getAuthToken(account, type, null, false, callback, null)
             } catch (ignored: OperationCanceledException) {
             } catch (ignored: IOException) {
             } catch (ignored: AuthenticatorException) {
@@ -117,11 +116,12 @@ class AuthModel {
                 result = it.addAccountExplicitly(account, null, null)
             } else
                 result = true
-            it.setAuthToken(account, token.token_type, token.access_token)
-            it.setAuthToken(account, "refresh_token", token.refresh_token)
+            it.setAuthToken(account, token.tokenType, token.accessToken)
+            it.setAuthToken(account, "refreshToken", token.refreshToken)
 
             if (result) {
-                setUserData("token_type", token.token_type)
+                setUserData("tokenType", token.tokenType)
+                setUserData("expiresIn", token.expiresIn)
                 setUserData("login", login)
             }
         }

@@ -21,12 +21,17 @@
 
 package com.nextgis.nextgismobile.data
 
+import android.annotation.SuppressLint
 import androidx.databinding.BaseObservable
+import com.google.gson.annotations.SerializedName
 import java.security.MessageDigest
 
-class User(var first_name: String, var last_name: String, var username: String, var email: String) : BaseObservable() {
-    val name: String get() = "$first_name $last_name"
-    val avatar: String
+class User(@SerializedName("first_name") var firstName: String, @SerializedName("last_name") var lastName: String,
+           var username: String, var email: String) : BaseObservable() {
+    val name: String get() = "$firstName $lastName".trim()
+    var avatar = ""
+    val gravatar: String
+        @SuppressLint("DefaultLocale")
         get() {
             val md = MessageDigest.getInstance("MD5")
             md.update(email.trim().toLowerCase().toByteArray())

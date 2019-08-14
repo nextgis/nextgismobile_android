@@ -24,6 +24,9 @@ package com.nextgis.nextgismobile.data
 import com.nextgis.nextgismobile.BuildConfig
 
 open class UserCreate(var email: String, var password: String) {
-    val client_id = BuildConfig.CLIENT_ID
-    val client_secret = BuildConfig.CLIENT_SECRET
+    companion object {
+        val client_id = BuildConfig.CLIENT_ID
+        val client_id_old = BuildConfig.CLIENT_ID_OLD
+        val client_secret = BuildConfig.CLIENT_SECRET
+    }
 }

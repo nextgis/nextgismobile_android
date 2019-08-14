@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018 NextGIS, info@nextgis.com
+ * Copyright © 2018-2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,4 +21,7 @@
 
 package com.nextgis.nextgismobile.data
 
-class Token(var access_token: String, var refresh_token: String, var token_type: String)
+import com.google.gson.annotations.SerializedName
+
+class Token(@SerializedName("access_token") var accessToken: String, @SerializedName("refresh_token") var refreshToken: String,
+            @SerializedName("token_type") var tokenType: String, @SerializedName("expires_in") var expiresIn: String)

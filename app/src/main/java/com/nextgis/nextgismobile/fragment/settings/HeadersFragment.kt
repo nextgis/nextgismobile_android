@@ -22,10 +22,10 @@
 package com.nextgis.nextgismobile.fragment.settings
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
@@ -43,7 +43,6 @@ import com.nextgis.nextgismobile.data.Setting
 import com.nextgis.nextgismobile.databinding.FragmentHeadersBinding
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
-import com.nextgis.nextgismobile.viewmodel.UserViewModel
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
 
@@ -62,40 +61,83 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             return array
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_headers, container, false)
         val authModel = ViewModelProviders.of(requireActivity()).get(AuthViewModel::class.java)
-        val userModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+//        val userModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
 
         binding.apply {
             auth = authModel
-            user = userModel
+//            user = userModel
             fragment = this@HeadersFragment
 
             list.adapter = SettingAdapter(settings, this@HeadersFragment)
-            list.layoutManager =
-                LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
+            list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
             list.isNestedScrollingEnabled = false
 
             authenticate.tint(R.color.white)
         }
 
-        authModel.token.observe(this, Observer { token ->
-            token?.let { userModel.profile() }
-        })
+//        authModel.token.observe(this, Observer { token ->
+//            token?.let { userModel.profile() }
+//        })
 
-        userModel.avatar.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+//        userModel.avatar.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+        authModel.account.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val placeholder = R.drawable.ic_account_outline_padded
                 val requestOptions = RequestOptions().circleCrop().placeholder(placeholder)
-                Glide.with(this@HeadersFragment).load(userModel.avatar.get())
-                    .apply(requestOptions).into(binding.avatar)
+                Glide.with(this@HeadersFragment).load(authModel.account.get().avatar).apply(requestOptions).into(binding.avatar)
             }
         })
 
         binding.executePendingBindings()
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_settings, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        binding.auth?.account?.get()?.authorized?.let { menu.findItem(R.id.action_signing).setVisible(it) }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_signing -> {
+                activity?.let { activity ->
+                    binding.auth?.let {
+                        if (it.account.get().authorized)
+                            showConfirmation(it, activity)
+                        else
+                            activity.startActivity<NGIDSigninActivity>()
+                    }
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showConfirmation(auth: AuthViewModel, activity: Activity) {
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.confirmation)
+            .setMessage(R.string.ngid_disconnect)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                auth.deleteAccount()
+                activity.invalidateOptionsMenu()
+            }
+            .setNegativeButton(android.R.string.cancel, null).create()
+        builder.show()
     }
 
     override fun onItemClick(key: String) {
@@ -116,7 +158,7 @@ class HeadersFragment : Fragment(), OnItemClickListener {
 
     fun action() {
         binding.auth?.let {
-            if (it.isAuthorized.get())
+            if (it.account.get().authorized)
                 toast(R.string.not_implemented)
             else
                 activity?.startActivity<NGIDSigninActivity>()
