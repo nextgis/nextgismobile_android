@@ -42,6 +42,7 @@ import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
 import com.nextgis.nextgismobile.activity.SelectFileActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
+import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
 import com.nextgis.nextgismobile.fragment.layers.LayerSettingsFragment
@@ -92,6 +93,8 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
                 }
 
                 override fun onItemDropped(initialPosition: Int, finalPosition: Int, item: Layer) {
+                    if (initialPosition == finalPosition)
+                        return
                     activity?.let { activity ->
                         val mapModel = ViewModelProviders.of(activity).get(MapViewModel::class.java)
                         mapModel.load()?.let { map ->
@@ -155,8 +158,12 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     }
 
     fun addFromNGW() {
-        toast(R.string.not_implemented)
+        AddFromInstanceDialog().show(this)
         hideBottomSheet()
+    }
+
+    fun createFromInstance(instance: Instance) {
+        toast(instance.title)
     }
 
     private fun checkResult(resultCode: Int, @StringRes info: Int) {

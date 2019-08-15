@@ -25,20 +25,32 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.databinding.DialogAddLayerBinding
+import com.nextgis.nextgismobile.adapter.InstanceAdapter
+import com.nextgis.nextgismobile.adapter.OnInstanceClickListener
+import com.nextgis.nextgismobile.data.Instance
+import com.nextgis.nextgismobile.databinding.DialogAddFromInstanceBinding
+import com.pawegio.kandroid.toast
 
-class AddLayerDialog : BottomSheetDialogFragment() {
-    private lateinit var binding: DialogAddLayerBinding
+class AddFromInstanceDialog : DialogFragment(), OnInstanceClickListener {
+    override fun onInstanceClick(instance: Instance) {
+        fragment?.createFromInstance(instance)
+        dismiss()
+    }
+
+    private lateinit var binding: DialogAddFromInstanceBinding
     private var fragment: LayersFragment? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_add_layer, null, false)
+        val dialog = Dialog(requireContext(), R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_add_from_instance, null, false)
         dialog.setContentView(binding.root)
-        binding.fragment = fragment
+        binding.fragment = this
+        binding.list.adapter = InstanceAdapter(arrayListOf(Instance("", "Test", "test", "test", "Long description", false)), this)
+        binding.list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         return dialog
     }
 
@@ -49,7 +61,11 @@ class AddLayerDialog : BottomSheetDialogFragment() {
         }
     }
 
+    fun addAccount() {
+        toast(R.string.not_implemented)
+    }
+
     companion object {
-        const val TAG = "AddLayerBottomSheet"
+        const val TAG = "AddFromInstanceDialog"
     }
 }

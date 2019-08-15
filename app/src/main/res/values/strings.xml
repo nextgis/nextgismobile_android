@@ -226,4 +226,6 @@
     <string name="color">Color</string>
     <string name="select_color">Select color</string>
     <string name="feature_more_1000">Adding layers with more than 1000 features is a pro plan option. Buy a premium to get more features!</string>
+    <string name="choose_account">Choose account</string>
+    <string name="add_account">Add account</string>
 </resources>
