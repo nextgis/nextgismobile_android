@@ -42,17 +42,16 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif"
             android:singleLine="true"
-            android:text="@{instance.title}"
+            android:text="@{instance.url}"
             android:textColor="#000"
             android:textSize="16sp"
-            tools:text="Instance title" />
+            tools:text="instance.nextgis.com" />
 
         <include
             layout="@layout/view_chevron"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:visible="@{instance.more}" />
+            android:layout_marginEnd="16dp" />
     </LinearLayout>
 
     <data>

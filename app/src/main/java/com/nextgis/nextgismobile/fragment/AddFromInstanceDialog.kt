@@ -21,7 +21,9 @@
 
 package com.nextgis.nextgismobile.fragment
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
@@ -29,11 +31,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.adapter.InstanceAdapter
+import com.nextgis.nextgismobile.activity.AddInstanceActivity
 import com.nextgis.nextgismobile.adapter.OnInstanceClickListener
 import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.databinding.DialogAddFromInstanceBinding
-import com.pawegio.kandroid.toast
+import com.pawegio.kandroid.IntentFor
+
 
 class AddFromInstanceDialog : DialogFragment(), OnInstanceClickListener {
     override fun onInstanceClick(instance: Instance) {
@@ -49,7 +52,7 @@ class AddFromInstanceDialog : DialogFragment(), OnInstanceClickListener {
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_add_from_instance, null, false)
         dialog.setContentView(binding.root)
         binding.fragment = this
-        binding.list.adapter = InstanceAdapter(arrayListOf(Instance("", "Test", "test", "test", "Long description", false)), this)
+        binding.list.adapter = getInstances(this, false)
         binding.list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         return dialog
     }
@@ -62,7 +65,17 @@ class AddFromInstanceDialog : DialogFragment(), OnInstanceClickListener {
     }
 
     fun addAccount() {
-        toast(R.string.not_implemented)
+        context?.let { startActivityForResult(IntentFor<AddInstanceActivity>(it), AddInstanceActivity.ADD_INSTANCE_REQUEST) }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            AddInstanceActivity.ADD_INSTANCE_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK)
+                    replaceInstances(binding.list.adapter)
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     companion object {

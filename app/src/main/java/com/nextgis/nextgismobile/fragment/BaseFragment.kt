@@ -30,8 +30,13 @@ import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
+import com.nextgis.maplib.API
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.adapter.InstanceAdapter
+import com.nextgis.nextgismobile.adapter.OnInstanceClickListener
+import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.util.statusBarHeight
 
 open class BaseFragment : Fragment() {
@@ -100,4 +105,32 @@ open class BaseFragment : Fragment() {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
         toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     }
+
+}
+
+
+fun replaceInstances(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>?, more: Boolean = true) {
+    (adapter as? InstanceAdapter)?.items?.let {
+        it.clear()
+        addInstances(it, more)
+    }
+}
+
+private fun addInstances(list: ArrayList<Instance>, more: Boolean) {
+    API.getCatalog()?.let {
+        for (child in it.children()) {
+            if (child.type == 72) {
+                val items = child.children()
+                for (item in items)
+                    list.add(Instance(item.name, item.path, "", "", "", more))
+                break
+            }
+        }
+    }
+}
+
+fun getInstances(listener: OnInstanceClickListener, more: Boolean = true): InstanceAdapter {
+    val list = arrayListOf<Instance>()
+    addInstances(list, more)
+    return InstanceAdapter(list, listener)
 }

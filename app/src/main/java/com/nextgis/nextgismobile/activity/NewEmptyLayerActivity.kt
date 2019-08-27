@@ -24,7 +24,6 @@ package com.nextgis.nextgismobile.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.FrameLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders

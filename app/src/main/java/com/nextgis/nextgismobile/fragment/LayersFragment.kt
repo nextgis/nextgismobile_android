@@ -163,7 +163,7 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     }
 
     fun createFromInstance(instance: Instance) {
-        toast(instance.title)
+        toast(instance.url)
     }
 
     private fun checkResult(resultCode: Int, @StringRes info: Int) {

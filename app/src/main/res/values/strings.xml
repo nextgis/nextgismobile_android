@@ -228,4 +228,7 @@
     <string name="feature_more_1000">Adding layers with more than 1000 features is a pro plan option. Buy a premium to get more features!</string>
     <string name="choose_account">Choose account</string>
     <string name="add_account">Add account</string>
+    <string name="nextgis_url">Instance URL</string>
+    <string name="connection_error">Cannot create a connection</string>
+    <string name="add_web_gis">Add Web GIS</string>
 </resources>

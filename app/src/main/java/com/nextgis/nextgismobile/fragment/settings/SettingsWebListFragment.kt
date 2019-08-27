@@ -21,6 +21,8 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,12 +32,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.adapter.InstanceAdapter
+import com.nextgis.nextgismobile.activity.AddInstanceActivity
 import com.nextgis.nextgismobile.adapter.OnInstanceClickListener
 import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.databinding.FragmentSettingsWebListBinding
+import com.nextgis.nextgismobile.fragment.getInstances
+import com.nextgis.nextgismobile.fragment.replaceInstances
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
-import com.pawegio.kandroid.toast
+import com.pawegio.kandroid.IntentFor
+
 
 class SettingsWebListFragment : SettingsFragment(), OnInstanceClickListener {
     private lateinit var binding: FragmentSettingsWebListBinding
@@ -46,7 +51,7 @@ class SettingsWebListFragment : SettingsFragment(), OnInstanceClickListener {
         binding.settings = settingsModel
         binding.fragment = this
 
-        binding.list.adapter = InstanceAdapter(arrayListOf(Instance("", "Test", "test", "test", "Long description")), this)
+        binding.list.adapter = getInstances(this)
         binding.list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
 
         binding.executePendingBindings()
@@ -60,6 +65,16 @@ class SettingsWebListFragment : SettingsFragment(), OnInstanceClickListener {
     }
 
     fun add() {
-        toast(R.string.not_implemented)
+        context?.let { startActivityForResult(IntentFor<AddInstanceActivity>(it), AddInstanceActivity.ADD_INSTANCE_REQUEST) }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            AddInstanceActivity.ADD_INSTANCE_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK)
+                    replaceInstances(binding.list.adapter)
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 }

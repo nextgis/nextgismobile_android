@@ -21,4 +21,4 @@
 
 package com.nextgis.nextgismobile.data
 
-class Instance(val id: String, val title: String, var login: String, var password: String, val description: String, val more: Boolean = true)
+class Instance(var url: String, val title: String, var login: String, var password: String, val description: String, val more: Boolean = true)

@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2018-2019 NextGIS, info@nextgis.com
+ * Copyright © 2019 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,27 +21,32 @@
 
 package com.nextgis.nextgismobile.activity
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import com.nextgis.maplib.API
+import com.nextgis.maplib.NGWConnection
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.databinding.ActivitySettingsBinding
-import com.nextgis.nextgismobile.fragment.settings.HeadersFragment
+import com.nextgis.nextgismobile.data.Instance
+import com.nextgis.nextgismobile.databinding.ActivityAddInstanceBinding
+import com.nextgis.nextgismobile.util.NonNullObservableField
 import com.nextgis.nextgismobile.util.statusBarHeight
-import com.nextgis.nextgismobile.viewmodel.AuthViewModel
-import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
-import com.pawegio.kandroid.accountManager
-import kotlinx.android.synthetic.main.activity_settings.*
+import com.nextgis.nextgismobile.util.tint
+import com.pawegio.kandroid.toast
+import kotlinx.android.synthetic.main.activity_new_layer.*
 
 
-class SettingsActivity : BaseActivity() {
-    private lateinit var binding: ActivitySettingsBinding
+class AddInstanceActivity : BaseActivity() {
+    private lateinit var binding: ActivityAddInstanceBinding
+    val instance = NonNullObservableField(Instance("", "", "", "", ""))
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_instance)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
@@ -49,47 +54,39 @@ class SettingsActivity : BaseActivity() {
         val params = binding.root.layoutParams as FrameLayout.LayoutParams
         params.topMargin = statusBarHeight
 
-        val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
-        settingsModel.setup(this)
-        settingsModel.load()
+        binding.apply {
+            activity = this@AddInstanceActivity
+            fab.tint(R.color.white)
+        }
 
-        val authModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
-        binding.auth = authModel
-        val headers = HeadersFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.headers, headers).addToBackStack("headers").commitAllowingStateLoss()
         binding.executePendingBindings()
-        authModel.init(accountManager, true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                handleBackPress()
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
-        settingsModel.save()
+    fun save() {
+        API.getCatalog()?.let {
+            val connection = NGWConnection(instance.get().url, instance.get().login, instance.get().password)
+            val status = connection.check()
+            if (status) {
+                it.createConnection(instance.get().url, connection)
+                setResult(Activity.RESULT_OK)
+                finish()
+            } else {
+                toast(R.string.connection_error)
+            }
+        }
     }
 
-    override fun onBackPressed() {
-        handleBackPress()
-    }
-
-    private fun handleBackPress() {
-        invalidateOptionsMenu()
-
-        if (supportFragmentManager.backStackEntryCount <= 2)
-            supportActionBar?.setTitle(R.string.action_settings)
-
-        if (supportFragmentManager.backStackEntryCount > 1)
-            supportFragmentManager.popBackStack()
-        else
-            finish()
+    companion object {
+        const val ADD_INSTANCE_REQUEST = 145
     }
 }
