@@ -22,7 +22,9 @@
 package com.nextgis.nextgismobile.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.databinding.ItemWebInstanceBinding
@@ -47,7 +49,10 @@ class InstanceAdapter(val items: ArrayList<Instance>, val listener: OnInstanceCl
     class ViewHolder(private var binding: ItemWebInstanceBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(repo: Instance, listener: OnInstanceClickListener) {
             binding.instance = repo
-            binding.root.setOnClickListener { listener.onInstanceClick(repo) }
+            val root = binding.root as LinearLayout
+            if (!repo.more)
+                root.getChildAt(root.childCount - 1).visibility = View.GONE
+            root.setOnClickListener { listener.onInstanceClick(repo) }
             binding.executePendingBindings()
         }
     }

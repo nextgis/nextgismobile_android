@@ -23,6 +23,8 @@ package com.nextgis.nextgismobile.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -37,6 +39,7 @@ import com.nextgis.nextgismobile.data.Field
 import com.nextgis.nextgismobile.databinding.ActivityNewLayerBinding
 import com.nextgis.nextgismobile.fragment.AddFieldDialog
 import com.nextgis.nextgismobile.util.setupDropdown
+import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.LayerViewModel
 import com.pawegio.kandroid.toast
@@ -61,6 +64,9 @@ class NewEmptyLayerActivity : BaseActivity(), OnFieldClickListener {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
+
+        val params = binding.root.layoutParams as FrameLayout.LayoutParams
+        params.topMargin = statusBarHeight
 
         val layerModel = ViewModelProviders.of(this).get(LayerViewModel::class.java)
 

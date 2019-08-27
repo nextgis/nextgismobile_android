@@ -22,9 +22,7 @@
 package com.nextgis.nextgismobile.fragment.settings
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,8 +45,23 @@ class SettingsWebInstanceFragment(val instance: Instance) : SettingsFragment() {
         binding.layers.adapter = adapter
         binding.layers.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         binding.executePendingBindings()
-        setTitle(instance.title)
+        setTitle(instance.url)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_instance, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_delete -> {
+                toast(R.string.not_implemented)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     fun checkConnection() {

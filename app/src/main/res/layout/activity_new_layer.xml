@@ -34,7 +34,7 @@
             type="com.nextgis.nextgismobile.viewmodel.LayerViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -132,5 +132,5 @@
                 android:src="@drawable/ic_content_save"
                 app:tint="@color/white" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

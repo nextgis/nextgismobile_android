@@ -29,7 +29,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -108,7 +107,8 @@ class HeadersFragment : Fragment(), OnItemClickListener {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        binding.auth?.account?.get()?.authorized?.let { menu.findItem(R.id.action_signing).setVisible(it) }
+        val topMost = requireActivity().supportFragmentManager.backStackEntryCount < 2
+        binding.auth?.account?.get()?.authorized?.let { menu.findItem(R.id.action_signing).setVisible(it && topMost) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

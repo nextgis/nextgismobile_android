@@ -21,6 +21,7 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
+import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
@@ -30,6 +31,11 @@ import com.nextgis.nextgismobile.activity.SettingsActivity
 import com.nextgis.nextgismobile.fragment.BaseFragment
 
 open class SettingsFragment : BaseFragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     open fun switch(checked: Boolean, key: String) {
         PreferenceManager.getDefaultSharedPreferences(requireActivity()).edit().putBoolean(key, checked).apply()
     }

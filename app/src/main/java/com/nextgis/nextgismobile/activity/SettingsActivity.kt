@@ -21,19 +21,19 @@
 
 package com.nextgis.nextgismobile.activity
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-import android.view.Menu
 import android.view.MenuItem
+import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivitySettingsBinding
 import com.nextgis.nextgismobile.fragment.settings.HeadersFragment
+import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.accountManager
-import com.pawegio.kandroid.startActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 
 
@@ -46,6 +46,9 @@ class SettingsActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
+
+        val params = binding.root.layoutParams as FrameLayout.LayoutParams
+        params.topMargin = statusBarHeight
 
         val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
         settingsModel.setup(this)
@@ -80,6 +83,8 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun handleBackPress() {
+        invalidateOptionsMenu()
+
         if (supportFragmentManager.backStackEntryCount <= 2)
             supportActionBar?.setTitle(R.string.action_settings)
 
