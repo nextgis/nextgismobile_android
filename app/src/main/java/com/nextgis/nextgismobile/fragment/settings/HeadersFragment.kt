@@ -92,7 +92,7 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val placeholder = R.drawable.ic_account_outline_padded
                 val requestOptions = RequestOptions().circleCrop().placeholder(placeholder)
-                Glide.with(this@HeadersFragment).load(authModel.account.get().avatar).apply(requestOptions).into(binding.avatar)
+                Glide.with(this@HeadersFragment).load(authModel.account.get()?.avatar).apply(requestOptions).into(binding.avatar)
             }
         })
 
@@ -116,7 +116,7 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             R.id.action_signing -> {
                 activity?.let { activity ->
                     binding.auth?.let {
-                        if (it.account.get().authorized)
+                        if (it.account.get() != null && it.account.get()!!.authorized)
                             showConfirmation(it, activity)
                         else
                             activity.startActivity<NGIDSigninActivity>()
@@ -158,7 +158,7 @@ class HeadersFragment : Fragment(), OnItemClickListener {
 
     fun action() {
         binding.auth?.let {
-            if (it.account.get().authorized)
+            if (it.account.get() != null && it.account.get()!!.authorized)
                 toast(R.string.not_implemented)
             else
                 activity?.startActivity<NGIDSigninActivity>()

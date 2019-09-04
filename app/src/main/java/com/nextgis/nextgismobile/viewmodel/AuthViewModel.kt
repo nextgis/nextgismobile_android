@@ -24,6 +24,7 @@ package com.nextgis.nextgismobile.viewmodel
 import android.accounts.AccountManager
 import android.accounts.AccountManagerCallback
 import android.content.Intent
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nextgis.maplib.Account
@@ -49,7 +50,7 @@ class AuthViewModel : ViewModel() {
     var token = MutableLiveData<Token>()
     var error = MutableLiveData<String>()
     val passwordVisible = NonNullObservableField(false)
-    val account = NonNullObservableField(Account("", "", ""))
+    val account: ObservableField<Account> = ObservableField()
     val fullName = NonNullObservableField("")
 
     fun init(accountManager: AccountManager?, load: Boolean) {
@@ -151,7 +152,7 @@ class AuthViewModel : ViewModel() {
 
     fun deleteAccount() {
         authModel.deleteAccount()
-        account.get().exit()
+        account.get()?.exit()
         account.set(Account("", "", ""))
         login.set("")
         this.token.value = null

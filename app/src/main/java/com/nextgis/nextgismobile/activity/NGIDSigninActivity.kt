@@ -55,10 +55,12 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
         authModel.init(accountManager, false)
         authModel.firstTime.set(!preferences.getBoolean("ngid_shown", false))
 
-        if (authModel.account.get().authorized) {
-            val newAccount = intent.getBooleanExtra("add_account", false)
-            showInfo(newAccount)
-            return
+        authModel.account.get()?.let {
+            if (it.authorized) {
+                val newAccount = intent.getBooleanExtra("add_account", false)
+                showInfo(newAccount)
+                return
+            }
         }
 
         authModel.signIn.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
