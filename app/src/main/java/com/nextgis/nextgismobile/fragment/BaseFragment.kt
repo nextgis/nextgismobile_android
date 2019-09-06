@@ -122,7 +122,7 @@ private fun addInstances(list: ArrayList<Instance>, more: Boolean) {
             if (child.type == 72) {
                 val items = child.children()
                 for (item in items)
-                    list.add(Instance(item.name, item.path, "", "", "", more))
+                    list.add(Instance(item.name.replace(".wconn", ""), item.path, "", "", "", more))
                 break
             }
         }

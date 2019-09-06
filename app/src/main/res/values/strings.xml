@@ -231,4 +231,6 @@
     <string name="nextgis_url">Instance URL</string>
     <string name="connection_error">Cannot create a connection</string>
     <string name="add_web_gis">Add Web GIS</string>
+    <string name="next">Next</string>
+    <string name="remote_resources">Nextgis.com resources</string>
 </resources>

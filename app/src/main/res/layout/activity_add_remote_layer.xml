@@ -27,10 +27,27 @@
         android:layout_height="match_parent">
 
         <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary">
+
+            <Button
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|center_vertical"
+                android:onClick="@{()->activity.next()}"
+                android:text="@string/next"
+                android:textColor="@color/white" />
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize" />
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginBottom="?attr/actionBarSize" />
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -50,6 +67,6 @@
 
         <variable
             name="activity"
-            type="com.nextgis.nextgismobile.activity.SelectFileActivity" />
+            type="com.nextgis.nextgismobile.activity.AddRemoteLayerActivity" />
     </data>
 </layout>

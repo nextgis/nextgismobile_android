@@ -27,38 +27,29 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.maplib.API
 import com.nextgis.maplib.Object
 import com.nextgis.maplib.StatusCode
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.adapter.FilesAdapter
-import com.nextgis.nextgismobile.adapter.OnFileClickListener
 import com.nextgis.nextgismobile.databinding.ActivitySelectFileBinding
-import com.nextgis.nextgismobile.fragment.AddFromFileDialog
 import com.nextgis.nextgismobile.fragment.FileLoadingDialog
+import com.nextgis.nextgismobile.fragment.FilePickerFragment
 import com.nextgis.nextgismobile.fragment.ProFeatureDialog
-import com.nextgis.nextgismobile.util.NonNullObservableField
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.pawegio.kandroid.runAsync
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.activity_new_layer.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_select_file.*
 import kotlin.math.roundToInt
 
-class SelectFileActivity : BaseActivity(), OnFileClickListener {
+
+class SelectFileActivity : BaseActivity(), PickerActivity {
     private lateinit var binding: ActivitySelectFileBinding
-    private val stack = Stack<Object>()
     private var file: Object? = null
     private var layerTitle = ""
-    val path = NonNullObservableField("/")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,30 +67,13 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
         binding.executePendingBindings()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_picker, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_refresh -> {
-                val file = stack.pop()
-                file.refresh()
-                onFileClick(file)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun addItems() {
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_READ_PERMISSIONS)
         } else {
-            list.adapter = FilesAdapter(root(), this)
-            list.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            val picker = FilePickerFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.container, picker).commit()
         }
     }
 
@@ -113,64 +87,24 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
         }
     }
 
-    private fun root(): ArrayList<Object> {
-        val children = arrayListOf<Object>()
-        API.getCatalog()?.children()?.let { addItems(children, it.toList()) }
+    override fun root(): List<Object> {
+        val children = listOf<Object>()
+        API.getCatalog()?.children()?.let {
+            for (child in it)
+                if (child.type == 52) {
+                    return child.children().toList()
+                }
+        }
         return children
     }
 
-    override fun onFileClick(file: Object) {
-        (list.adapter as? FilesAdapter)?.items?.clear()
-        val children = arrayListOf<Object>()
-        // TODO gpkg/ngrc type
-//        if (file.type == 501) { // TODO shp type
-//            toast(R.string.not_implemented)
-//            return
-//        }
-        if (file.type == 55) { // TODO zip type
-            toast(R.string.not_implemented)
-            return
-        }
-        if (file.type == 507 || file.type == 501) { // geojson
-            val dialog = AddFromFileDialog(file.name.substringBeforeLast("."))
-            dialog.show(this, DialogInterface.OnClickListener { _, _ ->
-                this.file = file
-                this.layerTitle = dialog.layerTitle
-                addLayer()
-            })
-            return
-        }
-        if (file.type == 1002) { // TODO tif type
-            toast(R.string.not_implemented)
-            return
-        }
-
-        if (file.type == -999) {
-            stack.pop()
-            if (stack.size == 0) {
-                addItems(children, root())
-                path.set("/")
-            } else {
-                addBack(children)
-                val parent = stack.peek()
-                addItems(children, parent.children().toList())
-                path.set(parent.path)
-            }
-        } else {
-            addBack(children)
-            addItems(children, file.children().toList())
-            stack.add(file)
-            path.set(file.path)
-        }
-        (list.adapter as? FilesAdapter)?.items?.addAll(children)
-        list.adapter?.notifyDataSetChanged()
-    }
-
-    private fun addLayer() {
+    override fun onLayerSelected(title: String, file: Object?) {
+        layerTitle = title
+        this.file = file
         API.getStore()?.let { store ->
             val copyOptions = mapOf(
                 "CREATE_OVERVIEWS" to "ON",
-                "NEW_NAME" to layerTitle
+                "NEW_NAME" to title
             )
 
             val dialog = FileLoadingDialog()
@@ -181,8 +115,8 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
                         dialog.progress.set((complete * 100).roundToInt())
                         if (status == StatusCode.FINISHED) { // TODO statuses
                             dialog.dismiss()
-                            val layer = store.child(layerTitle)!!
-                            addLayer(layerTitle, layer)
+                            val layer = store.child(title)!!
+                            addLayer(title, layer)
                         }
                     }
                     true
@@ -206,18 +140,10 @@ class SelectFileActivity : BaseActivity(), OnFileClickListener {
         when (requestCode) {
             PRO_FEATURE_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK)
-                    addLayer()
+                    onLayerSelected(layerTitle, file)
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
-    }
-
-    private fun addBack(children: ArrayList<Object>) {
-        children.add(Object(getString(R.string.back), -999, "", -1))
-    }
-
-    private fun addItems(children: ArrayList<Object>, items: List<Object>) {
-        children.addAll(items.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER, { it.name })).sortedBy { it.type != 53 })
     }
 
     companion object {

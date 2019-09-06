@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.activity.AddRemoteLayerActivity
 import com.nextgis.nextgismobile.activity.MainActivity
 import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
 import com.nextgis.nextgismobile.activity.SelectFileActivity
@@ -163,7 +164,11 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     }
 
     fun createFromInstance(instance: Instance) {
-        toast(instance.url)
+        context?.let {
+            val intent = IntentFor<AddRemoteLayerActivity>(it)
+            intent.putExtra("instance", instance.url)
+            startActivity(intent)
+        }
     }
 
     private fun checkResult(resultCode: Int, @StringRes info: Int) {

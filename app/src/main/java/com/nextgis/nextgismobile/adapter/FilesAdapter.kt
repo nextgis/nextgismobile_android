@@ -61,7 +61,7 @@ class FilesAdapter(val items: ArrayList<Object>, val listener: OnFileClickListen
             return when (type) {
                 51 -> R.drawable.ic_sd
                 52 -> R.drawable.ic_home
-                53 -> R.drawable.ic_folder
+                53, 74 -> R.drawable.ic_folder
                 55 -> R.drawable.ic_zip
                 -999 -> R.drawable.ic_keyboard_return
                 else -> R.drawable.ic_file_document_outline
