@@ -28,11 +28,12 @@ import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import com.nextgis.maplib.API
 import com.nextgis.maplib.Object
+import com.nextgis.maplib.activity.PickerActivity
+import com.nextgis.maplib.fragment.FilePickerFragment
+import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.databinding.ActivityAddRemoteLayerBinding
-import com.nextgis.nextgismobile.fragment.FilePickerFragment
-import com.nextgis.nextgismobile.util.NonNullObservableField
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_new_layer.*
@@ -91,7 +92,7 @@ class AddRemoteLayerActivity : BaseActivity(), PickerActivity {
         return children
     }
 
-    override fun onLayerSelected(title: String, file: Object?) {
+    override fun onLayerSelected(file: Object?) {
         toast(R.string.not_implemented)
     }
 

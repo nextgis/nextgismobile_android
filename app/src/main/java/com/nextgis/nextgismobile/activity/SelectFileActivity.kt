@@ -34,10 +34,12 @@ import androidx.databinding.DataBindingUtil
 import com.nextgis.maplib.API
 import com.nextgis.maplib.Object
 import com.nextgis.maplib.StatusCode
+import com.nextgis.maplib.activity.PickerActivity
+import com.nextgis.maplib.fragment.FilePickerFragment
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivitySelectFileBinding
+import com.nextgis.nextgismobile.fragment.AddFromFileDialog
 import com.nextgis.nextgismobile.fragment.FileLoadingDialog
-import com.nextgis.nextgismobile.fragment.FilePickerFragment
 import com.nextgis.nextgismobile.fragment.ProFeatureDialog
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.pawegio.kandroid.runAsync
@@ -49,7 +51,7 @@ import kotlin.math.roundToInt
 class SelectFileActivity : BaseActivity(), PickerActivity {
     private lateinit var binding: ActivitySelectFileBinding
     private var file: Object? = null
-    private var layerTitle = ""
+    private var layerTitle: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,40 +100,54 @@ class SelectFileActivity : BaseActivity(), PickerActivity {
         return children
     }
 
-    override fun onLayerSelected(title: String, file: Object?) {
-        layerTitle = title
+    override fun onLayerSelected(file: Object?) {
+        file?.let {
+            if (layerTitle == null && (file.type == 507 || file.type == 501)) { // geojson or shape
+                val dialog = AddFromFileDialog(file.name.substringBeforeLast("."))
+                dialog.show(this, DialogInterface.OnClickListener { _, _ ->
+                    this.file = file
+                    this.layerTitle = dialog.layerTitle
+                    onLayerSelected(file)
+                })
+            }
+        }
+
         this.file = file
         API.getStore()?.let { store ->
-            val copyOptions = mapOf(
-                "CREATE_OVERVIEWS" to "ON",
-                "NEW_NAME" to title
-            )
+            layerTitle?.let { title ->
+                val copyOptions = mapOf(
+                    "CREATE_OVERVIEWS" to "ON",
+                    "NEW_NAME" to title
+                )
 
-            val dialog = FileLoadingDialog()
-            dialog.show(this, DialogInterface.OnCancelListener { toast(R.string.not_implemented) })
-            runAsync {
-                val result = file?.copy(Object.Type.FC_GEOJSON, store, false, copyOptions) { status, complete, _ ->
+                val dialog = FileLoadingDialog()
+                dialog.show(this, DialogInterface.OnCancelListener { toast(R.string.not_implemented) })
+                runAsync {
+                    val result = file?.copy(Object.Type.FC_GEOJSON, store, false, copyOptions) { status, complete, _ ->
+                        runOnUiThread {
+                            dialog.progress.set((complete * 100).roundToInt())
+                            if (status == StatusCode.FINISHED) { // TODO statuses
+                                dialog.dismiss()
+                                val layer = store.child(title)!!
+                                addLayer(title, layer)
+                            }
+                        }
+                        true
+                    }
+
                     runOnUiThread {
-                        dialog.progress.set((complete * 100).roundToInt())
-                        if (status == StatusCode.FINISHED) { // TODO statuses
+                        if (result == null || !result) {
+                            val error = API.lastError()
+                            if (error.contains("Cannot copy") && error.contains("on your plan"))
+                                ProFeatureDialog().show(this, getString(R.string.add_layer), getString(R.string.feature_more_1000))
+                            else
+                                toast(R.string.cannot_create_layer)
                             dialog.dismiss()
-                            val layer = store.child(title)!!
-                            addLayer(title, layer)
                         }
                     }
-                    true
                 }
 
-                runOnUiThread {
-                    if (result == null || !result) {
-                        val error = API.lastError()
-                        if (error.contains("Cannot copy") && error.contains("on your plan"))
-                            ProFeatureDialog().show(this, getString(R.string.add_layer), getString(R.string.feature_more_1000))
-                        else
-                            toast(R.string.cannot_create_layer)
-                        dialog.dismiss()
-                    }
-                }
+                this.layerTitle = null
             }
         }
     }
@@ -140,7 +156,7 @@ class SelectFileActivity : BaseActivity(), PickerActivity {
         when (requestCode) {
             PRO_FEATURE_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK)
-                    onLayerSelected(layerTitle, file)
+                    onLayerSelected(file)
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }

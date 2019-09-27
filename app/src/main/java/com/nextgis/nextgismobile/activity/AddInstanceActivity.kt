@@ -29,10 +29,10 @@ import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import com.nextgis.maplib.API
 import com.nextgis.maplib.NGWConnection
+import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.databinding.ActivityAddInstanceBinding
-import com.nextgis.nextgismobile.util.NonNullObservableField
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.util.tint
 import com.pawegio.kandroid.toast

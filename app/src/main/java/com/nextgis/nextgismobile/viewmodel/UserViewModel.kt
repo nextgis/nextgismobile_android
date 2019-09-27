@@ -22,9 +22,10 @@
 package com.nextgis.nextgismobile.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.data.User
 import com.nextgis.nextgismobile.model.UserModel
-import com.nextgis.nextgismobile.util.NonNullObservableField
+
 
 class UserViewModel : ViewModel() {
     private var userModel: UserModel = UserModel()

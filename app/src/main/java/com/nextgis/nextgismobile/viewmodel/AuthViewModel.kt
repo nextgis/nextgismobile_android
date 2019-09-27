@@ -28,12 +28,13 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nextgis.maplib.Account
+import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.data.Token
 import com.nextgis.nextgismobile.data.UserCreate
 import com.nextgis.nextgismobile.model.AuthModel
 import com.nextgis.nextgismobile.util.APIService
-import com.nextgis.nextgismobile.util.NonNullObservableField
 import java.util.regex.Pattern
+
 
 class AuthViewModel : ViewModel() {
     companion object {

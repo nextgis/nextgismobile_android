@@ -27,9 +27,10 @@ import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
+import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.model.SettingsModel
-import com.nextgis.nextgismobile.util.NonNullObservableField
+
 
 class SettingsViewModel : ViewModel() {
     private var settingsModel: SettingsModel = SettingsModel()

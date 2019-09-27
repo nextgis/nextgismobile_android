@@ -28,9 +28,10 @@ import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
+import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.DialogFileLoadingBinding
-import com.nextgis.nextgismobile.util.NonNullObservableField
+
 
 class FileLoadingDialog() : DialogFragment() {
     private lateinit var binding: DialogFileLoadingBinding
