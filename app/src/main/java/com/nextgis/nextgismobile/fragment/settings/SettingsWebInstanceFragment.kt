@@ -26,12 +26,13 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.nextgis.maplib.Instance
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.adapter.LayerAdapter
-import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.FragmentSettingsWebInstanceBinding
 import com.pawegio.kandroid.toast
+
 
 class SettingsWebInstanceFragment(val instance: Instance) : SettingsFragment() {
     private lateinit var binding: FragmentSettingsWebInstanceBinding

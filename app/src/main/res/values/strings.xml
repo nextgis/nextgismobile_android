@@ -30,7 +30,6 @@
     <string name="sign_out_first">Please sign out first to add new account.</string>
     <string name="login_or_email">Login or email</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
@@ -152,7 +151,6 @@
     <string name="field_name">Name in DB</string>
     <string name="field_alias">Field name</string>
     <string name="field_type">Field type</string>
-    <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="default_value">Default value</string>
     <string name="change">Change</string>
@@ -211,9 +209,7 @@
     <string name="sync_max_size">Maximum attachment size (Mb)</string>
     <string name="over_wifi_only">Oversized attachments will be sent over Wi-Fi only</string>
     <string name="description">Description</string>
-    <string name="account">Account</string>
     <string name="check_connection">Check connection</string>
-    <string name="login">Login</string>
     <string name="add_layer_from_file">Add layer from file</string>
     <string name="load">Load</string>
     <string name="back">Back</string>
@@ -226,10 +222,6 @@
     <string name="color">Color</string>
     <string name="select_color">Select color</string>
     <string name="feature_more_1000">Adding layers with more than 1000 features is a pro plan option. Buy a premium to get more features!</string>
-    <string name="choose_account">Choose account</string>
-    <string name="add_account">Add account</string>
-    <string name="nextgis_url">Instance URL</string>
-    <string name="connection_error">Cannot create a connection</string>
     <string name="add_web_gis">Add Web GIS</string>
     <string name="next">Next</string>
     <string name="remote_resources">Nextgis.com resources</string>

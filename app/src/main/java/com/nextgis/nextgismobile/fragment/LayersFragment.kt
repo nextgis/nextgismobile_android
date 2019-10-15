@@ -36,6 +36,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
+import com.nextgis.maplib.Instance
+import com.nextgis.maplib.adapter.OnInstanceClickListener
+import com.nextgis.maplib.fragment.SelectInstanceDialog
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.AddRemoteLayerActivity
 import com.nextgis.nextgismobile.activity.MainActivity
@@ -43,7 +46,6 @@ import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
 import com.nextgis.nextgismobile.activity.SelectFileActivity
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.adapter.OnLayerClickListener
-import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.FragmentLayersBinding
 import com.nextgis.nextgismobile.fragment.layers.LayerSettingsFragment
@@ -159,7 +161,13 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     }
 
     fun addFromNGW() {
-        AddFromInstanceDialog().show(this)
+        activity?.let {
+            SelectInstanceDialog().show(it, object : OnInstanceClickListener {
+                override fun onInstanceClick(instance: Instance) {
+                    createFromInstance(instance)
+                }
+            })
+        }
         hideBottomSheet()
     }
 

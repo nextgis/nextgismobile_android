@@ -28,7 +28,7 @@ import com.nextgis.maplib.MapDocument
 
 class MapModel {
     fun init(context: Context) {
-        API.init(context)
+        API.init(context, API.generatePrivateKey())
     }
 
     fun load(): MapDocument? {

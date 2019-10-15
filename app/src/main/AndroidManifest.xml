@@ -96,9 +96,9 @@
             android:theme="@style/AppTheme.NoActionBar.WhiteTranslucentStatus" />
 
         <activity
-            android:name=".activity.AddInstanceActivity"
+            android:name="com.nextgis.maplib.activity.AddInstanceActivity"
             android:label="@string/add_web_gis"
-            android:theme="@style/AppTheme.NoActionBar.WhiteTranslucentStatus" />
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
 
         <activity
             android:name=".activity.AddRemoteLayerActivity"

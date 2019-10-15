@@ -31,13 +31,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.nextgis.maplib.Instance
+import com.nextgis.maplib.activity.AddInstanceActivity
+import com.nextgis.maplib.adapter.OnInstanceClickListener
+import com.nextgis.maplib.adapter.getInstances
+import com.nextgis.maplib.adapter.replaceInstances
 import com.nextgis.nextgismobile.R
-import com.nextgis.nextgismobile.activity.AddInstanceActivity
-import com.nextgis.nextgismobile.adapter.OnInstanceClickListener
-import com.nextgis.nextgismobile.data.Instance
 import com.nextgis.nextgismobile.databinding.FragmentSettingsWebListBinding
-import com.nextgis.nextgismobile.fragment.getInstances
-import com.nextgis.nextgismobile.fragment.replaceInstances
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.IntentFor
 
