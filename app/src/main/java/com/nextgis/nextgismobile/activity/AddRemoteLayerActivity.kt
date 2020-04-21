@@ -3,7 +3,7 @@
  * Purpose:  Mobile GIS for Android
  * Author:   Stanislav Petriakov, becomeglory@gmail.com
  * ****************************************************************************
- * Copyright © 2019 NextGIS, info@nextgis.com
+ * Copyright © 2019-2020 NextGIS, info@nextgis.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.maplib.API
 import com.nextgis.maplib.Instance
 import com.nextgis.maplib.Object
@@ -34,14 +35,16 @@ import com.nextgis.maplib.fragment.FilePickerFragment
 import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityAddRemoteLayerBinding
+import com.nextgis.nextgismobile.fragment.DownloadVectorLayerFragment
 import com.nextgis.nextgismobile.util.statusBarHeight
+import com.nextgis.nextgismobile.viewmodel.LayerDownloadViewModel
 import com.pawegio.kandroid.toast
 import kotlinx.android.synthetic.main.activity_new_layer.*
 
 
 class AddRemoteLayerActivity : BaseActivity(), PickerActivity {
     private lateinit var binding: ActivityAddRemoteLayerBinding
-    val instance = NonNullObservableField(Instance("", "", "", "", ""))
+    val instance = NonNullObservableField(Instance("source.nextgis.com", "", "administrator", "6A5tAj0u", ""))
     private var name = ""
 
     @SuppressLint("ClickableViewAccessibility")
@@ -53,13 +56,16 @@ class AddRemoteLayerActivity : BaseActivity(), PickerActivity {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
 
-        name = intent.getStringExtra("instance")
+        name = intent.getStringExtra("instance") ?: ""
 
         val params = binding.root.layoutParams as FrameLayout.LayoutParams
         params.topMargin = statusBarHeight
 
+        val downloadModel = ViewModelProvider(this).get(LayerDownloadViewModel::class.java)
+
         binding.apply {
             activity = this@AddRemoteLayerActivity
+            model = downloadModel
         }
 
         binding.executePendingBindings()
@@ -96,7 +102,17 @@ class AddRemoteLayerActivity : BaseActivity(), PickerActivity {
         toast(R.string.not_implemented)
     }
 
-    fun next() {
+    fun previous() {
         toast(R.string.not_implemented)
+    }
+
+    fun next() {
+        binding.model?.next()
+
+        // TODO handle different types
+        val vector = DownloadVectorLayerFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.container, vector).commit()
+
+        title = binding.model?.vectorLayer?.title
     }
 }

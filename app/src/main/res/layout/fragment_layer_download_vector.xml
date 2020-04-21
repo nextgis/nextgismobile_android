@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Project:  NextGIS Mobile
+  ~ Purpose:  Mobile GIS for Android
+  ~ Author:   Stanislav Petriakov, becomeglory@gmail.com
+  ~ *****************************************************************************
+  ~ Copyright © 2020 NextGIS, info@nextgis.com
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.nextgis.nextgismobile.viewmodel.LayerDownloadViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        tools:context=".activity.AddRemoteLayerActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/layer_name"
+                    android:inputType="text"
+                    android:text="@={model.vectorLayer.title}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/layer_type"
+                android:textColor="@color/colorPrimary" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    style="@style/SettingsTitle"
+                    android:checked="@{model.vectorType}"
+                    android:layoutDirection="rtl"
+                    android:onClick="@{() -> model.changeType()}"
+                    android:text="@string/vector" />
+
+                <RadioButton
+                    style="@style/SettingsTitle"
+                    android:checked="@{!model.vectorType}"
+                    android:layoutDirection="rtl"
+                    android:onClick="@{() -> model.changeType()}"
+                    android:text="@string/raster" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/layers"
+                android:textColor="@color/colorPrimary" />
+
+            <RadioGroup
+                android:id="@+id/forms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visible="@{model.vectorType}" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/layers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visible="@{!model.vectorType}"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_raster_layer" />
+        </LinearLayout>
+    </ScrollView>
+</layout>
