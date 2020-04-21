@@ -120,10 +120,10 @@
         <item name="rippleColor">@color/white</item>
     </style>
 
-    <style name="DarkPopupStyle" parent="Widget.MaterialComponents.PopupMenu.Dark">
+    <style name="DarkPopupStyle" parent="Widget.MaterialComponents.PopupMenu">
     </style>
 
-    <style name="DarkPopup" parent="Widget.MaterialComponents.PopupMenu.Dark">
+    <style name="DarkPopup" parent="Widget.MaterialComponents.PopupMenu">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:itemBackground">@color/deep_blue</item>
     </style>
