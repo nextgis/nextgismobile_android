@@ -25,7 +25,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.nextgis.nextgismobile.R
@@ -33,7 +32,10 @@ import com.nextgis.nextgismobile.data.Layer
 import com.nextgis.nextgismobile.databinding.DialogLayerFromFileBinding
 
 class AddFromFileDialog(val name: String) : DialogFragment() {
-    private lateinit var binding: DialogLayerFromFileBinding
+
+    private var _binding: DialogLayerFromFileBinding? = null
+    private val binding get() = _binding!!
+
     private var listener: DialogInterface.OnClickListener? = null
     val layerTitle by lazy {
         binding.layer?.title ?: name
@@ -41,7 +43,7 @@ class AddFromFileDialog(val name: String) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext(), R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_layer_from_file, null, false)
+        _binding = DialogLayerFromFileBinding.inflate(LayoutInflater.from(context), null, false)
         dialog.setContentView(binding.root)
 
         binding.apply {
@@ -71,5 +73,10 @@ class AddFromFileDialog(val name: String) : DialogFragment() {
 
     companion object {
         const val TAG = "AddFromFileDialog"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

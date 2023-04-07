@@ -31,8 +31,7 @@ import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.nextgis.maplib.CoordinateTransformation
 import com.nextgis.maplib.GestureDelegate
@@ -51,18 +50,19 @@ import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.runDelayed
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
+
 
 
 class MainActivity : BaseActivity(), GestureDelegate {
+
     private lateinit var binding: ActivityMainBinding
     internal var map: MapDocument? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setSupportActionBar(bottomBar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.bottomBar)
 
         initMap()
         initLocation()
@@ -77,18 +77,18 @@ class MainActivity : BaseActivity(), GestureDelegate {
                 snackbar(R.string.not_implemented)
             }
 
-            zoomIn.setOnClickListener { mapView.zoomIn() }
-            zoomOut.setOnClickListener { mapView.zoomOut() }
+            zoomIn.setOnClickListener { binding.mapinclude.mapView.zoomIn() }
+            zoomOut.setOnClickListener { binding.mapinclude.mapView.zoomOut() }
             locate.setOnClickListener {
-                val locationModel = ViewModelProviders.of(this@MainActivity).get(LocationViewModel::class.java)
+                val locationModel = ViewModelProvider(this@MainActivity).get(LocationViewModel::class.java)
                 locationModel.location?.let {
                     val ct = CoordinateTransformation.new(4326, 3857)
                     val newCenter = ct.transform(Point(it.longitude, it.latitude))
-                    mapView.centerMap(newCenter)
+                    binding.mapinclude.mapView.centerMap(newCenter)
                 }
             }
 
-            val settingsModel = ViewModelProviders.of(this@MainActivity).get(SettingsViewModel::class.java)
+            val settingsModel = ViewModelProvider(this@MainActivity).get(SettingsViewModel::class.java)
             settingsModel.setup(this@MainActivity)
             settings = settingsModel
         }
@@ -124,13 +124,13 @@ class MainActivity : BaseActivity(), GestureDelegate {
     }
 
     private fun initMap() {
-        val mapModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
+        val mapModel = ViewModelProvider(this).get(MapViewModel::class.java)
         mapModel.init(this)
 
-        map = mapModel.load()
-        map?.let { mapView.setMap(it) }
-        mapView.registerGestureRecognizers(this)
-        mapView.freeze = false
+        map = mapModel.load(this)
+        map?.let { binding.mapinclude.mapView.setMap(it) }
+        binding.mapinclude.mapView.registerGestureRecognizers(this)
+        binding.mapinclude.mapView.freeze = false
     }
 
     override fun onStart() {
@@ -173,11 +173,11 @@ class MainActivity : BaseActivity(), GestureDelegate {
 
     fun refresh() {
 //        mapView.refresh()
-        mapView.invalidate(mapView.mapExtent)
+        binding.mapinclude.mapView.invalidate(binding.mapinclude.mapView.mapExtent)
     }
 
     fun snackbar(@StringRes text: Int) {
-        val snackbar = Snackbar.make(coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.fab)
+        val snackbar = Snackbar.make(binding.coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.fab)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             snackbar.view.elevation = dpToPx(8).toFloat()
         }

@@ -24,7 +24,6 @@ package com.nextgis.nextgismobile.fragment
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.NewEmptyLayerActivity
@@ -33,14 +32,17 @@ import com.nextgis.nextgismobile.databinding.DialogAddFieldBinding
 import com.nextgis.nextgismobile.util.setupDropdown
 
 class AddFieldDialog : DialogFragment() {
-    private lateinit var binding: DialogAddFieldBinding
+
+    private var _binding: DialogAddFieldBinding? = null
+    private val binding get() = _binding!!
+
     private var newField = Field("", "", com.nextgis.maplib.Field.Type.INTEGER, "")
     private var activity: NewEmptyLayerActivity? = null
     var change = false
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext(), R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_add_field, null, false)
+        _binding = DialogAddFieldBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
 
         binding.apply {
@@ -48,7 +50,7 @@ class AddFieldDialog : DialogFragment() {
             binding.field = newField
 
             val callback = { value: String -> newField.type = com.nextgis.maplib.Field.Type.from(value.toInt()) }
-            type.setupDropdown(R.array.field_type, R.array.field_type_value, newField.type.code.toString(), callback)
+            binding.type.setupDropdown(R.array.field_type, R.array.field_type_value, newField.type.code.toString(), callback)
         }
 
         return dialog
@@ -74,5 +76,10 @@ class AddFieldDialog : DialogFragment() {
 
     companion object {
         const val TAG = "AddNewFieldDialog"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

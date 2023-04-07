@@ -21,23 +21,24 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsGeneralBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.toast
 
 class SettingsGeneralFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsGeneralBinding
+
+    private var _binding: FragmentSettingsGeneralBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_general, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsGeneralBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.apply {
             fragment = this@SettingsGeneralFragment
             settings = settingsModel
@@ -53,6 +54,12 @@ class SettingsGeneralFragment : SettingsFragment() {
             showDialog(R.array.data_storage_path, R.array.data_storage_path_value, it, R.string.data_storage)
             { value -> binding.settings?.mapPath?.set(value) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 
 }

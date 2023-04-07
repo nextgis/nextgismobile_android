@@ -23,10 +23,9 @@ package com.nextgis.nextgismobile.fragment.settings
 
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.nextgis.maplib.Instance
+//import com.nextgis.maplib .Instance
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.adapter.LayerAdapter
 import com.nextgis.nextgismobile.data.Layer
@@ -34,19 +33,22 @@ import com.nextgis.nextgismobile.databinding.FragmentSettingsWebInstanceBinding
 import com.pawegio.kandroid.toast
 
 
-class SettingsWebInstanceFragment(val instance: Instance) : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsWebInstanceBinding
+class SettingsWebInstanceFragment() : SettingsFragment() {
+
+    private var _binding: FragmentSettingsWebInstanceBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var adapter: LayerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_web_instance, container, false)
-        binding.instance = instance
+        _binding = FragmentSettingsWebInstanceBinding.inflate(inflater, container, false)
+//        binding.instance = instance
         binding.fragment = this
         adapter = LayerAdapter(arrayListOf(Layer(1, null)), null)
         binding.layers.adapter = adapter
         binding.layers.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
         binding.executePendingBindings()
-        setTitle(instance.url)
+//        setTitle(instance.url)
         return binding.root
     }
 
@@ -72,5 +74,11 @@ class SettingsWebInstanceFragment(val instance: Instance) : SettingsFragment() {
     override fun onDestroy() {
         setTitle(R.string.webgis)
         super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 }

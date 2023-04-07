@@ -25,7 +25,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,10 +38,12 @@ import com.nextgis.nextgismobile.viewmodel.LayerDownloadViewModel
 
 
 class DownloadVectorLayerFragment : BaseFragment() {
-    private lateinit var binding: FragmentLayerDownloadVectorBinding
+
+    private var _binding: FragmentLayerDownloadVectorBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_download_vector, container, false)
+        _binding = FragmentLayerDownloadVectorBinding.inflate(inflater, container, false)
 
         binding.apply {
             activity?.let { activity ->
@@ -69,5 +70,10 @@ class DownloadVectorLayerFragment : BaseFragment() {
         }
         binding.executePendingBindings()
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -40,9 +40,9 @@ class MapViewModel : ViewModel() {
         mapModel.init(context)
     }
 
-    fun load(): MapDocument? {
+    fun load(context : Context): MapDocument? {
         if (map == null)
-            map = mapModel.load()
+            map = mapModel.load(context)
         return map
     }
 

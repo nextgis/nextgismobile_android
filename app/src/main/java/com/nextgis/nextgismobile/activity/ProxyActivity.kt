@@ -21,9 +21,8 @@
 
 package com.nextgis.nextgismobile.activity
 
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.preference.PreferenceManager
+ import androidx.preference.PreferenceManager
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityProxyBinding
 import com.pawegio.kandroid.runDelayed
@@ -35,7 +34,10 @@ class ProxyActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_proxy)
+        binding = ActivityProxyBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //DataBindingUtil.setContentView(this, R.layout.activity_proxy)
         binding.executePendingBindings()
         hideStatusBar(window)
 

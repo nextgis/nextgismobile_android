@@ -26,10 +26,10 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -47,7 +47,11 @@ import com.pawegio.kandroid.toast
 
 
 class HeadersFragment : Fragment(), OnItemClickListener {
-    private lateinit var binding: FragmentHeadersBinding
+
+    private var _binding: FragmentHeadersBinding? = null
+    private val binding get() = _binding!!
+//    private lateinit var binding: FragmentHeadersBinding
+
     private val settings: List<Setting>
         get() {
             val array = arrayListOf<Setting>()
@@ -67,9 +71,10 @@ class HeadersFragment : Fragment(), OnItemClickListener {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_headers, container, false)
-        val authModel = ViewModelProviders.of(requireActivity()).get(AuthViewModel::class.java)
-//        val userModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+        _binding = FragmentHeadersBinding.inflate(inflater, container, false)
+//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_headers, container, false)
+        val authModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
+//        val userModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         binding.apply {
             auth = authModel
@@ -163,6 +168,12 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             else
                 activity?.startActivity<NGIDSigninActivity>()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 
 }

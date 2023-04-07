@@ -23,14 +23,14 @@ package com.nextgis.nextgismobile.activity
 
 import android.app.Activity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+ 
 import android.content.SharedPreferences
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import android.os.Bundle
-import android.preference.PreferenceManager
+ import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AlertDialog
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.auth.AccountAuthenticatorActivity
 import com.nextgis.nextgismobile.databinding.ActivitySigninBinding
@@ -49,8 +49,11 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         BaseActivity.hideStatusBar(window)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_signin)
-        val authModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        binding = ActivitySigninBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //DataBindingUtil.setContentView(this, R.layout.activity_signin)
+        val authModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         binding.auth = authModel
         authModel.init(accountManager, false)
         authModel.firstTime.set(!preferences.getBoolean("ngid_shown", false))

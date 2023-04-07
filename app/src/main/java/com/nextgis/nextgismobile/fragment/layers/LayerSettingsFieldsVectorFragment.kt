@@ -26,21 +26,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import androidx.databinding.DataBindingUtil
 import com.nextgis.maplib.FeatureClass
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Field
 import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsFieldsVectorBinding
+import com.nextgis.nextgismobile.databinding.FragmentSettingsLocationBinding
 import com.nextgis.nextgismobile.databinding.ItemFieldBinding
 
 
 open class LayerSettingsFieldsVectorFragment(private val vectorLayer: VectorLayer) : LayerSettingsBaseFragment(vectorLayer) {
-    private lateinit var binding: FragmentLayerSettingsFieldsVectorBinding
+
+    private var _binding: FragmentLayerSettingsFieldsVectorBinding? = null
+    private val binding get() = _binding!!
+
     private val layerFields = (vectorLayer.handle?.dataSource as? FeatureClass)?.fields
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_fields_vector, container, false)
+        _binding = FragmentLayerSettingsFieldsVectorBinding.inflate(inflater, container, false)
 
         binding.apply {
             layerFields?.let { items ->
@@ -66,4 +69,10 @@ open class LayerSettingsFieldsVectorFragment(private val vectorLayer: VectorLaye
             vectorLayer.alias = it
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

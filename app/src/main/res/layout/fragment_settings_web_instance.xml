@@ -24,9 +24,9 @@
 
     <data>
 
-        <variable
-            name="instance"
-            type="com.nextgis.maplib.Instance" />
+<!--        <variable-->
+<!--            name="instance"-->
+<!--            type="com.nextgis.maplib.Instance" />-->
 
         <variable
             name="fragment"
@@ -56,7 +56,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@{instance.description}"
+
             tools:text="Long instance description Long instance description Long instance description" />
 
         <TextView
@@ -76,7 +76,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/login"
                 android:inputType="textAutoComplete"
-                android:text="@={instance.login}" />
+
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout style="@style/SettingsEditText">
@@ -86,7 +87,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:text="@={instance.password}" />
+
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

@@ -25,7 +25,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.nextgis.maplib.util.NonNullObservableField
@@ -37,13 +36,16 @@ import com.skydoves.colorpickerview.sliders.BrightnessSlideBar
 
 
 class ColorPickerDialog : DialogFragment() {
-    private lateinit var binding: DialogColorPickerBinding
+
+    private var _binding: DialogColorPickerBinding? = null
+    private val binding get() = _binding!!
+
     val color = NonNullObservableField("")
     private var listener: ((color: String) -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext(), R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_color_picker, null, false)
+        _binding = DialogColorPickerBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
         binding.apply {
             fragment = this@ColorPickerDialog
@@ -78,5 +80,10 @@ class ColorPickerDialog : DialogFragment() {
 
     companion object {
         const val TAG = "ColorPickerDialog"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

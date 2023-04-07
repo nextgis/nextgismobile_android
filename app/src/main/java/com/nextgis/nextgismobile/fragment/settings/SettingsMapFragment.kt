@@ -21,23 +21,24 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsMapBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.toast
 
 class SettingsMapFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsMapBinding
+
+    private var _binding: FragmentSettingsMapBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_map, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsMapBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.apply {
             fragment = this@SettingsMapFragment
             settings = settingsModel
@@ -69,6 +70,12 @@ class SettingsMapFragment : SettingsFragment() {
             showDialog(R.array.map_background, R.array.map_background_value, it, R.string.map_background)
             { value -> binding.settings?.mapBackground?.set(value) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 
 }

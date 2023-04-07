@@ -26,24 +26,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+
 import androidx.viewpager.widget.ViewPager
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsWebBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 
 class SettingsWebFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsWebBinding
+
+    private var _binding: FragmentSettingsWebBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var adapter: WebGISPagerAdapter
     private lateinit var viewPager: ViewPager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_web, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsWebBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.settings = settingsModel
         binding.executePendingBindings()
         setTitle(R.string.webgis)
@@ -80,6 +83,12 @@ class SettingsWebFragment : SettingsFragment() {
                 else -> context.getString(R.string.params)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 
 }

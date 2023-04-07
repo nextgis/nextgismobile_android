@@ -25,20 +25,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsStyleBinding
 import com.nextgis.nextgismobile.fragment.ColorPickerDialog
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 
 class SettingsStyleFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsStyleBinding
+    private var _binding: FragmentSettingsStyleBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_style, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsStyleBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.apply {
             settings = settingsModel
             fragment = this@SettingsStyleFragment
@@ -88,7 +88,7 @@ class SettingsStyleFragment : SettingsFragment() {
     fun fillColor() {
         activity?.let {
             val dialog = ColorPickerDialog()
-            val settingsModel = ViewModelProviders.of(it).get(SettingsViewModel::class.java)
+            val settingsModel = ViewModelProvider(it).get(SettingsViewModel::class.java)
             dialog.show(it, settingsModel.fillColor.get()) { color -> settingsModel.fillColor.set(color) }
         }
     }
@@ -96,8 +96,14 @@ class SettingsStyleFragment : SettingsFragment() {
     fun strokeColor() {
         activity?.let {
             val dialog = ColorPickerDialog()
-            val settingsModel = ViewModelProviders.of(it).get(SettingsViewModel::class.java)
+            val settingsModel = ViewModelProvider(it).get(SettingsViewModel::class.java)
             dialog.show(it, settingsModel.strokeColor.get()) { color -> settingsModel.strokeColor.set(color) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 }

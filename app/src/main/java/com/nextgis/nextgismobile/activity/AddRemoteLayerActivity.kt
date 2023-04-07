@@ -25,33 +25,35 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.nextgis.maplib.API
-import com.nextgis.maplib.Instance
+//import com.nextgis.maplib.Instance
 import com.nextgis.maplib.Object
 import com.nextgis.maplib.activity.PickerActivity
 import com.nextgis.maplib.fragment.FilePickerFragment
 import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityAddRemoteLayerBinding
+import com.nextgis.nextgismobile.databinding.ActivityMainBinding
 import com.nextgis.nextgismobile.fragment.DownloadVectorLayerFragment
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.viewmodel.LayerDownloadViewModel
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.activity_new_layer.*
+
 
 
 class AddRemoteLayerActivity : BaseActivity(), PickerActivity {
     private lateinit var binding: ActivityAddRemoteLayerBinding
-    val instance = NonNullObservableField(Instance("source.nextgis.com", "", "administrator", "6A5tAj0u", ""))
+//    val instance = NonNullObservableField(
+//        Instance("source.nextgis.com", "", "administrator", "6A5tAj0u", ""))
     private var name = ""
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_remote_layer)
-        setSupportActionBar(toolbar)
+        binding = ActivityAddRemoteLayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)

@@ -21,26 +21,33 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsTracksBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 
 class SettingsTracksFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsTracksBinding
+
+    private var _binding: FragmentSettingsTracksBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_tracks, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsTracksBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.settings = settingsModel
         binding.executePendingBindings()
         setTitle(R.string.tracking)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 
 }

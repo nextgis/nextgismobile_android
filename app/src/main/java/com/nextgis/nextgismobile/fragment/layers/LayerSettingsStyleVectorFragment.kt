@@ -25,7 +25,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import com.nextgis.maplib.FeatureClass
 import com.nextgis.maplib.Geometry
@@ -40,10 +39,12 @@ import com.nextgis.nextgismobile.util.setupDropdown
 
 
 open class LayerSettingsStyleVectorFragment(private val vectorLayer: VectorLayer) : LayerSettingsBaseFragment(vectorLayer) {
-    private lateinit var binding: FragmentLayerSettingsStyleVectorBinding
+
+    private var _binding: FragmentLayerSettingsStyleVectorBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_vector, container, false)
+        _binding = FragmentLayerSettingsStyleVectorBinding.inflate(inflater, container, false)
         binding.layer = vectorLayer
         binding.fragment = this
 
@@ -119,4 +120,10 @@ open class LayerSettingsStyleVectorFragment(private val vectorLayer: VectorLayer
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

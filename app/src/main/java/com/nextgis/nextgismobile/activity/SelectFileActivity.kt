@@ -30,7 +30,6 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import com.nextgis.maplib.API
 import com.nextgis.maplib.Object
 import com.nextgis.maplib.StatusCode
@@ -44,7 +43,6 @@ import com.nextgis.nextgismobile.fragment.ProFeatureDialog
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.pawegio.kandroid.runAsync
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.activity_select_file.*
 import kotlin.math.roundToInt
 
 
@@ -55,8 +53,9 @@ class SelectFileActivity : BaseActivity(), PickerActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_select_file)
-        setSupportActionBar(toolbar)
+        binding = ActivitySelectFileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)

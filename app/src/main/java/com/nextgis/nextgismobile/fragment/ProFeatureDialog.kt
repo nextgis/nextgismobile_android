@@ -24,7 +24,6 @@ package com.nextgis.nextgismobile.fragment
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.nextgis.nextgismobile.R
@@ -35,11 +34,13 @@ import com.pawegio.kandroid.IntentFor
 
 
 class ProFeatureDialog : DialogFragment() {
-    private lateinit var binding: DialogProFeatureBinding
+
+    private var _binding: DialogProFeatureBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext(), R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_pro_feature, null, false)
+        _binding = DialogProFeatureBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
         binding.apply {
             fragment = this@ProFeatureDialog
@@ -71,5 +72,10 @@ class ProFeatureDialog : DialogFragment() {
 
     companion object {
         const val TAG = "ProFeatureDialog"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

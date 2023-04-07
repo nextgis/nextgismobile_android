@@ -25,7 +25,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.appyvet.materialrangebar.RangeBar
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.Layer
@@ -33,10 +32,11 @@ import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsGeneralBinding
 
 
 open class LayerSettingsGeneralFragment(layer: Layer) : LayerSettingsBaseFragment(layer) {
-    private lateinit var binding: FragmentLayerSettingsGeneralBinding
+    private var _binding: FragmentLayerSettingsGeneralBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_general, container, false)
+        _binding = FragmentLayerSettingsGeneralBinding.inflate(inflater, container, false)
         binding.layer = layer
 
         updateHint(layer.minZoom, layer.maxZoom)
@@ -63,4 +63,10 @@ open class LayerSettingsGeneralFragment(layer: Layer) : LayerSettingsBaseFragmen
         // TODO units
         binding.hint.text = getString(R.string.zoom_hint, leftPinIndex, 4f, "km", rightPinIndex, 900f, "m")
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

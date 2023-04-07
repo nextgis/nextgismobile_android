@@ -24,9 +24,9 @@ package com.nextgis.nextgismobile.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.FrameLayout
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.maplib.API
@@ -42,7 +42,6 @@ import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.LayerViewModel
 import com.pawegio.kandroid.toast
-import kotlinx.android.synthetic.main.activity_new_layer.*
 
 class NewEmptyLayerActivity : BaseActivity(), OnFieldClickListener {
     override fun onEditClick(field: Field) {
@@ -59,15 +58,16 @@ class NewEmptyLayerActivity : BaseActivity(), OnFieldClickListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_new_layer)
-        setSupportActionBar(toolbar)
+        binding = ActivityNewLayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
         val params = binding.root.layoutParams as FrameLayout.LayoutParams
         params.topMargin = statusBarHeight
 
-        val layerModel = ViewModelProviders.of(this).get(LayerViewModel::class.java)
+        val layerModel = ViewModelProvider(this).get(LayerViewModel::class.java)
 
         binding.apply {
             model = layerModel

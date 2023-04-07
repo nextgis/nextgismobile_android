@@ -26,7 +26,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -40,7 +39,10 @@ import com.nextgis.nextgismobile.fragment.BaseFragment
 
 
 class LayerSettingsFragment() : BaseFragment() {
-    private lateinit var binding: FragmentLayerSettingsBinding
+
+    private var _binding: FragmentLayerSettingsBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var adapter: SettingsPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var layer: Layer
@@ -50,7 +52,7 @@ class LayerSettingsFragment() : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings, container, false)
+        _binding = FragmentLayerSettingsBinding.inflate(inflater, container, false)
         binding.apply {
             setupStatus(status)
             setupToolbar(toolbar, R.string.layer_settings)
@@ -99,5 +101,11 @@ class LayerSettingsFragment() : BaseFragment() {
             }
         }
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
 
 }

@@ -23,7 +23,7 @@ package com.nextgis.nextgismobile.model
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.annotation.SuppressLint
 import android.provider.Settings
 
@@ -70,7 +70,7 @@ class SettingsModel {
     private lateinit var preferences: SharedPreferences
     var context: Context? = null
         set(value) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(value)
+            preferences = PreferenceManager.getDefaultSharedPreferences(value!!)
             field = value
         }
 

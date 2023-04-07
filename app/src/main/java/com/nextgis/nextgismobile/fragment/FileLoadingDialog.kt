@@ -25,7 +25,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.nextgis.maplib.util.NonNullObservableField
@@ -34,13 +33,16 @@ import com.nextgis.nextgismobile.databinding.DialogFileLoadingBinding
 
 
 class FileLoadingDialog() : DialogFragment() {
-    private lateinit var binding: DialogFileLoadingBinding
+
+    private var _binding: DialogFileLoadingBinding? = null
+    private val binding get() = _binding!!
+
     private var listener: DialogInterface.OnCancelListener? = null
     val progress = NonNullObservableField(0)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext(), R.style.Base_ThemeOverlay_AppCompat_Dialog_Alert)
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_file_loading, null, false)
+        _binding = DialogFileLoadingBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
         binding.fragment = this
         return dialog
@@ -60,5 +62,10 @@ class FileLoadingDialog() : DialogFragment() {
 
     companion object {
         const val TAG = "FileLoadingDialog"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

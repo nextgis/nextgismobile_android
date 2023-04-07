@@ -24,8 +24,8 @@ package com.nextgis.nextgismobile.activity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivitySettingsBinding
 import com.nextgis.nextgismobile.fragment.settings.HeadersFragment
@@ -33,7 +33,6 @@ import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.accountManager
-import kotlinx.android.synthetic.main.activity_settings.*
 
 
 class SettingsActivity : BaseActivity() {
@@ -41,19 +40,20 @@ class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
-        setSupportActionBar(toolbar)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
 
         val params = binding.root.layoutParams as FrameLayout.LayoutParams
         params.topMargin = statusBarHeight
 
-        val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
+        val settingsModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
         settingsModel.setup(this)
         settingsModel.load()
 
-        val authModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        val authModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         binding.auth = authModel
         val headers = HeadersFragment()
         supportFragmentManager.beginTransaction().replace(R.id.headers, headers).addToBackStack("headers").commitAllowingStateLoss()
@@ -73,7 +73,7 @@ class SettingsActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        val settingsModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
+        val settingsModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
         settingsModel.save()
     }
 

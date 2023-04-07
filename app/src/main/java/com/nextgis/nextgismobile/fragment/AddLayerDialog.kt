@@ -24,19 +24,22 @@ package com.nextgis.nextgismobile.fragment
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.DialogAddLayerBinding
 
+
 class AddLayerDialog : BottomSheetDialogFragment() {
-    private lateinit var binding: DialogAddLayerBinding
+
+    private var _binding: DialogAddLayerBinding? = null
+    private val binding get() = _binding!!
+
+    //private lateinit var binding: DialogAddLayerBinding
     private var fragment: LayersFragment? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_add_layer, null, false)
+        _binding = DialogAddLayerBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
         binding.fragment = fragment
         return dialog
@@ -51,5 +54,10 @@ class AddLayerDialog : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "AddLayerBottomSheet"
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

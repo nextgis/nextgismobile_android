@@ -24,11 +24,13 @@ package com.nextgis.nextgismobile.activity
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
+ import androidx.preference.PreferenceManager
+
+
 import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.viewmodel.MapViewModel
@@ -49,8 +51,8 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected fun addLayer(title: String, layer: Object) {
-        val mapModel = ViewModelProviders.of(this).get(MapViewModel::class.java)
-        val map = mapModel.load()
+        val mapModel = ViewModelProvider(this).get(MapViewModel::class.java)
+        val map = mapModel.load(this)
         map?.addLayer(title, layer)
         map?.save()?.let { success ->
             if (success) {

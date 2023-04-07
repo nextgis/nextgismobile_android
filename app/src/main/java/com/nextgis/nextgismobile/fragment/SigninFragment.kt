@@ -22,12 +22,12 @@
 package com.nextgis.nextgismobile.fragment
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
+ 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSigninBinding
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
@@ -38,12 +38,13 @@ class SigninFragment : AuthFragment() {
     override val listener: DrawableClick
         get() = this
 
-    private lateinit var binding: FragmentSigninBinding
+    private var _binding: FragmentSigninBinding? = null
+    private val binding get() = _binding!!
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signin, container, false)
-        val authModel = ViewModelProviders.of(requireActivity()).get(AuthViewModel::class.java)
+        _binding = FragmentSigninBinding.inflate(inflater, container, false)
+        val authModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
         binding.apply {
             auth = authModel
             fragment = this@SigninFragment
@@ -72,5 +73,10 @@ class SigninFragment : AuthFragment() {
         binding.auth?.let {
             it.passwordVisible.set(!it.passwordVisible.get())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

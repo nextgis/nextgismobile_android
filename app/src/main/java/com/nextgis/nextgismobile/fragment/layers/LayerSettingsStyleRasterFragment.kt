@@ -25,20 +25,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.RasterLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsStyleRasterBinding
 
 
 class LayerSettingsStyleRasterFragment(private val rasterLayer: RasterLayer) : LayerSettingsBaseFragment(rasterLayer) {
-    private lateinit var binding: FragmentLayerSettingsStyleRasterBinding
+
+    private var _binding: FragmentLayerSettingsStyleRasterBinding? = null
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_raster, container, false)
+        _binding = FragmentLayerSettingsStyleRasterBinding.inflate(inflater, container, false)
         binding.layer = rasterLayer
         binding.executePendingBindings()
         return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
 }

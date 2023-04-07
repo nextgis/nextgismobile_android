@@ -24,7 +24,7 @@ package com.nextgis.nextgismobile.activity
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
+ import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment

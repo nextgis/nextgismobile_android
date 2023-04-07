@@ -21,23 +21,24 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsLocationBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.toast
 
 class SettingsLocationFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsLocationBinding
+
+    private var _binding: FragmentSettingsLocationBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_location, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsLocationBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.apply {
             fragment = this@SettingsLocationFragment
             settings = settingsModel
@@ -52,6 +53,12 @@ class SettingsLocationFragment : SettingsFragment() {
             showDialog(R.array.location_accuracy, R.array.location_accuracy_value, it, R.string.location_accuracy)
             { value -> binding.settings?.locationAccuracy?.set(value) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 
 }

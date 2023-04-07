@@ -226,4 +226,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="remote_resources">Nextgis.com resources</string>
+    <string name="cancel">cancel</string>
+    <string name="password">password</string>
+    <string name="account">account</string>
+    <string name="login">login</string>
+
 </resources>

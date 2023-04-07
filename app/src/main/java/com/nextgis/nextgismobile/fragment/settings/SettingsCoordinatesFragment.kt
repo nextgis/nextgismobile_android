@@ -21,28 +21,35 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsCoordinatesBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 
 class SettingsCoordinatesFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsCoordinatesBinding
+
+    private var _binding: FragmentSettingsCoordinatesBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_coordinates, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsCoordinatesBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.apply {
             settings = settingsModel
         }
         binding.executePendingBindings()
         setTitle(R.string.coordinate_format)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 
 }

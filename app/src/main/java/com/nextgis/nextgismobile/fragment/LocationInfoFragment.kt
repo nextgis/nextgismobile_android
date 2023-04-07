@@ -21,7 +21,7 @@
 
 package com.nextgis.nextgismobile.fragment
 
-import androidx.lifecycle.ViewModelProviders
+ 
 import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -30,6 +30,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.nextgis.maplib.formatCoordinate
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.viewmodel.LocationViewModel
@@ -40,7 +41,7 @@ class LocationInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        locationModel = ViewModelProviders.of(requireActivity()).get(LocationViewModel::class.java)
+        locationModel = ViewModelProvider(requireActivity()).get(LocationViewModel::class.java)
     }
 
     override fun onStart() {
@@ -74,7 +75,7 @@ class LocationInfoFragment : Fragment() {
 
             view?.findViewById<TextView>(R.id.signalSourceText)?.text = location.provider
             view?.findViewById<TextView>(R.id.speedText)?.text = formatSpeed(location.speed)
-            val satelliteCount = location.extras.getInt("satellites")
+            val satelliteCount = location.extras?.getInt("satellites")
             view?.findViewById<TextView>(R.id.satCountText)?.text = satelliteCount.toString()
 
             view?.findViewById<TextView>(R.id.altText)?.text = getString(R.string.location_m_format).format(location.altitude)

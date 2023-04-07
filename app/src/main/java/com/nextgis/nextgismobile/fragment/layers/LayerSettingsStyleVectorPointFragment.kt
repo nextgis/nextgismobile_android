@@ -27,7 +27,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ScrollView
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
@@ -38,11 +37,13 @@ import com.nextgis.nextgismobile.util.setupDropdown
 
 
 class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer) : LayerSettingsStyleVectorFragment(vectorLayer) {
-    private lateinit var binding: FragmentLayerSettingsStyleVectorPointBinding
+
+    private var _binding: FragmentLayerSettingsStyleVectorPointBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) as? ScrollView
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_vector_point, container, false)
+        _binding = FragmentLayerSettingsStyleVectorPointBinding.inflate(inflater, container, false)
         binding.layer = vectorLayer
         binding.fragment = this
 
@@ -86,4 +87,10 @@ class LayerSettingsStyleVectorPointFragment(private val vectorLayer: VectorLayer
             dialog.show(activity, it.strokeColor) { color -> it.strokeColor = color }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

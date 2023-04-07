@@ -44,7 +44,7 @@ interface APIService {
         private const val SERVER_API = SERVER_MY + "api/v1/"
 
         var TOKEN = ""
-        private val userAgent = String.format("NextGIS Mobile %s rev. %d (Android %s; API %d)",
+        private val userAgent = String.format("NextGIS Mobile %s r ev. %d (Android %s; API %d)",
                 BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, Build.VERSION.RELEASE, Build.VERSION.SDK_INT)
 
         fun build(base: String = SERVER_API): Retrofit {
@@ -64,6 +64,7 @@ interface APIService {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val builder = chain.request().newBuilder()
                 builder.addHeader("Accept-Language", Locale.getDefault().language)
+                builder.removeHeader("User-Agent")
                 builder.addHeader("User-Agent", userAgent)
                 if (TOKEN.isNotBlank())
                     builder.addHeader("Authorization", TOKEN)

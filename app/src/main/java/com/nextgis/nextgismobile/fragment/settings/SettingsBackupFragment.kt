@@ -21,13 +21,12 @@
 
 package com.nextgis.nextgismobile.fragment.settings
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.adapter.BackupAdapter
@@ -38,11 +37,13 @@ import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.toast
 
 class SettingsBackupFragment : SettingsFragment(), OnBackupClickListener {
-    private lateinit var binding: FragmentSettingsBackupBinding
+
+    private var _binding: FragmentSettingsBackupBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_backup, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsBackupBinding.inflate(inflater,  container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.apply {
             settings = settingsModel
             fragment = this@SettingsBackupFragment
@@ -68,6 +69,11 @@ class SettingsBackupFragment : SettingsFragment(), OnBackupClickListener {
 
     fun sync() {
         toast(R.string.not_implemented)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

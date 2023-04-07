@@ -22,7 +22,7 @@
 package com.nextgis.nextgismobile.fragment.settings
 
 import android.os.Bundle
-import android.preference.PreferenceManager
+ import androidx.preference.PreferenceManager
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog

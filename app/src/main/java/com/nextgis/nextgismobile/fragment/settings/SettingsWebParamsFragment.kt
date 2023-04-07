@@ -25,18 +25,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsWebParamsBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 
 class SettingsWebParamsFragment : SettingsFragment() {
-    private lateinit var binding: FragmentSettingsWebParamsBinding
+    private var _binding: FragmentSettingsWebParamsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_web_params, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsWebParamsBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.settings = settingsModel
         binding.fragment = this
         binding.executePendingBindings()
@@ -48,5 +49,11 @@ class SettingsWebParamsFragment : SettingsFragment() {
             showDialog(R.array.sync_period, R.array.sync_period_value, it, R.string.sync_period)
             { value -> binding.settings?.syncPeriod?.set(value) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 }

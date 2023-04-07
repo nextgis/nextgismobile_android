@@ -40,7 +40,10 @@
         android:layout_height="match_parent"
         tools:context=".activity.MainActivity">
 
-        <include layout="@layout/content_main" />
+        <include
+            android:id="@+id/mapinclude"
+            layout="@layout/content_main"
+            />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card"

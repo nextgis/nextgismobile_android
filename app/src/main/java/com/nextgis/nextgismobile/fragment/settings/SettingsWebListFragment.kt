@@ -27,54 +27,64 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.nextgis.maplib.Instance
-import com.nextgis.maplib.activity.AddInstanceActivity
-import com.nextgis.maplib.adapter.OnInstanceClickListener
-import com.nextgis.maplib.adapter.getInstances
-import com.nextgis.maplib.adapter.replaceInstances
+//import com.nextgis.maplib.Instance
+//import com.nextgis.maplib.activity.AddInstanceActivity
+//import com.nextgis.maplib.adapter.OnInstanceClickListener
+//import com.nextgis.maplib.adapter.getInstances
+//import com.nextgis.maplib.adapter.replaceInstances
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.databinding.FragmentSettingsBackupBinding
 import com.nextgis.nextgismobile.databinding.FragmentSettingsWebListBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.IntentFor
 
 
-class SettingsWebListFragment : SettingsFragment(), OnInstanceClickListener {
-    private lateinit var binding: FragmentSettingsWebListBinding
+class SettingsWebListFragment : SettingsFragment()
+//    , OnInstanceClickListener
+{
+    private var _binding: FragmentSettingsWebListBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings_web_list, container, false)
-        val settingsModel = ViewModelProviders.of(requireActivity()).get(SettingsViewModel::class.java)
+        _binding = FragmentSettingsWebListBinding.inflate(inflater, container, false)
+        val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.settings = settingsModel
         binding.fragment = this
 
-        binding.list.adapter = getInstances(this)
-        binding.list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
+//        binding.list.adapter = getInstances(this)
+//        binding.list.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL, false)
 
         binding.executePendingBindings()
         return binding.root
     }
 
-    override fun onInstanceClick(instance: Instance) {
-        val settings = SettingsWebInstanceFragment(instance)
+    fun onInstanceClick() {
+        val settings = SettingsWebInstanceFragment()
         val transaction = activity?.supportFragmentManager?.beginTransaction()
         transaction?.add(R.id.container, settings)?.addToBackStack("instance_settings")?.commitAllowingStateLoss()
     }
 
     fun add() {
-        context?.let { startActivityForResult(IntentFor<AddInstanceActivity>(it), AddInstanceActivity.ADD_INSTANCE_REQUEST) }
+//        context?.let { startActivityForResult(IntentFor<AddInstanceActivity>(it), AddInstanceActivity.ADD_INSTANCE_REQUEST) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            AddInstanceActivity.ADD_INSTANCE_REQUEST -> {
-                if (resultCode == Activity.RESULT_OK)
-                    replaceInstances(binding.list.adapter)
-            }
-            else -> super.onActivityResult(requestCode, resultCode, data)
+//            AddInstanceActivity.ADD_INSTANCE_REQUEST -> {
+//                if (resultCode == Activity.RESULT_OK)
+//                    replaceInstances(binding.list.adapter)
+//            }
+//            else ->
+//                super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+
     }
 }

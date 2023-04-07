@@ -28,7 +28,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
-import androidx.databinding.DataBindingUtil
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.data.VectorLayer
 import com.nextgis.nextgismobile.databinding.FragmentLayerSettingsGeneralVectorBinding
@@ -37,12 +36,14 @@ import com.pawegio.kandroid.toast
 
 
 class LayerSettingsGeneralVectorFragment(private val vectorLayer: VectorLayer) : LayerSettingsGeneralFragment(vectorLayer) {
-    private lateinit var binding: FragmentLayerSettingsGeneralVectorBinding
+
+    private var _binding: FragmentLayerSettingsGeneralVectorBinding? = null
+    private val binding get() = _binding!!
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) as? ScrollView
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_general_vector, container, false)
+        _binding = FragmentLayerSettingsGeneralVectorBinding.inflate(inflater, container, false)
         binding.layer = vectorLayer
         binding.fragment = this
 
@@ -79,5 +80,11 @@ class LayerSettingsGeneralVectorFragment(private val vectorLayer: VectorLayer) :
     fun sticking() {
         binding.sticking.performClick()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
 }

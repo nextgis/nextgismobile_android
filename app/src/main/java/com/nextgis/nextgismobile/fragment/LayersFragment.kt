@@ -29,16 +29,16 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
-import com.nextgis.maplib.Instance
-import com.nextgis.maplib.adapter.OnInstanceClickListener
-import com.nextgis.maplib.fragment.SelectInstanceDialog
+//import com.nextgis.maplib.Instance
+//import com.nextgis.maplib.adapter.OnInstanceClickListener
+//import com.nextgis.maplib.fragment.SelectInstanceDialog
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.AddRemoteLayerActivity
 import com.nextgis.nextgismobile.activity.MainActivity
@@ -56,7 +56,10 @@ import com.pawegio.kandroid.toast
 
 
 class LayersFragment : BaseFragment(), OnLayerClickListener {
-    private lateinit var binding: FragmentLayersBinding
+
+    private var _binding: FragmentLayersBinding? = null
+    private val binding get() = _binding!!
+
     private var bottomSheet: AddLayerDialog? = null
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -70,13 +73,13 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layers, container, false)
+        _binding = FragmentLayersBinding.inflate(inflater, container, false)
 
         binding.apply {
             fragment = this@LayersFragment
 
             activity?.let { activity ->
-                val mapModel = ViewModelProviders.of(activity).get(MapViewModel::class.java)
+                val mapModel = ViewModelProvider(activity).get(MapViewModel::class.java)
                 mapModel.layers.observe(this@LayersFragment, Observer { layers ->
                     layers?.let {
                         (list.adapter as? LayerAdapter)?.items?.clear()
@@ -99,8 +102,8 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
                     if (initialPosition == finalPosition)
                         return
                     activity?.let { activity ->
-                        val mapModel = ViewModelProviders.of(activity).get(MapViewModel::class.java)
-                        mapModel.load()?.let { map ->
+                        val mapModel = ViewModelProvider(activity).get(MapViewModel::class.java)
+                        mapModel.load(activity)?.let { map ->
                             map.getLayer(initialPosition)?.let { layer ->
                                 map.reorder(map.getLayer(finalPosition - 1), layer)
                                 map.save()
@@ -162,28 +165,28 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
     fun addFromNGW() {
         activity?.let {
-            SelectInstanceDialog().show(it, object : OnInstanceClickListener {
-                override fun onInstanceClick(instance: Instance) {
-                    createFromInstance(instance)
-                }
-            })
+//            SelectInstanceDialog().show(it, object : OnInstanceClickListener {
+//                override fun onInstanceClick(instance: Instance) {
+//                    createFromInstance(instance)
+//                }
+//            })
         }
         hideBottomSheet()
     }
 
-    fun createFromInstance(instance: Instance) {
-        context?.let {
-            val intent = IntentFor<AddRemoteLayerActivity>(it)
-            intent.putExtra("instance", instance.url)
-            startActivity(intent)
-        }
-    }
+//    fun createFromInstance(instance: Instance) {
+//        context?.let {
+//            val intent = IntentFor<AddRemoteLayerActivity>(it)
+//            intent.putExtra("instance", instance.url)
+//            startActivity(intent)
+//        }
+//    }
 
     private fun checkResult(resultCode: Int, @StringRes info: Int) {
         if (resultCode == Activity.RESULT_OK) {
             (activity as? MainActivity)?.let {
                 it.snackbar(info)
-                val mapModel = ViewModelProviders.of(it).get(MapViewModel::class.java)
+                val mapModel = ViewModelProvider(it).get(MapViewModel::class.java)
                 mapModel.getLayers()
             }
         }
@@ -223,8 +226,8 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
     override fun onDeleteClick(layer: Layer) {
         activity?.let { activity ->
-            val mapModel = ViewModelProviders.of(activity).get(MapViewModel::class.java)
-            val map = mapModel.load()
+            val mapModel = ViewModelProvider(activity).get(MapViewModel::class.java)
+            val map = mapModel.load(activity)
             map?.deleteLayer(layer.id)
             map?.save()
             mapModel.getLayers()
@@ -234,5 +237,10 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
     companion object {
         const val NEW_EMPTY_LAYER_REQUEST = 733
         const val SELECT_FILE_REQUEST = 537
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

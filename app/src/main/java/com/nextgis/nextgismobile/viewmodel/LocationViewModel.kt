@@ -32,7 +32,13 @@ class LocationViewModel : ViewModel(), LocationListener {
     private var listener: ((location: Location?) -> Unit)? = null
     var location: Location? = null
 
-    override fun onLocationChanged(location: Location?) {
+//    override fun onLocationChanged(location: Location?) {
+//        listener?.invoke(location)
+//        this.location = location
+//    }
+
+    override fun onLocationChanged(p0: Location) {
+        TODO("Not yet implemented")
         listener?.invoke(location)
         this.location = location
     }
@@ -40,11 +46,19 @@ class LocationViewModel : ViewModel(), LocationListener {
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
     }
 
-    override fun onProviderEnabled(p0: String?) {
-    }
+//    fun onProviderEnabled(p0: String?) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    fun onProviderDisabled(p0: String?) {
+//        TODO("Not yet implemented")
+//    }
 
-    override fun onProviderDisabled(p0: String?) {
-    }
+//    fun onProviderEnabled(p0: String?) {
+//    }
+//
+//    fun onProviderDisabled(p0: String?) {
+//    }
 
     private var locationModel = LocationModel()
 

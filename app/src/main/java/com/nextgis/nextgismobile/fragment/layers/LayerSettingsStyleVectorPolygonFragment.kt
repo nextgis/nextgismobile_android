@@ -27,7 +27,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ScrollView
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import com.nextgis.nextgismobile.BR
 import com.nextgis.nextgismobile.R
@@ -38,11 +37,13 @@ import com.pawegio.kandroid.toast
 
 
 class LayerSettingsStyleVectorPolygonFragment(private val vectorLayer: VectorLayer) : LayerSettingsStyleVectorFragment(vectorLayer) {
-    private lateinit var binding: FragmentLayerSettingsStyleVectorPolygonBinding
+
+    private var _binding: FragmentLayerSettingsStyleVectorPolygonBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState) as? ScrollView
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_layer_settings_style_vector_polygon, container, false)
+        _binding = FragmentLayerSettingsStyleVectorPolygonBinding.inflate(inflater, container, false)
         binding.apply {
             layer = vectorLayer
             fragment = this@LayerSettingsStyleVectorPolygonFragment
@@ -81,4 +82,10 @@ class LayerSettingsStyleVectorPolygonFragment(private val vectorLayer: VectorLay
             dialog.show(activity, it.strokeColor) { color -> it.strokeColor = color }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
