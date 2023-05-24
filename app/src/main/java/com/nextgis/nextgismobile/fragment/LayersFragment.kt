@@ -36,9 +36,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemDragListener
-//import com.nextgis.maplib.Instance
-//import com.nextgis.maplib.adapter.OnInstanceClickListener
-//import com.nextgis.maplib.fragment.SelectInstanceDialog
+import com.nextgis.maplib.Instance
+import com.nextgis.maplib.adapter.OnInstanceClickListener
+import com.nextgis.maplib.fragment.SelectInstanceDialog
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.AddRemoteLayerActivity
 import com.nextgis.nextgismobile.activity.MainActivity
@@ -165,22 +165,22 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
     fun addFromNGW() {
         activity?.let {
-//            SelectInstanceDialog().show(it, object : OnInstanceClickListener {
-//                override fun onInstanceClick(instance: Instance) {
-//                    createFromInstance(instance)
-//                }
-//            })
+            SelectInstanceDialog().show(it, object : OnInstanceClickListener {
+                override fun onInstanceClick(instance: Instance) {
+                    createFromInstance(instance)
+                }
+            })
         }
         hideBottomSheet()
     }
 
-//    fun createFromInstance(instance: Instance) {
-//        context?.let {
-//            val intent = IntentFor<AddRemoteLayerActivity>(it)
-//            intent.putExtra("instance", instance.url)
-//            startActivity(intent)
-//        }
-//    }
+    fun createFromInstance(instance: Instance) {
+        context?.let {
+            val intent = IntentFor<AddRemoteLayerActivity>(it)
+            intent.putExtra("instance", instance.url)
+            startActivity(intent)
+        }
+    }
 
     private fun checkResult(resultCode: Int, @StringRes info: Int) {
         if (resultCode == Activity.RESULT_OK) {

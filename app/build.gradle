@@ -30,6 +30,10 @@ android {
         viewBinding = true
     }
     namespace 'com.nextgis.nextgismobile'
+    compileOptions {
+        sourceCompatibility "17"
+        targetCompatibility "17"
+    }
 
 }
 
@@ -40,6 +44,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_version"
     implementation 'androidx.preference:preference:1.2.0'
 
+    implementation 'io.github.nextgis:maplib:3.7.2'
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
@@ -52,7 +57,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation 'com.nextgis.maplib:maplib:3.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0'

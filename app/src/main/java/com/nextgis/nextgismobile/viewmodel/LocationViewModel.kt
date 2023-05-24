@@ -38,7 +38,7 @@ class LocationViewModel : ViewModel(), LocationListener {
 //    }
 
     override fun onLocationChanged(p0: Location) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
         listener?.invoke(location)
         this.location = location
     }
