@@ -34,20 +34,19 @@ android {
         sourceCompatibility "17"
         targetCompatibility "17"
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
 
-    implementation "androidx.core:core-ktx:$core_version"
+    implementation "androidx.core:core-ktx:1.10.0"
     implementation 'androidx.preference:preference:1.2.0'
 
     implementation 'io.github.nextgis:maplib:3.7.2'
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    kapt "androidx.lifecycle:lifecycle-common-java8:2.6.1"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
