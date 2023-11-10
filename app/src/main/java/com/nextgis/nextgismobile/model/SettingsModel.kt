@@ -30,6 +30,9 @@ import android.provider.Settings
 
 class SettingsModel {
     companion object {
+//        const val PREF = "app_preferences"
+//        const val LOGGED_IN = "logged_in"
+
         const val ANALYTICS = "collect_analytics"
         const val KEEP_SCREEN_ON = "keep_screen_on"
         const val ROAMING_NETWORK = "roaming_on"

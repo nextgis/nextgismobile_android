@@ -32,7 +32,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import java.io.IOException
+import java.security.SecureRandom
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
 import java.util.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 interface APIService {
     companion object {
@@ -48,11 +55,52 @@ interface APIService {
                 BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, Build.VERSION.RELEASE, Build.VERSION.SDK_INT)
 
         fun build(base: String = SERVER_API): Retrofit {
-            return Retrofit.Builder()
-                    .client(OkHttpClient.Builder().addNetworkInterceptor(CustomInterceptor()).build())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(base)
-                    .build()
+            // create TrustManager without check cert
+            val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                    // no need to check client cert
+                }
+
+                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                    // no need to check server cert
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
+            })
+
+
+
+            // create SSL context and turning  TrustManager
+            val sslContext = SSLContext.getInstance("TLS")
+            sslContext.init(null, trustAllCerts, SecureRandom())
+
+            // get  SSLSocketFactory from  SSL context
+            val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
+
+            // create  OkHttpClient with complete  SSLSocketFactory
+            val client: OkHttpClient = OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+                .addNetworkInterceptor(CustomInterceptor())
+                .hostnameVerifier { _, _ -> true } // allow skip  checking hostname
+                .build()
+
+            // create  Retrofit with using  OkHttpClient
+            val retrofit: Retrofit = Retrofit.Builder()
+                .baseUrl(base)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            return retrofit
+
+            // use Retrofit to create  API-service
+            //            val apiService: YourApiService = retrofit.create(YourApiService::class.java)
+            //            return Retrofit.Builder()
+            //                    .client(OkHttpClient.Builder().
+            //                    addNetworkInterceptor(CustomInterceptor()).build())
+            //                    .addConverterFactory(GsonConverterFactory.create())
+            //                    .baseUrl(base)
+            //                    .build()
         }
 
         fun create(): APIService {
@@ -79,7 +127,6 @@ interface APIService {
 //                        response = response.newBuilder().body(ResponseBody.create(it.contentType(), data)).build()
 //                    } catch (e: JSONException) {}
 //                }
-//
 //                return response
             }
         }

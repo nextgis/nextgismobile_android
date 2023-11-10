@@ -21,14 +21,17 @@
 
 package com.nextgis.nextgismobile.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
-
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivitySettingsBinding
 import com.nextgis.nextgismobile.fragment.settings.HeadersFragment
+//import com.nextgis.nextgismobile.model.SettingsModel.Companion.PREF
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
@@ -58,8 +61,26 @@ class SettingsActivity : BaseActivity() {
         val headers = HeadersFragment()
         supportFragmentManager.beginTransaction().replace(R.id.headers, headers).addToBackStack("headers").commitAllowingStateLoss()
         binding.executePendingBindings()
+
         authModel.init(accountManager, true)
+//        authModel.init(getSharedPreferences(PREF, Context.MODE_MULTI_PROCESS), accountManager, true)
+
+
+//        val runnable: Runnable = object : Runnable {
+//            override fun run() {
+//                // Переносим сюда старый код
+//                //authModel.checkUser()
+//            }
+//        }
+//        val thread = Thread(runnable)
+//        thread.start()
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        val authModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+//        authModel.init(getSharedPreferences(PREF, Context.MODE_MULTI_PROCESS), accountManager, true)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

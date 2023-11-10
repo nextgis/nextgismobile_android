@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="-6dp"
-                    android:src="@drawable/appintro_indicator_dot_white"
+                    android:src="@drawable/dot_white"
                     tools:ignore="ContentDescription" />
 
                 <View
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="-6dp"
-                    android:src="@{model.currentPage > 0 ? @drawable/appintro_indicator_dot_white : @drawable/appintro_indicator_dot_grey}"
+                    android:src="@{model.currentPage > 0 ? @drawable/dot_white : @drawable/dot_grey}"
                     tools:ignore="ContentDescription" />
 
                 <View
@@ -89,7 +89,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@{model.currentPage > 1 ? @drawable/appintro_indicator_dot_white : @drawable/appintro_indicator_dot_grey}"
+                    android:src="@{model.currentPage > 1 ? @drawable/dot_white : @drawable/dot_grey}"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
 

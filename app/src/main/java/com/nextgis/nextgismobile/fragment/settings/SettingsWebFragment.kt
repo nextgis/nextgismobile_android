@@ -29,6 +29,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 
 import androidx.viewpager.widget.ViewPager
@@ -36,7 +38,7 @@ import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSettingsWebBinding
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 
-class SettingsWebFragment : SettingsFragment() {
+class SettingsWebFragment : SettingsFragment() , DefaultLifecycleObserver {
 
     private var _binding: FragmentSettingsWebBinding? = null
     private val binding get() = _binding!!
@@ -49,8 +51,19 @@ class SettingsWebFragment : SettingsFragment() {
         val settingsModel = ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
         binding.settings = settingsModel
         binding.executePendingBindings()
-        setTitle(R.string.webgis)
+
+
+        lifecycle.addObserver(this)
+
+
         return binding.root
+    }
+
+
+    override fun onResume(owner: LifecycleOwner) {
+        super<DefaultLifecycleObserver>.onResume(owner)
+        setTitle(R.string.webgis)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -22,6 +22,7 @@
 package com.nextgis.nextgismobile.activity
 
 import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.Observer
  
 import android.content.SharedPreferences
@@ -31,11 +32,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import com.nextgis.maplib.Constants.SettingsStrings.ngid_shown
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.auth.AccountAuthenticatorActivity
 import com.nextgis.nextgismobile.databinding.ActivitySigninBinding
 import com.nextgis.nextgismobile.fragment.SigninFragment
 import com.nextgis.nextgismobile.fragment.SignupFragment
+import com.nextgis.nextgismobile.model.SettingsModel
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.pawegio.kandroid.accountManager
 import com.pawegio.kandroid.startActivity
@@ -55,8 +58,8 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
         //DataBindingUtil.setContentView(this, R.layout.activity_signin)
         val authModel = ViewModelProvider(this).get(AuthViewModel::class.java)
         binding.auth = authModel
-        authModel.init(accountManager, false)
-        authModel.firstTime.set(!preferences.getBoolean("ngid_shown", false))
+        authModel.init(accountManager, false) // getSharedPreferences(SettingsModel.PREF, Context.MODE_MULTI_PROCESS)
+        authModel.firstTime.set(!preferences.getBoolean(ngid_shown, false))
 
         authModel.account.get()?.let {
             if (it.authorized) {
@@ -82,7 +85,7 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
                 if (added) {
                     setAccountAuthenticatorResult(intent.extras)
                     setResult(Activity.RESULT_OK, intent)
-                    startActivity<MainActivity>() // TODO diff targets
+                    // startActivity<MainActivity>() // just return
                     finish()
                 } // TODO error
             }
@@ -92,7 +95,7 @@ class NGIDSigninActivity: AccountAuthenticatorActivity() {
         })
         signIn(binding.root)
         binding.executePendingBindings()
-        preferences.edit().putBoolean("ngid_shown", true).apply()
+        preferences.edit().putBoolean(ngid_shown, true).apply()
     }
 
     @Suppress("UNUSED_PARAMETER")

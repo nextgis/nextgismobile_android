@@ -22,7 +22,8 @@
 package com.nextgis.nextgismobile.fragment
 
 import android.annotation.SuppressLint
- 
+import android.content.Context
+
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.databinding.FragmentSignupBinding
+import com.nextgis.nextgismobile.model.SettingsModel
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 
 
@@ -59,7 +61,7 @@ class SignupFragment : AuthFragment() {
     override fun authenticate() {
         binding.auth?.let {
             if (credentialsValid(it)) {
-                it.signUp()
+                it.signUp() // this.requireContext().getSharedPreferences(SettingsModel.PREF, Context.MODE_MULTI_PROCESS))
                 hideKB()
             }
         }

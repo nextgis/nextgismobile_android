@@ -45,83 +45,118 @@
             android:descendantFocusability="blocksDescendants">
 
             <LinearLayout
-                android:id="@+id/info"
+                android:id="@+id/authPanel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingBottom="24dp"
-                android:visible="@{auth.account.authorized}"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/avatar"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:src="@drawable/ic_account_outline_padded"
-                    app:civ_circle_background_color="#0c18262c"
-                    tools:ignore="ContentDescription" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{auth.fullName}"
-                        android:textColor="#000"
-                        android:textSize="16sp"
-                        tools:text="Firstname Lastname (f.n)" />
-
-                    <TextView
-                        android:id="@+id/email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{auth.login}"
-                        android:textSize="12sp"
-                        tools:text="fname@test.com" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/panel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:gravity="center"
                 android:orientation="vertical"
-                android:padding="24dp"
-                android:visible="@{!auth.account.authorized || !auth.account.supported}"
-                app:layout_constraintTop_toBottomOf="@id/info">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+                <LinearLayout
+                    android:id="@+id/progressPanel"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@{auth.account.authorized ? @string/upgrade : @string/unidentified}"
-                    android:textColor="#fff"
-                    android:textSize="16sp"
-                    tools:text="@string/upgrade" />
+                    android:orientation="vertical"
+                    android:visibility="@{auth.isTokenGetting ? 0:8}"
 
-                <Button
-                    android:id="@+id/authenticate"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="wrap_content"
+                    >
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:indeterminate="true"
+                        />
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="@color/white"
-                    android:onClick="@{()->fragment.action()}"
-                    android:text="@{auth.account.authorized ? @string/unlock : @string/sign_in}"
-                    android:textColor="@color/colorPrimary"
-                    tools:text="@string/unlock" />
+                    android:orientation="vertical"
+                    android:visibility="@{auth.isTokenGetting ? 8:0}"
+                    >
+                    <LinearLayout
+                        android:id="@+id/info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:paddingBottom="24dp"
+                        android:visible="@{auth.account.authorized}"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/avatar"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:src="@drawable/ic_account_outline_padded"
+                            app:civ_circle_background_color="#0c18262c"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{auth.fullName}"
+                                android:textColor="#000"
+                                android:textSize="16sp"
+                                tools:text="Firstname Lastname (f.n)" />
+
+                            <TextView
+                                android:id="@+id/email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{auth.login}"
+                                android:textSize="12sp"
+                                tools:text="fname@test.com" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="24dp"
+                        android:visible="@{!auth.account.authorized || !auth.account.supported}"
+                        app:layout_constraintTop_toBottomOf="@id/info">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@{auth.account.authorized ? @string/upgrade : @string/unidentified}"
+                            android:textColor="#fff"
+                            android:textSize="16sp"
+                            tools:text="@string/upgrade" />
+
+                        <Button
+                            android:id="@+id/authenticate"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:backgroundTint="@color/white"
+                            android:onClick="@{()->fragment.action()}"
+                            android:text="@{auth.account.authorized ? @string/unlock : @string/sign_in}"
+                            android:textColor="@color/colorPrimary"
+                            tools:text="@string/unlock" />
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
             <TextView
@@ -135,7 +170,7 @@
                 android:text="@string/action_settings"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/panel" />
+                app:layout_constraintTop_toBottomOf="@id/authPanel" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"

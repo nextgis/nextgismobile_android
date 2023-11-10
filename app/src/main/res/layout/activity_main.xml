@@ -21,7 +21,8 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -65,7 +66,10 @@
             style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            app:fabAlignmentMode="center"
+            app:menu="@menu/bottom_app_bar_menu"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -93,12 +97,55 @@
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            style="@style/FabButton"
-            android:src="@drawable/ic_plus"
-            app:layout_anchor="@id/bottomBar"
-            app:tint="@color/white" />
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/fab"-->
+<!--            style="@style/FabButton"-->
+<!--            android:src="@drawable/ic_plus"-->
+<!--            app:layout_anchor="@id/bottomBar"-->
+<!--            app:tint="@color/white"-->
+<!--            />-->
+
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/fabAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:fab_addButtonColorNormal="@color/colorButton"
+            tools:fab_addButtonColorPressed="@color/colorButton"
+            tools:fab_addButtonPlusIconColor="@android:color/white"
+            app:fab_addButtonColorNormal="@color/colorButton"
+            app:fab_addButtonColorPressed="@color/colorButton"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center|bottom"
+            >
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_new_geometry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorButton"
+                fab:fab_colorPressed="@color/colorButton"
+                fab:fab_icon="@drawable/ic_polygon_white"
+                fab:fab_size="mini"
+                android:text="создать обьект"
+                tools:tooltipText="csldfldsj"
+                tools:fab_addButtonPlusIconColor="@android:color/white"
+                />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_geometry_by_walk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorButton"
+                fab:fab_colorPressed="@color/colorButton"
+                fab:fab_icon="@drawable/ic_walk_white"
+                fab:fab_size="mini"
+                />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -129,7 +176,6 @@
                 app:backgroundTint="@color/white"
                 app:fabSize="mini" />
         </LinearLayout>
-
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"

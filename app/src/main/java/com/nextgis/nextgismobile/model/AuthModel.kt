@@ -25,8 +25,13 @@ import android.accounts.*
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import com.nextgis.maplib.Auth
+import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.BuildConfig
 import com.nextgis.nextgismobile.data.Token
+import com.nextgis.nextgismobile.data.User
+import com.nextgis.nextgismobile.data.UserAuth
 import com.nextgis.nextgismobile.data.UserCreate
 import com.nextgis.nextgismobile.data.Username
 import com.nextgis.nextgismobile.util.AuthService
@@ -34,6 +39,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+
 
 class AuthModel {
     companion object {
@@ -70,18 +76,49 @@ class AuthModel {
     }
 
     fun signIn(email: String, password: String, callback: OnDataReadyCallback) {
-//        authService.signIn(UserAuth(email, password)).enqueue(object : Callback<Token> {
-        authService.signIn(email, password).enqueue(object : Callback<Token> {
+        Log.e("NNGGWW", "signIn start")
+
+        authService.signIn(email,password ).enqueue(object : Callback<Token> {
             override fun onFailure(call: Call<Token>?, t: Throwable?) {
+                Log.e("NNGGWW", "signIn failed")
                 callback.onRequestFailed(t?.localizedMessage)
             }
 
             override fun onResponse(call: Call<Token>?, response: Response<Token>?) {
+                Log.e("NNGGWW", "signIn onResponse")
                 response?.let {
-                    if (it.isSuccessful)
+
+                    if (it.isSuccessful) {
                         callback.onDataReady(it.body())
-                    else
+                        Log.e("NNGGWW", "signIn success " + response.body().toString())
+                    }
+                    else {
+                        Log.e("NNGGWW", "signIn unsuccess " + response.body().toString())
                         callback.onRequestFailed(it.errorBody()?.string())
+                    }
+                }
+            }
+        })
+    }
+
+    fun checkUser() {
+        authService.checkUser().enqueue(object  : Callback<User> {
+            override fun onFailure(call: Call<User>?, t: Throwable?) {
+                Log.e("NNGGWW", "checkUser failed")
+//                callback.onRequestFailed(t?.localizedMessage)
+            }
+
+            override fun onResponse(call: Call<User>?, response: Response<User>?) {
+                Log.e("NNGGWW", "checkUser onResponse")
+                response?.let {
+                    if (it.isSuccessful) {
+//                        callback.onDataReady(it.body())
+                        Log.e("NNGGWW", "checkUser success " + response.body().toString())
+                    }
+                    else {
+                        Log.e("NNGGWW", "checkUser unsuccess " + response.body().toString())
+//                        callback.onRequestFailed(it.errorBody()?.string())
+                    }
                 }
             }
         })
@@ -95,15 +132,27 @@ class AuthModel {
         return intent
     }
 
-    fun getToken(type: String, callback: AccountManagerCallback<Bundle>) {
+    fun getToken(type: String, callback: AccountManagerCallback<Bundle>, isTokenGetting : NonNullObservableField<Boolean>) {
+        isTokenGetting.set(true)
+
         val account = getAccount()
         if (account != null) {
             try {
                 accountManager?.getAuthToken(account, type, null, false, callback, null)
             } catch (ignored: OperationCanceledException) {
+                Log.e("app", "exception")
+
             } catch (ignored: IOException) {
+                Log.e("app", "exception")
+
             } catch (ignored: AuthenticatorException) {
+                Log.e("app", "exception")
+
+            } catch (ignored: Exception){
+                Log.e("app", "exception")
             }
+        } else {
+            isTokenGetting.set(false)
         }
     }
 

@@ -24,9 +24,9 @@
 
     <data>
 
-        <variable
-            name="activity"
-            type="com.nextgis.nextgismobile.activity.SettingsActivity" />
+<!--        <variable-->
+<!--            name="activity"-->
+<!--            type="com.nextgis.nextgismobile.activity.SettingsActivity" />-->
 
         <variable
             name="auth"

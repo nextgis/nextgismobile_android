@@ -32,6 +32,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.animation.AnimationUtils
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.nextgis.maplib.CoordinateTransformation
 import com.nextgis.maplib.GestureDelegate
@@ -50,7 +53,6 @@ import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
 import com.pawegio.kandroid.runDelayed
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
-
 
 
 class MainActivity : BaseActivity(), GestureDelegate {
@@ -72,9 +74,16 @@ class MainActivity : BaseActivity(), GestureDelegate {
             val params = card.layoutParams as CoordinatorLayout.LayoutParams
             params.topMargin = statusBarHeight + dpToPx(8)
 
-            fab.tint(R.color.colorButton)
-            fab.setOnClickListener {
-                snackbar(R.string.not_implemented)
+            binding.fabAdd.tint(R.color.colorButton)
+
+            binding.addNewGeometry.setOnClickListener {
+                fabAdd.collapse()
+                snackbar("addNewGeometry")
+            }
+
+            binding.addGeometryByWalk.setOnClickListener {
+                fabAdd.collapse()
+                snackbar("addGeometryByWalk")
             }
 
             zoomIn.setOnClickListener { binding.mapinclude.mapView.zoomIn() }
@@ -154,8 +163,20 @@ class MainActivity : BaseActivity(), GestureDelegate {
                 startActivity<SettingsActivity>()
                 true
             }
-            R.id.action_null -> {
-                toast(R.string.not_implemented)
+            R.id.menu_favorites -> {
+                toast(R.string.use_favorites)
+                true
+            }
+            R.id.menu_share_map -> {
+                toast(R.string.share_map)
+                true
+            }
+            R.id.menu_pointing -> {
+                toast(R.string.pointing)
+                true
+            }
+            R.id.menu_track_record -> {
+                toast(R.string.track_record)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -177,7 +198,15 @@ class MainActivity : BaseActivity(), GestureDelegate {
     }
 
     fun snackbar(@StringRes text: Int) {
-        val snackbar = Snackbar.make(binding.coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.fab)
+        val snackbar = Snackbar.make(binding.coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.bottomBar)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            snackbar.view.elevation = dpToPx(8).toFloat()
+        }
+        snackbar.show()
+    }
+
+    fun snackbar(text: String) {
+        val snackbar = Snackbar.make(binding.coordinator, text, Snackbar.LENGTH_LONG).setAction("Action", null).setAnchorView(R.id.bottomBar)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             snackbar.view.elevation = dpToPx(8).toFloat()
         }

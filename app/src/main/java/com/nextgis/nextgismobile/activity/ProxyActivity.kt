@@ -23,6 +23,8 @@ package com.nextgis.nextgismobile.activity
 
 import android.os.Bundle
  import androidx.preference.PreferenceManager
+import com.nextgis.maplib.Constants.SettingsStrings.intro_shown
+import com.nextgis.maplib.Constants.SettingsStrings.ngid_shown
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityProxyBinding
 import com.pawegio.kandroid.runDelayed
@@ -42,8 +44,8 @@ class ProxyActivity : BaseActivity() {
         hideStatusBar(window)
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
-        val intro = !preferences.getBoolean("intro_shown", false)
-        val signin = !preferences.getBoolean("ngid_shown", false)
+        val intro = !preferences.getBoolean(intro_shown, false)
+        val signin = !preferences.getBoolean(ngid_shown, false)
         runDelayed(2500) {
             when {
                 intro -> startActivity<IntroActivity>()

@@ -44,6 +44,7 @@ import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
+import com.pawegio.kandroid.visible
 
 
 class HeadersFragment : Fragment(), OnItemClickListener {
@@ -92,12 +93,14 @@ class HeadersFragment : Fragment(), OnItemClickListener {
 //            token?.let { userModel.profile() }
 //        })
 
-//        userModel.avatar.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
         authModel.account.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 val placeholder = R.drawable.ic_account_outline_padded
                 val requestOptions = RequestOptions().circleCrop().placeholder(placeholder)
-                Glide.with(this@HeadersFragment).load(authModel.account.get()?.avatar).apply(requestOptions).into(binding.avatar)
+//                val avatar = authModel.account.get()?.avatar
+//                avatar?.apply {
+//                    Glide.with(this@HeadersFragment).load(authModel.account.get()?.avatar).apply(requestOptions).into(binding.avatar)
+//                }
             }
         })
 

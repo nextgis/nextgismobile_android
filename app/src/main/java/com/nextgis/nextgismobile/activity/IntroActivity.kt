@@ -26,9 +26,10 @@ import android.os.Build
 import android.os.Bundle
  import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
-import com.github.paolorotolo.appintro.AppIntro
-import com.github.paolorotolo.appintro.AppIntroFragment
-import com.github.paolorotolo.appintro.model.SliderPage
+import com.github.appintro.AppIntro
+import com.github.appintro.AppIntroFragment
+import com.github.appintro.model.SliderPage
+import com.nextgis.maplib.Constants.SettingsStrings.intro_shown
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.util.getColorCompat
 import com.nextgis.nextgismobile.util.tint
@@ -43,26 +44,26 @@ class IntroActivity : AppIntro() {
         page1.title = getString(R.string.intro_title_1)
         page1.titleColor = Color.BLACK
         page1.description = getString(R.string.intro_description_1)
-        page1.descColor = Color.BLACK
+        page1.descriptionColorRes = R.color.black
         page1.imageDrawable = R.drawable.logo_color
-        page1.bgColor = Color.WHITE
-        addSlide(AppIntroFragment.newInstance(page1))
+        page1.backgroundColorRes = R.color.white
+        addSlide(AppIntroFragment.createInstance(page1))
 
         val page2 = SliderPage()
         page2.title = getString(R.string.intro_title_2)
         page2.titleColor = Color.BLACK
         page2.description = getString(R.string.intro_description_2)
-        page2.descColor = Color.BLACK
+        page2.descriptionColorRes = R.color.black
         page2.imageDrawable = R.drawable.under_construction
-        page2.bgColor = Color.WHITE
-        addSlide(AppIntroFragment.newInstance(page2))
+        page2.backgroundColorRes = R.color.white
+        addSlide(AppIntroFragment.createInstance(page2))
 
         val primary = getColorCompat(R.color.colorPrimary)
         setNextArrowColor(primary)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            skipButton.tint(R.color.white)
-            doneButton.tint(R.color.white)
+//            skipButton.tint(R.color.white)
+//            doneButton.tint(R.color.white)
             setColorSkipButton(primary)
             setColorDoneText(primary)
         }
@@ -74,19 +75,19 @@ class IntroActivity : AppIntro() {
         BaseActivity.hideStatusBar(window)
     }
 
-    override fun onSkipPressed(currentFragment: Fragment) {
+    override fun onSkipPressed(currentFragment: Fragment?) {
         super.onSkipPressed(currentFragment)
         openSignin()
     }
 
-    override fun onDonePressed(currentFragment: Fragment) {
+    override fun onDonePressed(currentFragment: Fragment?) {
         super.onDonePressed(currentFragment)
         openSignin()
     }
 
     private fun openSignin() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        preferences.edit().putBoolean("intro_shown", true).apply()
+        preferences.edit().putBoolean(intro_shown, true).apply()
         startActivity<NGIDSigninActivity>()
     }
 }

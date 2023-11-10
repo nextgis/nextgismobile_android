@@ -62,7 +62,7 @@ class VectorLayer(id: Int, handle: com.nextgis.maplib.Layer?) :
                 Geometry.Type.POLYGON -> R.drawable.ic_polygon
                 Geometry.Type.MULTIPOLYGON -> R.drawable.ic_multipolygon
 //                Object.Type.FC_GPKG.code -> R.drawable.appintro_indicator_dot_grey
-                else -> R.drawable.appintro_indicator_dot_grey
+                else -> R.drawable.dot_grey
             }
         }
 

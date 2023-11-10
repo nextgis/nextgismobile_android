@@ -83,8 +83,12 @@ class MapModel {
         if (dataDir != null) {
             val bbox = Envelope(MIN_X, MAX_X, MIN_Y, MAX_Y)
             val baseMap = dataDir.createTMS(OSM_NAME, OSM_URL, 3857, 0, 18, bbox, bbox, 14)
-            map.addLayer("OSM", baseMap!!)
-            map.save()
+            if (baseMap != null) {
+                map.addLayer("OSM", baseMap)
+                map.save()
+            } else {
+                // todo message about map null and cannot work
+            }
         }
     }
 

@@ -27,7 +27,7 @@ import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
 import com.nextgis.maplib.API
-//import com.nextgis.maplib.Instance
+import com.nextgis.maplib.Instance
 import com.nextgis.maplib.Object
 import com.nextgis.maplib.activity.PickerActivity
 import com.nextgis.maplib.fragment.FilePickerFragment
@@ -44,8 +44,8 @@ import com.pawegio.kandroid.toast
 
 class AddRemoteLayerActivity : BaseActivity(), PickerActivity {
     private lateinit var binding: ActivityAddRemoteLayerBinding
-//    val instance = NonNullObservableField(
-//        Instance("source.nextgis.com", "", "administrator", "6A5tAj0u", ""))
+    val instance = NonNullObservableField(
+        Instance("source.nextgis.com", "", "administrator", "6A5tAj0u", ""))
     private var name = ""
 
     @SuppressLint("ClickableViewAccessibility")

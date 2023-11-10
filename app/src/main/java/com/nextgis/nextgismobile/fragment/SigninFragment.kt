@@ -22,7 +22,8 @@
 package com.nextgis.nextgismobile.fragment
 
 import android.annotation.SuppressLint
- 
+import android.content.Context
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.FragmentSigninBinding
+import com.nextgis.nextgismobile.model.SettingsModel
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
 import com.pawegio.kandroid.toast
 
