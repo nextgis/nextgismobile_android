@@ -21,7 +21,12 @@
 
 package com.nextgis.nextgismobile.activity
 
+import android.accounts.Account
+import android.accounts.AccountManager
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentResolver
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
  import androidx.preference.PreferenceManager
@@ -29,10 +34,14 @@ import android.os.Bundle
 
 import android.view.View
 import android.view.Window
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.nextgis.maplib.Object
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.model.AuthModel.Companion.ACCOUNT
+import com.nextgis.nextgismobile.model.AuthModel.Companion.ACCOUNT_TYPE
+import com.nextgis.nextgismobile.model.AuthModel.Companion.AUTHORITY
 import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.pawegio.kandroid.toast
 
@@ -63,4 +72,37 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
     }
+
+    public fun disableSync() {
+        getAccount()?.let {
+            ContentResolver.setSyncAutomatically(it, AUTHORITY, false)
+            ContentResolver.removePeriodicSync(it, AUTHORITY, Bundle.EMPTY)
+        }
+    }
+
+    public fun enableSync(interval: Long) {
+        val account = getAccount() ?: createSyncAccount()
+        ContentResolver.setSyncAutomatically(account, AUTHORITY, true)
+        ContentResolver.addPeriodicSync(account, AUTHORITY, Bundle.EMPTY, interval)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getAccount(): Account? {
+        val accountManager = getSystemService(Context.ACCOUNT_SERVICE) as AccountManager
+        val accounts = accountManager.getAccountsByType(ACCOUNT_TYPE)
+        return accounts.firstOrNull()
+    }
+
+    private fun createSyncAccount(): Account {
+        val userData = Bundle()
+        userData.putString("url", "sdfdsfdsf")
+        userData.putString("login", "ddddd")
+        val accountManager = getSystemService(Context.ACCOUNT_SERVICE) as AccountManager
+        return Account(ACCOUNT, ACCOUNT_TYPE).also { newAccount ->
+            if (!accountManager.addAccountExplicitly(newAccount, "22", userData)) {
+                Toast.makeText(this, R.string.create_account_failed, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }

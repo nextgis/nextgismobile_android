@@ -180,6 +180,8 @@ class AuthViewModel : ViewModel() {
 
         Log.e("NNGGWW", "account created with token " + token.accessToken + " refresh " + token.refreshToken)
         Log.e("NNGGWW", "emailis " + account.email)
+//        account.updateInfo()
+//        Log.e("NNGGWW", "emailis after update " + account.email)
         val updateResult = account.updateSupportInfo()
         Log.e("NNGGWW", "updateSupport result " + updateResult)
         Log.e("NNGGWW", "emailis after updateSupport " + account.email)

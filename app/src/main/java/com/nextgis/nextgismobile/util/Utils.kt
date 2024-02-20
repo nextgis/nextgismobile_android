@@ -21,13 +21,19 @@
 
 package com.nextgis.nextgismobile.util
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.text.Editable
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import com.nextgis.maplib.service.TrackerService
+import com.nextgis.maplib.startTrackerService
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.activity.MainActivity
 
 public class Utils {
     companion object {
@@ -43,5 +49,47 @@ public class Utils {
 
             val dialog = builder.show()
         }
+    }
+}
+
+internal fun requestPermissionsUtil(
+    title: Int,
+    message: Int,
+    requestCode: Int,
+    permissions: Array<String>,
+    activity: Activity) {
+    var shouldShowDialog = false
+    for (permission in permissions) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+            shouldShowDialog = true
+            break
+        }
+    }
+    if (shouldShowDialog) {
+        val activity: Activity = activity
+        val builder = androidx.appcompat.app.AlertDialog.Builder(activity).setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null).create()
+
+        builder.setCanceledOnTouchOutside(false)
+        builder.show()
+        builder.setOnDismissListener {
+            ActivityCompat.requestPermissions(
+                activity,
+                permissions,
+                requestCode
+            )
+        }
+    } else ActivityCompat.requestPermissions(activity,
+        permissions,
+        requestCode)
+
+}
+
+internal fun startService(context: Context, command: TrackerService.Command, options: Map<String, String> = mapOf()) {
+    if (command == TrackerService.Command.START) {
+        startTrackerService(context, command, Intent(context, MainActivity::class.java), options)
+    } else {
+        startTrackerService(context, command, null, options)
     }
 }

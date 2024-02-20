@@ -80,7 +80,7 @@ class LayersFragment : BaseFragment(), OnLayerClickListener {
 
             activity?.let { activity ->
                 val mapModel = ViewModelProvider(activity).get(MapViewModel::class.java)
-                mapModel.layers.observe(this@LayersFragment, Observer { layers ->
+                mapModel.layers.observe(viewLifecycleOwner, Observer { layers ->
                     layers?.let {
                         (list.adapter as? LayerAdapter)?.items?.clear()
                         (list.adapter as? LayerAdapter)?.items?.addAll(layers)

@@ -26,12 +26,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import com.nextgis.maplib.Auth
 import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.BuildConfig
 import com.nextgis.nextgismobile.data.Token
 import com.nextgis.nextgismobile.data.User
-import com.nextgis.nextgismobile.data.UserAuth
 import com.nextgis.nextgismobile.data.UserCreate
 import com.nextgis.nextgismobile.data.Username
 import com.nextgis.nextgismobile.util.AuthService
@@ -43,7 +41,9 @@ import java.io.IOException
 
 class AuthModel {
     companion object {
-        private const val ACCOUNT_TYPE = BuildConfig.APPLICATION_ID + ".account"
+        public const val ACCOUNT_TYPE = BuildConfig.APPLICATION_ID + ".account"
+        const val AUTHORITY = BuildConfig.APPLICATION_ID
+        const val ACCOUNT = "NextGIS Mobile 3"
     }
 
     var accountManager: AccountManager? = null

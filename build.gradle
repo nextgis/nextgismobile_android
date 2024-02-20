@@ -6,6 +6,7 @@ plugins {
     id "io.sentry.android.gradle" version "3.6.0" // 3.6.0
     id 'org.jetbrains.dokka' version '1.8.10'
 
+
 }
 
 task clean(type: Delete) {

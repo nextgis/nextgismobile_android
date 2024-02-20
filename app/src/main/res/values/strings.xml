@@ -237,8 +237,20 @@
     <string name="share_map">Share map</string>
     <string name="pointing">Pointing</string>
     <string name="track_record">Record track</string>
+    <string name="track_record_start">Record track start</string>
+    <string name="track_record_stop">Record track stop</string>
 
+    <string name="tracks_list">Tracks list</string>
+    <string name="permissions">Permissions</string>
 
-
+    <string name="requested_permissions">Application needs some permissions to work properly. It includes writing to external storage (to save data on card),
+        access to location services and getting contacts (to create and manage web accounts).</string>
+    <string name="permissions_x">dddd\n</string>
+    <string name="track_days">%d days</string>
+    <string name="send_track">Send track %s</string>
+    <string name="share_gpx">Share GPX track</string>
+    <string name="tracker_image">Tracker image</string>
+    <string name="create_account_failed">Failed to create account</string>
+    <string name="more_menu">More menu</string>
 
 </resources>

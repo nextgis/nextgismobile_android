@@ -41,23 +41,23 @@ class MapModel {
             val memoryInfo = ActivityManager.MemoryInfo()
             activityManager.getMemoryInfo(memoryInfo)
 
-            var reduceFactor = 1.0
-            val totalRam = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                memoryInfo.totalMem / (1024 * 1024)
-            } else {
-                512
-            }
-
-            if(totalRam < 1024) {
-                reduceFactor = 2.0
-            }
-
-            val options = mapOf(
-                "ZOOM_INCREMENT" to "-1", // Add extra to zoom level corresponding to scale
-                "VIEWPORT_REDUCE_FACTOR" to reduceFactor.toString() // Reduce viewport width and height to decrease memory usage
-            )
-
-            it.setOptions(options)
+//            var reduceFactor = 1.0
+//            val totalRam = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                memoryInfo.totalMem / (1024 * 1024)
+//            } else {
+//                512
+//            }
+//
+//            if(totalRam < 1024) {
+//                reduceFactor = 2.0
+//            }
+//
+//            val options = mapOf(
+//                "ZOOM_INCREMENT" to "-1", // Add extra to zoom level corresponding to scale
+//                "VIEWPORT_REDUCE_FACTOR" to reduceFactor.toString() // Reduce viewport width and height to decrease memory usage
+//            )
+//
+//            it.setOptions(options)
 
             it.setExtentLimits(MIN_X, MIN_Y, MAX_X, MAX_Y)
             var hasOSM = false
@@ -72,7 +72,7 @@ class MapModel {
             if (!hasOSM)
                 addOSMTo(it)
 
-            addPointsTo(it)
+            addExamplePointsLayerTo(it)// example of add points - not workdd
             it.save()
         }
         return map
@@ -92,7 +92,7 @@ class MapModel {
         }
     }
 
-    fun addPointsTo(map: MapDocument) {
+    private fun addExamplePointsLayerTo(map: MapDocument) {
         // Get or create data store
         val dataStore = API.getStore("store")
         if(dataStore != null) {

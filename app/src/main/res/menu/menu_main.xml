@@ -58,6 +58,11 @@
                 android:title="@string/track_record"
                 app:showAsAction="always" />
 
+            <item
+                android:id="@+id/menu_tracks_list"
+                android:title="@string/tracks_list"
+                app:showAsAction="always" />
+
 
         </menu>
     </item>

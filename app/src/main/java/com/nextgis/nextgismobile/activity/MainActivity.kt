@@ -22,11 +22,17 @@
 package com.nextgis.nextgismobile.activity
 
 import android.Manifest
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
@@ -38,27 +44,75 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.snackbar.Snackbar
 import com.nextgis.maplib.CoordinateTransformation
 import com.nextgis.maplib.GestureDelegate
+import com.nextgis.maplib.Location
 import com.nextgis.maplib.MapDocument
 import com.nextgis.maplib.Point
+import com.nextgis.maplib.service.TrackerDelegate
+import com.nextgis.maplib.service.TrackerService
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.databinding.ActivityMainBinding
 import com.nextgis.nextgismobile.fragment.LayersFragment
 import com.nextgis.nextgismobile.fragment.LocationInfoFragment
+import com.nextgis.nextgismobile.fragment.TracksFragment
 import com.nextgis.nextgismobile.util.dpToPx
+import com.nextgis.nextgismobile.util.requestPermissionsUtil
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.LocationViewModel
 import com.nextgis.nextgismobile.viewmodel.MapViewModel
 import com.nextgis.nextgismobile.viewmodel.SettingsViewModel
+import com.nextgis.nextgismobile.util.startService
 import com.pawegio.kandroid.runDelayed
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
+import java.util.Date
 
-
+const val LOCATION_REQUEST = 2
 class MainActivity : BaseActivity(), GestureDelegate {
 
     private lateinit var binding: ActivityMainBinding
     internal var map: MapDocument? = null
+
+
+
+    private var mIsServiceRunning = false
+
+
+    private val mTrackerDelegate = object : TrackerDelegate {
+        override fun onLocationChanged(location: Location) {
+        }
+
+        override fun onStatusChanged(status: TrackerService.Status, trackName: String, trackStartTime: Date) {
+            mIsServiceRunning = status == TrackerService.Status.RUNNING
+            updateServiceStatus()
+        }
+    }
+
+    private fun updateServiceStatus() {
+        if (mIsServiceRunning) {
+            //binding.fab.setImageResource(R.drawable.ic_pause)
+        }
+        else {
+            //binding.fab.setImageResource(R.drawable.ic_play)
+        }
+        //binding.contentMain.tracksGroup.text = getString(R.string.tracks) + " (${mTracksAdapter?.itemCount})"
+    }
+
+    private var mTrackerService: TrackerService? = null
+    private var mIsBound = false
+    private val mServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as TrackerService.LocalBinder
+            mTrackerService = binder.getService()
+            mTrackerService?.addDelegate(mTrackerDelegate)
+            mIsBound = true
+            mTrackerService?.status()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            mIsBound = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,23 +186,34 @@ class MainActivity : BaseActivity(), GestureDelegate {
         supportFragmentManager.beginTransaction().replace(R.id.location_info, location, LOCATION_INFO).commitAllowingStateLoss()
     }
 
-    private fun initMap() {
+    private fun initMap(){
         val mapModel = ViewModelProvider(this).get(MapViewModel::class.java)
         mapModel.init(this)
 
         map = mapModel.load(this)
-        map?.let { binding.mapinclude.mapView.setMap(it) }
+        map?.let {
+            binding.mapinclude.mapView.setMap(it)
+            binding.mapinclude.mapView.showLocation = true
+
+        }
+
         binding.mapinclude.mapView.registerGestureRecognizers(this)
         binding.mapinclude.mapView.freeze = false
     }
 
     override fun onStart() {
         super.onStart()
+        val intent = Intent(this, TrackerService::class.java)
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
         runDelayed(1500) { binding.settings?.load() }
     }
 
     override fun onStop() {
         super.onStop()
+        if(mIsBound) {
+            mTrackerService?.removeDelegate(mTrackerDelegate)
+            unbindService(mServiceConnection)
+        }
         map?.save()
     }
 
@@ -175,18 +240,92 @@ class MainActivity : BaseActivity(), GestureDelegate {
                 toast(R.string.pointing)
                 true
             }
+
+            R.id.menu_tracks_list -> {
+                tracks()
+                true
+            }
+
             R.id.menu_track_record -> {
-                toast(R.string.track_record)
+                if(mIsServiceRunning) {
+                    toast(R.string.track_record_stop)
+                    startService(this, TrackerService.Command.STOP)
+                }
+                else {
+
+                    val activity = this
+
+                    TrackerService.showBackgroundDialog(this, object : TrackerService.BackgroundPermissionCallback {
+                        override fun beforeAndroid10(hasBackgroundPermission: Boolean) {
+                            if (!hasBackgroundPermission) {
+                                val permissions = arrayOf(
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION
+                                )
+                                requestPermissionsUtil(R.string.permissions_x,
+                                    R.string.requested_permissions,
+                                    LOCATION_REQUEST,
+                                    permissions,
+                                    activity)
+                            } else {
+                                toast(R.string.track_record_start)
+                                startService(baseContext, TrackerService.Command.START)
+                                if(!mIsBound) {
+                                    val intent = Intent(baseContext, TrackerService::class.java)
+                                    bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
+                                }                         }
+                        }
+
+                        @RequiresApi(api = Build.VERSION_CODES.Q)
+                        override fun onAndroid10(hasBackgroundPermission: Boolean) {
+                            if (!hasBackgroundPermission) {
+                                requestPermissions()
+                            } else {
+                                toast(R.string.track_record_start)
+                                startService(baseContext, TrackerService.Command.START)
+                                if(!mIsBound) {
+                                    val intent = Intent(baseContext, TrackerService::class.java)
+                                    bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
+                                }                        }
+                        }
+
+                        @RequiresApi(api = Build.VERSION_CODES.Q)
+                        override fun afterAndroid10(hasBackgroundPermission: Boolean) {
+                            if (!hasBackgroundPermission) {
+                                requestPermissions()
+                            } else {
+                                toast(R.string.track_record_start)
+                                startService(baseContext, TrackerService.Command.START)
+                                if(!mIsBound) {
+                                    val intent = Intent(baseContext, TrackerService::class.java)
+                                    bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
+                                }                        }
+                        }
+                    })
+
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private fun requestPermissions() {
+        val permissions = arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        ActivityCompat.requestPermissions(this, permissions, LOCATION_REQUEST)
+    }
+
     fun layers() {
         val layers = LayersFragment()
         supportFragmentManager.beginTransaction().replace(R.id.container, layers).addToBackStack("layers").commitAllowingStateLoss()
     }
+
+
+    fun tracks() {
+        val layers = TracksFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.container, layers).addToBackStack("tracks").commitAllowingStateLoss()
+    }
+
 
     fun search() {
         toast(R.string.not_implemented)
