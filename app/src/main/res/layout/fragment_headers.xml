@@ -51,31 +51,12 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent"
                 >
-                <LinearLayout
-                    android:id="@+id/progressPanel"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="@{auth.isTokenGetting ? 0:8}"
-
                     >
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="16dp"
-                        android:indeterminate="true"
-                        />
 
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="@{auth.isTokenGetting ? 8:0}"
-                    >
                     <LinearLayout
                         android:id="@+id/info"
                         android:layout_width="match_parent"
@@ -84,7 +65,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:paddingBottom="24dp"
-                        android:visible="@{auth.account.authorized}"
+                        android:visible="@{auth.account.authorized || auth.showBeforeUpdate}"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <de.hdodenhof.circleimageview.CircleImageView
@@ -120,9 +101,54 @@
                                 android:text="@{auth.login}"
                                 android:textSize="12sp"
                                 tools:text="fname@test.com" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                >
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{auth.lastError}"
+                                    android:textColor="@color/red"
+                                    android:visibility="@{(auth.isTokenUpdateError &amp;&amp; !auth.isLoading)? 0:8}"
+                                    />
+
+                            </RelativeLayout>
                         </LinearLayout>
+
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:id="@+id/progressPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="#68FFFFFF"
+                        android:orientation="vertical"
+                        android:visibility="@{auth.isLoading() ? 0:8}"
+
+                        >
+
+                        <ProgressBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:indeterminate="true" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{auth.isTokenGetting ? 8:0}"
+                    >
                     <LinearLayout
                         android:id="@+id/panel"
                         android:layout_width="match_parent"
@@ -131,7 +157,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="24dp"
-                        android:visible="@{!auth.account.authorized || !auth.account.supported}"
+                        android:visible="@{(!auth.isLoading()) &amp;&amp; auth.isLoginPanelShow()}"
                         app:layout_constraintTop_toBottomOf="@id/info">
 
                         <TextView

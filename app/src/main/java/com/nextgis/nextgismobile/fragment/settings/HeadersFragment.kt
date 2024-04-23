@@ -29,11 +29,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.nextgis.maplib.Account
 import com.nextgis.nextgismobile.R
 import com.nextgis.nextgismobile.activity.NGIDSigninActivity
 import com.nextgis.nextgismobile.adapter.OnItemClickListener
@@ -42,9 +41,7 @@ import com.nextgis.nextgismobile.data.Setting
 import com.nextgis.nextgismobile.databinding.FragmentHeadersBinding
 import com.nextgis.nextgismobile.util.tint
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
-import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
-import com.pawegio.kandroid.visible
 
 
 class HeadersFragment : Fragment(), OnItemClickListener {
@@ -124,10 +121,12 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             R.id.action_signing -> {
                 activity?.let { activity ->
                     binding.auth?.let {
-                        if (it.account.get() != null && it.account.get()!!.authorized)
+                        if (it.account.get() != null &&
+                            // it.account.get()!!.authorized
+                            !(it.account.get() as Account ).auth.accessToken.equals(""))
                             showConfirmation(it, activity)
                         else
-                            activity.startActivity<NGIDSigninActivity>()
+                            activity?.startActivityForResult( NGIDSigninActivity.getSignInIntent(context), NGIDSigninActivity.CODE_SIGN_SUCC)
                     }
                 }
                 true
@@ -143,6 +142,7 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 auth.deleteAccount()
                 activity.invalidateOptionsMenu()
+                // auth.
             }
             .setNegativeButton(android.R.string.cancel, null).create()
         builder.show()
@@ -168,8 +168,10 @@ class HeadersFragment : Fragment(), OnItemClickListener {
         binding.auth?.let {
             if (it.account.get() != null && it.account.get()!!.authorized)
                 toast(R.string.not_implemented)
-            else
-                activity?.startActivity<NGIDSigninActivity>()
+            else {
+                activity?.startActivityForResult( NGIDSigninActivity.getSignInIntent(context), NGIDSigninActivity.CODE_SIGN_SUCC)
+                //activity?.startActivity<NGIDSigninActivity>()
+            }
         }
     }
 

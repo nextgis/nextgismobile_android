@@ -24,22 +24,32 @@ package com.nextgis.nextgismobile.viewmodel
 //import com.nextgis.nextgismobile.model.SettingsModel.Companion.LOGGED_IN
 import android.accounts.AccountManager
 import android.accounts.AccountManagerCallback
+import android.app.Application
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableField
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.preference.PreferenceManager
+import com.nextgis.maplib.API
 import com.nextgis.maplib.Account
+import com.nextgis.maplib.Constants
 import com.nextgis.maplib.util.NonNullObservableField
 import com.nextgis.nextgismobile.data.Token
 import com.nextgis.nextgismobile.data.UserCreate
 import com.nextgis.nextgismobile.model.AuthModel
 import com.nextgis.nextgismobile.util.APIService
+import com.pawegio.kandroid.runAsync
+import com.pawegio.kandroid.runOnUiThread
 import java.util.regex.Pattern
 
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
         const val EMAIL_PATTERN =
             "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
@@ -49,8 +59,13 @@ class AuthViewModel : ViewModel() {
 
 //    val loggedIn = NonNullObservableField(false)
 
+    val lastError = NonNullObservableField("token update error")
+    val loginWasDone = NonNullObservableField(false)
     val firstTime = NonNullObservableField(true)
     val isTokenGetting = NonNullObservableField(false)
+    val isLoginPanelShow = NonNullObservableField(false) // no login was
+    val isTokenUpdateError = NonNullObservableField(false) // token error - after update
+
 
     val isLoading = NonNullObservableField(false)
     val signIn = NonNullObservableField(false)
@@ -59,21 +74,28 @@ class AuthViewModel : ViewModel() {
     var token = MutableLiveData<Token>()
     var error = MutableLiveData<String>()
     val passwordVisible = NonNullObservableField(false)
+    val isExternalOnline = NonNullObservableField(true)
     val account: ObservableField<Account> = ObservableField()
     val fullName = NonNullObservableField("")
+    val showBeforeUpdate = NonNullObservableField(false)
 
-    fun getVisible():Int {
-        return if (isLoading.get()) View.VISIBLE else View.GONE
-    }
 
-    fun getInVisible():Int {
-        return if (isLoading.get()) View.GONE else View.VISIBLE
-    }
     fun init(accountManager: AccountManager?, load: Boolean) {
-        //fun init(preferences: SharedPreferences, accountManager: AccountManager?, load: Boolean) {
 
-//        loggedIn.set(preferences.getBoolean( LOGGED_IN, false))
+        Log.e("AAUUTTHHH","AuthViewModel init()")
+        Log.e("AAUUTTHHH", "executing AuthViewModel init() on..." + Thread.currentThread().name)
 
+        // load pref values stored on prev steps
+        val context = getApplication<Application>().applicationContext
+        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val storedFullName = preferences.getString(Constants.SettingsStrings.account_fullName, "")
+        val storedLogin = preferences.getString(Constants.SettingsStrings.account_login, "")
+        val storedLoginWasDone = preferences.getBoolean(Constants.SettingsStrings.account_login_was_done, false)
+        storedFullName?.let { fullName.set(it) }
+        storedLogin?.let { login.set(storedLogin) }
+        loginWasDone.set(storedLoginWasDone)
+        if (!TextUtils.isEmpty(storedFullName) || !TextUtils.isEmpty(storedLogin))
+            showBeforeUpdate.set(true)
 
         authModel.accountManager = accountManager
         if (!load)
@@ -83,31 +105,47 @@ class AuthViewModel : ViewModel() {
         val expiresIn = authModel.getUserData("expiresIn")
         token.value = Token("", "", type, expiresIn)
         isTokenGetting.set(true)
-        Log.e("TTOOKK","true")
+        isLoginPanelShow.set(false)
+        isLoading.set(true)
+        isTokenUpdateError.set(false)
+        Log.e("AAUUTTHHH","start authModel.getToken type (access)")
         authModel.getToken(type, AccountManagerCallback { callback ->
+            Log.e("AAUUTTHHH","start authModel.getToken type (access) callback")
+            Log.e("AAUUTTHHH", "executing getToken access on..." + Thread.currentThread().name)
             val token = callback.result.getString(AccountManager.KEY_AUTHTOKEN, "")
             this.token.value?.accessToken = token
             APIService.TOKEN = "$type $token"
             this.token.value?.let {
-                if (it.refreshToken.isNotBlank())
-                    addAuth(it)
+                if (it.refreshToken.isNotBlank()) {
+                    runAsync {
+                        Log.e("AAUUTTHHH", "executing runAsync on..." + Thread.currentThread().name)
+                        addAuth(it)
+                    }
+                }
             }
-        }, isTokenGetting)
+        }, isTokenGetting, isLoginPanelShow, isLoading)
+        Log.e("AAUUTTHHH","start authModel.getToken refreshToken")
         authModel.getToken("refreshToken", AccountManagerCallback { callback ->
+            Log.e("AAUUTTHHH","start authModel.getToken refreshToken callback")
+            Log.e("AAUUTTHHH", "executing getToken refreshToken  on..." + Thread.currentThread().name)
             val token = callback.result.getString(AccountManager.KEY_AUTHTOKEN, "")
             this.token.value?.refreshToken = token
             this.token.value?.let {
-                if (it.accessToken.isNotBlank())
-                    addAuth(it)
+                if (it.accessToken.isNotBlank()) {
+                    runAsync {
+                        addAuth(it)
+                    }
+                }
                 isTokenGetting.set(false)
                 Log.e("TTOOKK","false")
             }
-        }, isTokenGetting)
+        }, isTokenGetting, isLoginPanelShow, isLoading)
     }
 
     fun checkUser(){
         if (this.token.value != null) {
             authModel.checkUser()
+            View.VISIBLE
         }
     }
 
@@ -129,7 +167,13 @@ class AuthViewModel : ViewModel() {
         isLoading.set(false)
         isTokenGetting.set(false)
         Log.e("TTOOKK","false")
-        error.value = message
+
+        message?.let {
+            error.value = if (message == null) "" else message
+        } ?:run{
+            error.value = "null error message"
+        }
+
     }
 
     fun signIn() {
@@ -140,8 +184,11 @@ class AuthViewModel : ViewModel() {
                 token.value = data as Token?
                 token.value?.let {
                     APIService.TOKEN = "${it.tokenType} ${it.accessToken}"
-                    addAuth(it)
-                    APIService.TOKEN = "${it.tokenType} ${it.accessToken}"
+                    runAsync {
+                        addAuth(it)
+                    }
+
+                    //APIService.TOKEN = "${it.tokenType} ${it.accessToken}"
                 }
             }
 
@@ -158,7 +205,9 @@ class AuthViewModel : ViewModel() {
                 isLoading.set(false)
                 token.value = data as Token?
                 token.value?.let {
-                    addAuth(it)
+                    runAsync {
+                        addAuth(it)
+                    }
                 }
             }
 
@@ -169,32 +218,63 @@ class AuthViewModel : ViewModel() {
     }
 
     private fun addAuth(token: Token) {
-//        val url = "http://source.nextgis.com"
-//        val authUrl = "https://my.nextgis.com"
-//        API.addAuth(Auth(url, authUrl, token.accessToken, token.refreshToken, token.expiresIn, UserCreate.client_id, {}))
+        //        val url = "http://source.nextgis.com"
+        //        val authUrl = "https://my.nextgis.com"
+        //        API.addAuth(Auth(url, authUrl, token.accessToken, token.refreshToken, token.expiresIn, UserCreate.client_id, {}))
+        Log.e("AAUUTTHHH", "start executing addAuth  on..." + Thread.currentThread().name)
+        Log.e("AAUUTTHHH","start addAuth")
 
         val account = Account(UserCreate.client_id_old, token.accessToken, token.refreshToken,
             authorizeFailedCallback = {
                 Log.e("NNGGWW", "authorizeFailedCallback"  )
             })
 
-        Log.e("NNGGWW", "account created with token " + token.accessToken + " refresh " + token.refreshToken)
-        Log.e("NNGGWW", "emailis " + account.email)
         account.updateInfo()
-        Log.e("NNGGWW", "emailis after update " + account.email)
         val updateResult = account.updateSupportInfo()
-        Log.e("NNGGWW", "updateSupport result " + updateResult)
-        Log.e("NNGGWW", "emailis after updateSupport " + account.email)
-        fullName.set((account.firstName + " " + account.lastName).trim())
-        login.set(account.email)
-        this.account.set(account)
 
-        val options = account.options()
-        if (options == null)
-            Log.e("nul","ff")
+        isLoading.set(false)
+        if (loginWasDone.get() && !account.authorized){
+            // some error on update info - as one reason - unable refresh token
+            isTokenUpdateError.set(true)
+        }
 
+        runOnUiThread {
+            if (loginWasDone.get() && account.authorized == false && account.firstName.equals("") && account.lastName.equals("")
+                && account.email.equals("")) {
+                // looks like token update  error - show attention and not change saved names and email
+                isTokenUpdateError.set(true)
+                if (!isExternalOnline.get())
+                    lastError.set("no internet to check authority")
 
-        // updateInfoFromServer()
+            } else {
+                fullName.set((account.firstName + " " + account.lastName).trim())
+                login.set(account.email)
+                // not update if update fail
+                isTokenUpdateError.set(false)
+            }
+
+            this.account.set(account)
+            val options = account.options()
+            if (options == null)
+                Log.e("nul", "ff")
+
+            // store data - to show fast account info
+            if (account.authorized) { //auth success - save data
+                val context = getApplication<Application>().applicationContext
+                val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+                preferences.edit().putString(
+                    Constants.SettingsStrings.account_fullName,
+                    (account.firstName + " " + account.lastName).trim()
+                ).apply()
+                preferences.edit().putString(Constants.SettingsStrings.account_login, account.email).apply()
+
+                if (!loginWasDone.get()) {
+                    preferences.edit().putBoolean(Constants.SettingsStrings.account_login_was_done, true).apply()
+                    loginWasDone.set(true)
+                }
+                preferences.edit().putString(Constants.SettingsStrings.account_login, account.email).apply()
+            }
+        }
     }
 
     private fun updateInfoFromServer() {
@@ -220,5 +300,16 @@ class AuthViewModel : ViewModel() {
         login.set("")
         this.token.value = null
         APIService.TOKEN = ""
+
+        val context = getApplication<Application>().applicationContext
+        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        preferences.edit().remove(Constants.SettingsStrings.account_fullName).apply()
+        preferences.edit().remove(Constants.SettingsStrings.account_login).apply()
+        preferences.edit().remove(Constants.SettingsStrings.account_login_was_done).apply()
+        loginWasDone.set(false)
+        isLoginPanelShow.set(true)
+        isLoading.set(false)
+        signIn.set(false)
+        showBeforeUpdate.set(false)
     }
 }

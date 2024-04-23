@@ -18,11 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.nextgis.nextgismobile.activity
-
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.Observer
  
 import android.content.SharedPreferences
@@ -44,10 +43,17 @@ import com.pawegio.kandroid.accountManager
 import com.pawegio.kandroid.startActivity
 import com.pawegio.kandroid.toast
 
-
 class NGIDSigninActivity: AccountAuthenticatorActivity() {
     private lateinit var binding: ActivitySigninBinding
     private val preferences: SharedPreferences get() = PreferenceManager.getDefaultSharedPreferences(this)
+    companion object {
+        val CODE_SIGN_SUCC = 43
+
+        fun getSignInIntent(context: Context?) : Intent {
+            val result  = Intent(context, NGIDSigninActivity::class.java)
+            return result
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

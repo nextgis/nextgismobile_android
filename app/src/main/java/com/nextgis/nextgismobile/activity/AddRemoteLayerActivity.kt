@@ -22,12 +22,15 @@
 package com.nextgis.nextgismobile.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
 import com.nextgis.maplib.API
+import com.nextgis.maplib.ConnectionDescription
 import com.nextgis.maplib.Instance
+import com.nextgis.maplib.NGWConnectionDescription
 import com.nextgis.maplib.Object
 import com.nextgis.maplib.activity.PickerActivity
 import com.nextgis.maplib.fragment.FilePickerFragment
@@ -102,6 +105,7 @@ class AddRemoteLayerActivity : BaseActivity(), PickerActivity {
 
     override fun onLayerSelected(file: Object?) {
         toast(R.string.not_implemented)
+        // todo remove
     }
 
     fun previous() {

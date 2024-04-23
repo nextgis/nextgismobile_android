@@ -20,15 +20,12 @@
  */
 
 package com.nextgis.nextgismobile.util
-
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.text.Editable
-import android.view.View
-import android.widget.Toast
+import android.net.ConnectivityManager
 import androidx.core.app.ActivityCompat
 import com.nextgis.maplib.service.TrackerService
 import com.nextgis.maplib.startTrackerService
@@ -46,8 +43,13 @@ public class Utils {
                 .setMessage(text)
                 .setNegativeButton(R.string.cancel, null)// listenerCancel)
                 .setPositiveButton(R.string.ok, listenerOK)
-
             val dialog = builder.show()
+        }
+
+        fun isOnline(context: Context): Boolean {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val netInfo = cm.activeNetworkInfo
+            return netInfo != null && netInfo.isConnectedOrConnecting
         }
     }
 }

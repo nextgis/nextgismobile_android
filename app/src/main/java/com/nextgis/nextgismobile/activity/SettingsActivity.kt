@@ -21,6 +21,7 @@
 
 package com.nextgis.nextgismobile.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -29,8 +30,10 @@ import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProvider
 import com.nextgis.nextgismobile.R
+import com.nextgis.nextgismobile.activity.NGIDSigninActivity.Companion.CODE_SIGN_SUCC
 import com.nextgis.nextgismobile.databinding.ActivitySettingsBinding
 import com.nextgis.nextgismobile.fragment.settings.HeadersFragment
+import com.nextgis.nextgismobile.util.Utils
 //import com.nextgis.nextgismobile.model.SettingsModel.Companion.PREF
 import com.nextgis.nextgismobile.util.statusBarHeight
 import com.nextgis.nextgismobile.viewmodel.AuthViewModel
@@ -62,6 +65,8 @@ class SettingsActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.headers, headers).addToBackStack("headers").commitAllowingStateLoss()
         binding.executePendingBindings()
 
+
+        authModel.isExternalOnline.set(Utils.isOnline(applicationContext))
         authModel.init(accountManager, true)
 //        authModel.init(getSharedPreferences(PREF, Context.MODE_MULTI_PROCESS), accountManager, true)
 
@@ -76,11 +81,14 @@ class SettingsActivity : BaseActivity() {
 //        thread.start()
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        val authModel = ViewModelProvider(this).get(AuthViewModel::class.java)
-//        authModel.init(getSharedPreferences(PREF, Context.MODE_MULTI_PROCESS), accountManager, true)
-//    }
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == CODE_SIGN_SUCC) {
+            val authModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+            authModel.init(accountManager, true)
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

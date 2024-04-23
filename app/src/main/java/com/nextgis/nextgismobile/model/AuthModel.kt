@@ -132,7 +132,8 @@ class AuthModel {
         return intent
     }
 
-    fun getToken(type: String, callback: AccountManagerCallback<Bundle>, isTokenGetting : NonNullObservableField<Boolean>) {
+    fun getToken(type: String, callback: AccountManagerCallback<Bundle>, isTokenGetting : NonNullObservableField<Boolean>,
+                 isLoginPanelShow : NonNullObservableField<Boolean>, isLoading : NonNullObservableField<Boolean>) {
         isTokenGetting.set(true)
 
         val account = getAccount()
@@ -153,6 +154,9 @@ class AuthModel {
             }
         } else {
             isTokenGetting.set(false)
+            isLoginPanelShow.set(true)
+            isLoading.set(false)
+
         }
     }
 
