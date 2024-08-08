@@ -121,9 +121,8 @@ class HeadersFragment : Fragment(), OnItemClickListener {
             R.id.action_signing -> {
                 activity?.let { activity ->
                     binding.auth?.let {
-                        if (it.account.get() != null &&
-                            // it.account.get()!!.authorized
-                            !(it.account.get() as Account ).auth.accessToken.equals(""))
+                        if ( it.isLoading.get() || (it.account.get() != null &&
+                            !(it.account.get() as Account).auth.accessToken.equals("")))
                             showConfirmation(it, activity)
                         else
                             activity?.startActivityForResult( NGIDSigninActivity.getSignInIntent(context), NGIDSigninActivity.CODE_SIGN_SUCC)
